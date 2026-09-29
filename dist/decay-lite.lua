@@ -1,6 +1,6 @@
 --[[
     Decay — bundled build
-    generated 2026-09-29T20:21:27.066Z
+    generated 2026-09-29T20:22:20.294Z
     modules: 277
     assets:  0
 ]]
@@ -47678,23 +47678,41 @@ local function build(outer)
     local search = find_search_box(inner);
     local title = find_title(inner);
 
+    -- Measure before touching anything. Once the window is resized these
+    -- values are gone.
+    local content_width = content and content.AbsoluteSize.X or nil;
+    local separator_height = separator and separator.AbsoluteSize.Y or nil;
+
     -- ── widen ──────────────────────────────────────────────────────────────
-    -- Everything that spans the window grows by SIDEBAR_WIDTH. The content
-    -- frame does NOT: it keeps its 546px so the two 266px columns are
-    -- untouched, and is simply pushed right into the remaining space.
+    -- Only the window itself is widened outright. Its descendants are mostly
+    -- scale-sized (Inner is 1,-2 of Outer, and so on), so they follow on their
+    -- own -- explicitly widening those double-counts. The earlier version did
+    -- exactly that and produced an 812px Inner inside a 682px window.
     add_width(outer, SIDEBAR_WIDTH);
-    add_width(inner, SIDEBAR_WIDTH);
-    add_width(container, SIDEBAR_WIDTH);
-    add_width(holder, SIDEBAR_WIDTH);
-    if separator then
-        add_width(separator, SIDEBAR_WIDTH);
-    end;
-    if content then
-        shift_x(content, SIDEBAR_WIDTH);
+
+    -- Only genuinely fixed-width frames along the chain need help. Threshold is
+    -- on Scale, not Offset: anything mostly scaled is already relative.
+    for _, object in ipairs({ inner, container, holder }) do
+        if object and object.Size.X.Scale <= 0.5 then
+            add_width(object, SIDEBAR_WIDTH);
+        end;
     end;
 
-    -- right-anchored widgets keep their gap to the edge by shifting by the same
-    -- amount, which preserves whatever AnchorPoint or scale they already use
+    -- The separator is a hairline that should span whatever the window is now.
+    if separator then
+        separator.Size = UDim2.new(1, 0, 0, separator_height or separator.Size.Y.Offset);
+    end;
+
+    -- Content is pinned to the width it had and pushed right by the sidebar.
+    -- Left to scale it would stretch across the new window and drag both 266px
+    -- columns out of position.
+    if content and content_width then
+        content.Size = UDim2.new(0, content_width, content.Size.Y.Scale, content.Size.Y.Offset);
+        content.Position = UDim2.new(0, SIDEBAR_WIDTH, content.Position.Y.Scale, content.Position.Y.Offset);
+    end;
+
+    -- Right-anchored widgets keep their gap to the edge by shifting by the same
+    -- amount, which preserves whatever AnchorPoint or scale they already use.
     if search then
         shift_x(search, SIDEBAR_WIDTH);
     end;
