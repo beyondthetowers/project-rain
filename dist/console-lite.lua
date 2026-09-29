@@ -1,6 +1,6 @@
 --[[
-    Decay — bundled build
-    generated 2026-09-29T20:30:54.708Z
+    Console — bundled build
+    generated 2026-09-29T20:35:13.988Z
     modules: 278
     assets:  0
 ]]
@@ -1562,7 +1562,7 @@ function auto_echo_layer2:pass_fragments()
                     if not game:IsLoaded() then game.Loaded:Wait(); end;
                     if game.PlaceId ~= 4111023553 then return; end
                     local slot = "%s";
-                    queueonteleport('if game.PlaceId == 4111023553 then return; end; xpcall(function() local sound = Instance.new("Sound", game:GetService("CoreGui")); game:GetService("Debris"):AddItem(sound, 6); sound.Volume = 1.3; sound.SoundId = getcustomasset("Decay/assets/notification.mp3"); sound:Play(); end, warn);')
+                    queueonteleport('if game.PlaceId == 4111023553 then return; end; xpcall(function() local sound = Instance.new("Sound", game:GetService("CoreGui")); game:GetService("Debris"):AddItem(sound, 6); sound.Volume = 1.3; sound.SoundId = getcustomasset("Console/assets/notification.mp3"); sound:Play(); end, warn);')
                     game:GetService("ReplicatedStorage"):WaitForChild("Requests"):WaitForChild("WipeSlot"):InvokeServer(slot)
                     task.wait(0.5)
                 ]]
@@ -8513,7 +8513,7 @@ struct = automation_struct:construct({
                         if not game:IsLoaded() then game.Loaded:Wait(); end;
                         if game.PlaceId ~= 4111023553 then return; end
                         local slot = "%s";
-                        queueonteleport('if game.PlaceId == 4111023553 then return; end; xpcall(function() local sound = Instance.new("Sound", game:GetService("CoreGui")); game:GetService("Debris"):AddItem(sound, 6); sound.Volume = 1.3; sound.SoundId = getcustomasset("Decay/assets/notification.mp3"); sound:Play(); end, warn);')
+                        queueonteleport('if game.PlaceId == 4111023553 then return; end; xpcall(function() local sound = Instance.new("Sound", game:GetService("CoreGui")); game:GetService("Debris"):AddItem(sound, 6); sound.Volume = 1.3; sound.SoundId = getcustomasset("Console/assets/notification.mp3"); sound:Play(); end, warn);')
                         game:GetService("ReplicatedStorage"):WaitForChild("Requests"):WaitForChild("WipeSlot"):InvokeServer(slot)
                         task.wait(0.5)
                     ]]
@@ -9011,7 +9011,7 @@ local state_machine = StateMachine.create({
                     local server = '%s';
                     local slot = "%s";
 
-                    queueonteleport('if game.PlaceId == 4111023553 then return; end; xpcall(function() local sound = Instance.new("Sound", game:GetService("CoreGui")); game:GetService("Debris"):AddItem(sound, 6); sound.Volume = 1.3; sound.SoundId = getcustomasset("Decay/assets/notification.mp3"); sound:Play(); end, warn);')
+                    queueonteleport('if game.PlaceId == 4111023553 then return; end; xpcall(function() local sound = Instance.new("Sound", game:GetService("CoreGui")); game:GetService("Debris"):AddItem(sound, 6); sound.Volume = 1.3; sound.SoundId = getcustomasset("Console/assets/notification.mp3"); sound:Play(); end, warn);')
 
                     local args = {
                         slot
@@ -9051,12 +9051,12 @@ local state_machine = StateMachine.create({
                                                     description = string.format("Finished cycle in %.2fs, Gained %i echoes.", wiped_at - last_wiped_at, math.floor(v.Echoes or 0)),
                                                     color = 6724044,
                                                     author = {
-                                                        name = ".gg/decay",
+                                                        name = ".gg/console",
                                                         icon_url = "https://cdn.discordapp.com/attachments/1211502078200127529/1464075011550613588/PRLOGO.png"
                                                     }
                                                 }
                                             },
-                                            username = "Decay",
+                                            username = "Console",
                                             avatar_url = "https://cdn.discordapp.com/attachments/1211502078200127529/1464075011550613588/PRLOGO.png",
                                             attachments = {},
                                             flags = 4096
@@ -9782,7 +9782,7 @@ local state_machine = StateMachine.create({
                     if not game:IsLoaded() then game.Loaded:Wait(); end;
                     if game.PlaceId ~= 4111023553 then return; end
                     local slot = "%s";
-                    queueonteleport('if game.PlaceId == 4111023553 then return; end; xpcall(function() local sound = Instance.new("Sound", game:GetService("CoreGui")); game:GetService("Debris"):AddItem(sound, 6); sound.Volume = 1.3; sound.SoundId = getcustomasset("Decay/assets/notification.mp3"); sound:Play(); end, warn);')
+                    queueonteleport('if game.PlaceId == 4111023553 then return; end; xpcall(function() local sound = Instance.new("Sound", game:GetService("CoreGui")); game:GetService("Debris"):AddItem(sound, 6); sound.Volume = 1.3; sound.SoundId = getcustomasset("Console/assets/notification.mp3"); sound:Play(); end, warn);')
                     game:GetService("ReplicatedStorage"):WaitForChild("Requests"):WaitForChild("WipeSlot"):InvokeServer(slot)
                     task.wait(0.5)
                 ]]
@@ -10607,7 +10607,7 @@ struct = automation_struct:construct({
                         local server = '%s';
                         local slot = "%s";
                     
-                        queueonteleport('if game.PlaceId == 4111023553 then return; end; xpcall(function() local sound = Instance.new("Sound", game:GetService("CoreGui")); game:GetService("Debris"):AddItem(sound, 6); sound.Volume = 1.3; sound.SoundId = getcustomasset("Decay/assets/notification.mp3"); sound:Play(); end, warn);')
+                        queueonteleport('if game.PlaceId == 4111023553 then return; end; xpcall(function() local sound = Instance.new("Sound", game:GetService("CoreGui")); game:GetService("Debris"):AddItem(sound, 6); sound.Volume = 1.3; sound.SoundId = getcustomasset("Console/assets/notification.mp3"); sound:Play(); end, warn);')
                     
                         local args = {
                             slot
@@ -10647,12 +10647,12 @@ struct = automation_struct:construct({
                                                         description = string.format("Finished cycle in %.2fs, Gained %i echoes.", wiped_at - last_wiped_at, math.floor(v.Echoes or 0)),
                                                         color = 6724044,
                                                         author = {
-                                                            name = ".gg/decay",
+                                                            name = ".gg/console",
                                                             icon_url = "https://cdn.discordapp.com/attachments/1211502078200127529/1464075011550613588/PRLOGO.png"
                                                         }
                                                     }
                                                 },
-                                                username = "Decay",
+                                                username = "Console",
                                                 avatar_url = "https://cdn.discordapp.com/attachments/1211502078200127529/1464075011550613588/PRLOGO.png",
                                                 attachments = {},
                                                 flags = 4096
@@ -18582,8 +18582,8 @@ return LPH_NO_VIRTUALIZE(function()
             local instance = setmetatable({}, chance_store)
             instance.chances = {}
 
-            if isfile("Decay/post-rc-260421-parry-chances.json") then
-                local data = game:GetService("HttpService"):JSONDecode(readfile("Decay/post-rc-260421-parry-chances.json"))
+            if isfile("Console/post-rc-260421-parry-chances.json") then
+                local data = game:GetService("HttpService"):JSONDecode(readfile("Console/post-rc-260421-parry-chances.json"))
                 instance:load_chances(data)
             end
 
@@ -18836,7 +18836,7 @@ return LPH_NO_VIRTUALIZE(function()
 
         function chance_store:save_chances()
             local data = game:GetService("HttpService"):JSONEncode(self.chances)
-            writefile("Decay/post-rc-260421-parry-chances.json", data)
+            writefile("Console/post-rc-260421-parry-chances.json", data)
         end
 
         function chance_store:on_load(f)
@@ -20602,7 +20602,7 @@ local ap_breaker_tracks = setmetatable({}, { __mode = "k" });
 
 break_anims = function(track, time, data, action_type, self)
     if not data then return end
-    if track:HasTag("DECAY_BREAKER_IGNORE") then return end
+    if track:HasTag("CONSOLE_BREAKER_IGNORE") then return end
 
     if aztup.flags.ap_breaker and aztup_options.ap_breaker_type.Value == "Tester Aggressive 1 (Blatant)" and not track.Looped and track.Speed > 0.1 then
         while track.IsPlaying do
@@ -26312,7 +26312,7 @@ feature = Feature:new("ap_breaker", game:GetService("RunService").RenderStepped,
         if aztup_options.ap_breaker_type.Value == "Tester Aggressive 1 (Blatant)" and should_proc_aggressive then
             
             local breaker_type = rand:NextInteger(1, 3);
-            last_added_track:AddTag("DECAY_BREAKER_IGNORE")
+            last_added_track:AddTag("CONSOLE_BREAKER_IGNORE")
 
             if breaker_type == 1 then
                 last_added_track.Priority = rand:NextNumber() > 0.5 and Enum.AnimationPriority.Movement or Enum.AnimationPriority.Action;
@@ -27956,7 +27956,7 @@ function loader.initialize()
         warn(string.format("[features] %d module(s) returned a plain table, not registered", skipped));
     end;
 
-    getgenv().DECAY_registry = { loaded = loaded, failed = failed, modules = MODULES, options = OPTION_ONLY };
+    getgenv().CONSOLE_registry = { loaded = loaded, failed = failed, modules = MODULES, options = OPTION_ONLY };
 
     if not aztup.silent_mode and Logger and Logger.log then
         Logger.log(string.format("[features] registered %d, failed %d", loaded, failed));
@@ -28113,7 +28113,7 @@ end
         stats = {
             buildName = string.format("%s %s's Stolen Build", os.date("%B %d %Y"), player.Name),
             buildDescription = "Talents are not stealable anymore - This is just the opponents stats.",
-            buildAuthor = "decay",
+            buildAuthor = "console",
             power = level,
             pointsUntilNextPower = 67,
             points = 67,
@@ -28303,10 +28303,10 @@ end
     local path = string.format("%s %s Stolen Build", os.date("%B %d %Y"), player.Name);
     Logger:notify_sound(string.format("Successfully stole %s's build, %s & saved to file.", player.Name, buildUrl))
 
-    if not isfolder("Decay/Stolen Builds") then
-        makefolder("Decay/Stolen Builds")
+    if not isfolder("Console/Stolen Builds") then
+        makefolder("Console/Stolen Builds")
     end
-    writefile("Decay/Stolen Builds/" .. path .. ".txt", string.format([[https://decay
+    writefile("Console/Stolen Builds/" .. path .. ".txt", string.format([[https://decay
 stolen on %s
 build url: %s
 %s]], os.date("%B %d %Y"), buildUrl, data.content.notes));
@@ -28444,14 +28444,14 @@ aztup.maid:give_task(scheduler:add_task(0.5):Connect(function()
 
     local show_mem_data = aztup_toggles.WatermarkShowsMem and aztup_toggles.WatermarkShowsMem.Value;
 
-    local watermark, raw_watermark = ('DECAY // <font color=\"#%s\">DECOMPOSING</font> %i<font color="#%s">fps</font> %i<font color="#%s">ms</font>'):format(
+    local watermark, raw_watermark = ('CONSOLE // <font color=\"#%s\">DECOMPOSING</font> %i<font color="#%s">fps</font> %i<font color="#%s">ms</font>'):format(
         color_in_hex,
         math.floor(fps),
         color_in_hex,
         math.floor(Latency:get_ping() * 1000),
         color_in_hex
     ), ('%s %ifps %ims'):format(
-        "DECAY // DECOMPOSING",
+        "CONSOLE",
         math.floor(fps),
         math.floor(Latency:get_ping() * 1000)
     );
@@ -29142,13 +29142,13 @@ end;
 function exit_sound()
     if not aztup.flags.notify_with_sound then return end
     
-    sound.new("Decay/Assets/proximity.mp3", 0.9, aztup.flags.player_proximity_vol, true):play();
+    sound.new("Console/Assets/proximity.mp3", 0.9, aztup.flags.player_proximity_vol, true):play();
 end;
 
 function enter_sound()
     if not aztup.flags.notify_with_sound then return end
 
-    sound.new("Decay/Assets/proximity.mp3", 1.1, aztup.flags.player_proximity_vol, true):play();
+    sound.new("Console/Assets/proximity.mp3", 1.1, aztup.flags.player_proximity_vol, true):play();
 end;
 
 
@@ -30787,8 +30787,8 @@ local STATS_HEIGHT = 58;
 local ROW_HEIGHT = 24;
 local HEIGHT = TITLE_HEIGHT + STAGE_HEIGHT + STATS_HEIGHT + ROW_HEIGHT * 2 + 12;
 
-local SAVE_PATH = "Decay/brayden.json";
-local PORTRAIT_PATH = "Decay/Assets/brayden.png";
+local SAVE_PATH = "Console/brayden.json";
+local PORTRAIT_PATH = "Console/Assets/brayden.png";
 
 local FOODS = { "Burger", "Sushi", "Pizza", "Salad", "Tacos", "Curry", "Donut", "Natto", "Ramen", "Cake", "Steak", "Eel" };
 local GIFTS = { "Cap", "Hoodie", "Guitar", "Game", "Sunglasses", "Plushie", "Skateboard", "Houseplant" };
@@ -32829,7 +32829,7 @@ end;
         
         sound = enabledSounds[math.random(1, #enabledSounds)]
         child.PlaybackSpeed = 1;
-        child.AssetId = getcustomasset("Decay/Assets/Parry Sounds/" .. sound .. ".mp3")
+        child.AssetId = getcustomasset("Console/Assets/Parry Sounds/" .. sound .. ".mp3")
         child.Volume = aztup.flags.parry_sound_volume;
     
         if child:WaitForChild("AudioPitchShifter", 0.2) then
@@ -37220,13 +37220,13 @@ end;
     local PlayerESP = {} do
        PlayerESP.__index = PlayerESP;
     
-       local player_container = services.CoreGui:FindFirstChild("DECAY_PLAYER_CONTAINER");
+       local player_container = services.CoreGui:FindFirstChild("CONSOLE_PLAYER_CONTAINER");
         if player_container then
             player_container:Destroy();
         end;
     
         local pr_player_container = Instance.new("Folder", game:GetService("CoreGui"));
-        pr_player_container.Name = "DECAY_PLAYER_CONTAINER";
+        pr_player_container.Name = "CONSOLE_PLAYER_CONTAINER";
 
         local character_map = {};
     
@@ -38022,15 +38022,15 @@ local MainGui
 if RunService:IsStudio() then
 	MainGui = script:WaitForChild("MorphGui")
 else 	
-	if not isfolder("Decay/Deepwoken-Config") then
+	if not isfolder("Console/Deepwoken-Config") then
 		LocalPlayer:Kick("Race Morph Checksum : \nThe Script couldn't find the whole folder, please make sure to set up the files correctly.")
 	end
 
-	if not isfile("Decay/Deepwoken-Config/GuiItself.rbxm") then
+	if not isfile("Console/Deepwoken-Config/GuiItself.rbxm") then
 		LocalPlayer:Kick("Race Morph Checksum : \nThe Script couldn't find the GUI, please make sure to set up the files correctly.")
 	end
 
-	MainGui = game:GetObjects(getcustomasset("Decay/Deepwoken-Config/GuiItself.rbxm"))[1]
+	MainGui = game:GetObjects(getcustomasset("Console/Deepwoken-Config/GuiItself.rbxm"))[1]
 end
 
 local GlobalAssets = MainGui:WaitForChild("GlobalOrnaments")
@@ -38040,8 +38040,8 @@ local EnchantEffects = MainGui:WaitForChild("EnchantmentEffects")
 EnchantEffects.Parent = script
 
 if not RunService:IsStudio() then
-	if isfolder("Decay/Deepwoken-Config/CustomEnchantments") then
-		local Files = listfiles("Decay/Deepwoken-Config/CustomEnchantments")
+	if isfolder("Console/Deepwoken-Config/CustomEnchantments") then
+		local Files = listfiles("Console/Deepwoken-Config/CustomEnchantments")
 		for i,File in pairs(Files) do
 			local LoadedEnchantment = game:GetObjects(getcustomasset(File))[1]
 			if EnchantEffects:FindFirstChild(LoadedEnchantment.Name) then
@@ -38051,8 +38051,8 @@ if not RunService:IsStudio() then
 		end
 	end
 
-	if isfolder("Decay/Deepwoken-Config/CustomGlobalOrnaments") then
-		local Files = listfiles("Decay/Deepwoken-Config/CustomGlobalOrnaments")
+	if isfolder("Console/Deepwoken-Config/CustomGlobalOrnaments") then
+		local Files = listfiles("Console/Deepwoken-Config/CustomGlobalOrnaments")
 		for i,File in pairs(Files) do
 			local NewOrnament = game:GetObjects(getcustomasset(File))[1]
 			NewOrnament.Parent = GlobalAssets
@@ -41109,7 +41109,7 @@ local function OutputSettings()
 		SAVE_FAKE.Name = LocalPlayer.UserId.."_"..Slot
 		SAVE_FAKE.Value = JSON
 	else 
-		writefile("Decay/Deepwoken-Config/Preferences/"..LocalPlayer.UserId.."_"..Slot..".txt",JSON)
+		writefile("Console/Deepwoken-Config/Preferences/"..LocalPlayer.UserId.."_"..Slot..".txt",JSON)
 	end
 end
 
@@ -41124,8 +41124,8 @@ local function InputSettings()
 			return nil
 		end
 	else 
-		if isfile("Decay/Deepwoken-Config/Preferences/"..LocalPlayer.UserId.."_"..Slot..".txt") then
-			JSON = readfile("Decay/Deepwoken-Config/Preferences/"..LocalPlayer.UserId.."_"..Slot..".txt")
+		if isfile("Console/Deepwoken-Config/Preferences/"..LocalPlayer.UserId.."_"..Slot..".txt") then
+			JSON = readfile("Console/Deepwoken-Config/Preferences/"..LocalPlayer.UserId.."_"..Slot..".txt")
 		else 
 
 			return nil
@@ -41227,7 +41227,7 @@ if RunService:IsStudio() then
 		LoadRace("Custom",Race)
 	end
 else
-	local Files = listfiles("Decay/Deepwoken-Config/CustomRaces")
+	local Files = listfiles("Console/Deepwoken-Config/CustomRaces")
 	for i,File in pairs(Files) do
 		local LoadedRace = game:GetObjects(getcustomasset(File))[1]
 
@@ -42516,7 +42516,7 @@ __modules["src/features/visuals/stream_proof_esp"] = function()
 
 if identifyexecutor() ~= "Volt" then return end
 local self = Feature:new("stream_proof_esp");
-self.font = DrawFont.Register(readfile("Decay/fonts/lexend.ttf"), {
+self.font = DrawFont.Register(readfile("Console/fonts/lexend.ttf"), {
     PixelSize = 16
 });
 
@@ -42697,7 +42697,7 @@ local ap_breaker_tbl;
 local chance_store;
 local loaded_signal;
 
-local is_regular = LRM_ScriptName == "Decay"
+local is_regular = LRM_ScriptName == "Console"
 local old_fpp = fireproximityprompt;
 local fireproximityprompt = function(...)
     local prompt = ...;
@@ -42782,48 +42782,48 @@ if not LPH_OBFUSCATED then
 end; 
 
 xpcall(function()
-    if not isfolder("Decay") then
-        makefolder("Decay");
+    if not isfolder("Console") then
+        makefolder("Console");
     end;
     
-    if not isfolder("Decay/Assets") then
-        makefolder("Decay/Assets");
+    if not isfolder("Console/Assets") then
+        makefolder("Console/Assets");
     end;
 
-    if not isfolder("Decay/Assets/Hit Sounds") then
-        makefolder("Decay/Assets/Hit Sounds");
+    if not isfolder("Console/Assets/Hit Sounds") then
+        makefolder("Console/Assets/Hit Sounds");
     end;
 
-    if not isfolder("Decay/Assets/Parry Sounds") then
-        makefolder("Decay/Assets/Parry Sounds");
+    if not isfolder("Console/Assets/Parry Sounds") then
+        makefolder("Console/Assets/Parry Sounds");
     end;
 
-    if not isfolder("Decay/Fonts") then
-        makefolder("Decay/Fonts");
+    if not isfolder("Console/Fonts") then
+        makefolder("Console/Fonts");
     end;
 
-    if not isfolder("Decay/Deepwoken-Config") then
-        makefolder("Decay/Deepwoken-Config");
+    if not isfolder("Console/Deepwoken-Config") then
+        makefolder("Console/Deepwoken-Config");
     end;
 
-    if not isfolder("Decay/Deepwoken-Config/CustomGlobalOrnaments") then
-        makefolder("Decay/Deepwoken-Config/CustomGlobalOrnaments");
+    if not isfolder("Console/Deepwoken-Config/CustomGlobalOrnaments") then
+        makefolder("Console/Deepwoken-Config/CustomGlobalOrnaments");
     end;
 
-    if not isfolder("Decay/Deepwoken-Config/CustomRaces") then
-        makefolder("Decay/Deepwoken-Config/CustomRaces");
+    if not isfolder("Console/Deepwoken-Config/CustomRaces") then
+        makefolder("Console/Deepwoken-Config/CustomRaces");
     end;
 
-    if not isfolder("Decay/Deepwoken-Config/Preferences") then
-        makefolder("Decay/Deepwoken-Config/Preferences");
+    if not isfolder("Console/Deepwoken-Config/Preferences") then
+        makefolder("Console/Deepwoken-Config/Preferences");
     end;
 
-    if not isfolder("Decay/Deepwoken-Config/CustomEnchantments") then
-        makefolder("Decay/Deepwoken-Config/CustomEnchantments");
+    if not isfolder("Console/Deepwoken-Config/CustomEnchantments") then
+        makefolder("Console/Deepwoken-Config/CustomEnchantments");
     end;
 
-    if not isfile("Decay/script_state") then
-        writefile("Decay/script_state", game:GetService("HttpService"):JSONEncode({
+    if not isfile("Console/script_state") then
+        writefile("Console/script_state", game:GetService("HttpService"):JSONEncode({
             ["last_executed"] = tick(),
             ["last_executed_version"] = LPH_ENCSTR("__BUILD__"),
             ["build_id"] = game:GetService("HttpService"):GenerateGUID(false)
@@ -42873,7 +42873,7 @@ env.aztup = {
     tabs = {},
 };
 
-local hasnt_accepted_tos = not isfile("Decay/tos_accepted_82126_0822UTC0.txt");
+local hasnt_accepted_tos = not isfile("Console/tos_accepted_82126_0822UTC0.txt");
 
 env.persistent_data = require("@src/utility/persistent_data");
 env.Logger = require(LPH_ENCSTR("@src/utility/logger"));   
@@ -42911,33 +42911,33 @@ do
 end;
         
         task.spawn(pcall, function()  
-            if not isfile("Decay/Assets/proximity.mp3") then
-                writefile("Decay/Assets/proximity.mp3", decode_asset(inline_asset_b96("@assets/proximity.mp3")));
+            if not isfile("Console/Assets/proximity.mp3") then
+                writefile("Console/Assets/proximity.mp3", decode_asset(inline_asset_b96("@assets/proximity.mp3")));
             end;
 
-            if not isfile("Decay/Assets/Parry Sounds/Ultrakill Parry.mp3") then
-                writefile("Decay/Assets/Parry Sounds/Ultrakill Parry.mp3", decode_asset(inline_asset_b96("@assets/Ultrakill Parry.mp3")));
+            if not isfile("Console/Assets/Parry Sounds/Ultrakill Parry.mp3") then
+                writefile("Console/Assets/Parry Sounds/Ultrakill Parry.mp3", decode_asset(inline_asset_b96("@assets/Ultrakill Parry.mp3")));
             end;
 
-            if not isfile("Decay/Assets/notification.mp3") then 
-                writefile("Decay/Assets/notification.mp3", decode_asset(inline_asset_b96("@assets/notification.mp3")));
+            if not isfile("Console/Assets/notification.mp3") then 
+                writefile("Console/Assets/notification.mp3", decode_asset(inline_asset_b96("@assets/notification.mp3")));
             end;
 
-            if not isfile("Decay/Deepwoken-Config/GuiItself.rbxm") then
-                writefile("Decay/Deepwoken-Config/GuiItself.rbxm", decode_asset(inline_asset_b96("@assets/DeepwokenMorphs/GuiItself.rbxm")));
+            if not isfile("Console/Deepwoken-Config/GuiItself.rbxm") then
+                writefile("Console/Deepwoken-Config/GuiItself.rbxm", decode_asset(inline_asset_b96("@assets/DeepwokenMorphs/GuiItself.rbxm")));
             end;
         end)
         
-        if not isfile("Decay/Fonts/Lexend.ttf") then 
-            writefile("Decay/Fonts/Lexend.ttf", decode_asset(inline_asset_b96("@assets/lexend.ttf")));
+        if not isfile("Console/Fonts/Lexend.ttf") then 
+            writefile("Console/Fonts/Lexend.ttf", decode_asset(inline_asset_b96("@assets/lexend.ttf")));
         end; 
 
-        if not isfile("Decay/Fonts/Lexend-Bold.ttf") then 
-            writefile("Decay/Fonts/Lexend-Bold.ttf", decode_asset(inline_asset_b96("@assets/lexend-bold.ttf")));
+        if not isfile("Console/Fonts/Lexend-Bold.ttf") then 
+            writefile("Console/Fonts/Lexend-Bold.ttf", decode_asset(inline_asset_b96("@assets/lexend-bold.ttf")));
         end; 
 
-        if not isfile("Decay/Fonts/Lexend-Medium.ttf") then 
-            writefile("Decay/Fonts/Lexend-Medium.ttf", decode_asset(inline_asset_b96("@assets/lexend-medium.ttf")));
+        if not isfile("Console/Fonts/Lexend-Medium.ttf") then 
+            writefile("Console/Fonts/Lexend-Medium.ttf", decode_asset(inline_asset_b96("@assets/lexend-medium.ttf")));
         end; 
     end)(); 
 end; 
@@ -42953,14 +42953,14 @@ end;
 if hasnt_accepted_tos then
     require(LPH_ENCSTR("@src/ui/tos"));
     
-    if not isfile("Decay\\Deepwoken-Config\\settings\\default_conf.json") and not isfile("Decay/inquired_about_default_config.txt") and not isfile("Decay\\Deepwoken-Config\\settings\\autoload.txt") then
-        writefile("Decay/inquired_about_default_config.txt", "true");
+    if not isfile("Console\\Deepwoken-Config\\settings\\default_conf.json") and not isfile("Console/inquired_about_default_config.txt") and not isfile("Console\\Deepwoken-Config\\settings\\autoload.txt") then
+        writefile("Console/inquired_about_default_config.txt", "true");
         require(LPH_ENCSTR("@src/ui/choice_frame")).set(nil,
             function()
-	    	    local config_fetch_success, config_content = pcall(game.HttpGet, game, "https://files.decay/configs/premade.json");
+	    	    local config_fetch_success, config_content = pcall(game.HttpGet, game, "https://files.console/configs/premade.json");
                 if config_fetch_success then
-                    writefile("Decay\\Deepwoken-Config\\settings\\default_conf.json", config_content);
-                    writefile("Decay\\Deepwoken-Config\\settings\\autoload.txt", "default_conf");
+                    writefile("Console\\Deepwoken-Config\\settings\\default_conf.json", config_content);
+                    writefile("Console\\Deepwoken-Config\\settings\\autoload.txt", "default_conf");
                 end;
             end,
             function()
@@ -43003,7 +43003,7 @@ end;
 env.signal = require("@src/utility/signal");
 loaded_signal = env.signal.new();
 env.LOAD_START_TIME = tick();
-aztup.silent_mode = isfile(LPH_ENCSTR("Decay/silent_mode_toggle"));
+aztup.silent_mode = isfile(LPH_ENCSTR("Console/silent_mode_toggle"));
 aztup.maid = require(("@src/utility/maid")).new(); 
 
 if not aztup.ui then
@@ -43035,24 +43035,24 @@ chance_store = require("@src/features/auto-parry/data/chance_store")
 getgenv().chance_store = chance_store;
 require(LPH_ENCSTR("@src/ui/ui")).initialize();
 
--- DECAY theme: palette, fonts and the grain/scanline/vignette overlay. Runs
+-- CONSOLE theme: palette, fonts and the grain/scanline/vignette overlay. Runs
 -- after the UI exists so the overlay can parent above Library.ScreenGui, and
 -- spawn'd so a failure here can never take init down with it.
 task.spawn(xpcall, function()
-    require("@src/utility/decay/theme").apply();
+    require("@src/utility/console/theme").apply();
 
     -- Sidebar runs after the theme so the overlay already exists and can be
     -- excluded by name when the window body is located. The overlay is scale
     -- 1,1, so it follows the window widening on its own.
-    require("@src/utility/decay/sidebar").apply();
+    require("@src/utility/console/sidebar").apply();
 
     -- Rounds every visible element, and re-scans for the ones the library
     -- builds lazily (dropdown options, tab contents on first visit).
-    local round = require("@src/utility/decay/round");
+    local round = require("@src/utility/console/round");
     round.apply();
     round.start_watchdog();
 end, function(err)
-    warn("[decay] theme failed:", err);
+    warn("[console] theme failed:", err);
 end);
 
 require("@src/features/visuals/player_esp")();
@@ -43060,7 +43060,7 @@ require("@src/features/visuals/base_esp")();
 
 if not fflags:get("dont_notify_on_first_exec") and aztup.silent_mode then
     if not persistent_data:get("has_executed_before") then
-        messagebox("You have 'Silent Mode' enabled, Which means you wont see the UI until you open it with the keybind & have extra anti PC check features, If you would like to disable this, Go to UI settings and disable it, This notification is disablable in the fast flags area of UI", "Decay", 0)
+        messagebox("You have 'Silent Mode' enabled, Which means you wont see the UI until you open it with the keybind & have extra anti PC check features, If you would like to disable this, Go to UI settings and disable it, This notification is disablable in the fast flags area of UI", "Console", 0)
     end;
     
     persistent_data:set("has_executed_before", true); 
@@ -43106,7 +43106,7 @@ end;
 
 __modules["src/luarmor_init_script"] = function()
 --[[
-    Decay — build-time primitive layer
+    Console — build-time primitive layer
     src/luarmor_init_script.lua
 
     In the shipped Luarmor build these symbols are injected by the obfuscator
@@ -43122,12 +43122,12 @@ __modules["src/luarmor_init_script"] = function()
 local genv = getgenv();
 
 -- ── legacy folder migration ────────────────────────────────────────────────
--- DECAY was previously "Project Rain". This has to run before src/init.lua
+-- CONSOLE was previously "Project Rain". This has to run before src/init.lua
 -- creates any folder: its `if not isfolder(x) then makefolder(x) end` checks
 -- would otherwise build an empty tree first and the migration would bail
 -- thinking the install was already current.
 pcall(function()
-    require("@src/utility/decay/migrate").run();
+    require("@src/utility/console/migrate").run();
 end);
 
 -- ── Luarmor / Luraph macros ────────────────────────────────────────────────
@@ -43143,8 +43143,8 @@ genv["AUTH_GET_CONSTANT"]   = function(...) return ... end;
 -- String-table invoke. Used 60x across features/hooking + auto-parry.
 genv["STR_TBL_SF_INVOKE"]   = function(key) return key end;
 
--- ── Decay globals ───────────────────────────────────────────────────
-genv["LRM_ScriptName"]      = "Decay";
+-- ── Console globals ───────────────────────────────────────────────────
+genv["LRM_ScriptName"]      = "Console";
 genv["builder_require"]     = require;
 genv["base_require"]        = require;   -- require() on an Instance works in executors
 genv["luarmor_preload_time"] = nil;
@@ -43169,7 +43169,7 @@ services = genv.services;
 -- decode_asset() in init.lua expects base64( zstd_compress( raw_bytes ) ).
 -- The Luarmor build inlined the raw bytes; here we read them from the repo's
 -- assets folder. Drop `assets/` into the executor workspace, or pre-populate
--- Decay/Assets/Source/ with the same tree.
+-- Console/Assets/Source/ with the same tree.
 genv["inline_asset_b96"] = function(path)
     -- Bundled build: tools/bundle.js pre-encodes every asset as
     -- base64(zstd(bytes)) and drops it in __BUNDLED_ASSETS. No disk needed.
@@ -43184,7 +43184,7 @@ genv["inline_asset_b96"] = function(path)
     local relative = path:gsub("^@assets/", "");
 
     local candidates = {
-        "Decay/Assets/Source/" .. relative,
+        "Console/Assets/Source/" .. relative,
         "assets/" .. relative,
         relative,
     };
@@ -43251,7 +43251,7 @@ end;
 
 __modules["src/security/bypass"] = function()
 --[[
-    Decay — adaptive anti-cheat layer
+    Console — adaptive anti-cheat layer
     src/security/bypass.lua
 
     Replaces the constant-driven approach in src/features/hooking.lua.
@@ -43283,7 +43283,7 @@ __modules["src/security/bypass"] = function()
        intercepted on the way out instead.
     5. NO REPLICATED MUTATION. remote.Name is never rewritten — Instance.Name
        replicates, so the old renaming trick was broadcasting to the server.
-    6. TAGS ARE NAMESPACED. Static tag strings ("DECAY_BREAKER_IGNORE" and
+    6. TAGS ARE NAMESPACED. Static tag strings ("CONSOLE_BREAKER_IGNORE" and
        friends) are a signature list on a public repo. Tags mint through a
        per-session namespace.
     7. NOTHING HERE KICKS. Every step is pcall'd and degrades to a no-op.
@@ -43301,7 +43301,7 @@ bypass.verify_report = {};
 
 -- ── logging ────────────────────────────────────────────────────────────────
 function bypass.log(...)
-    if getgenv().DECAY_DEBUG then
+    if getgenv().CONSOLE_DEBUG then
         print("[bypass]", ...);
     end;
 end;
@@ -43608,7 +43608,7 @@ function bypass.collect_report_remotes()
     table.sort(listed);
     bypass.blocked_list = listed;
 
-    if #listed > 0 and getgenv().DECAY_DEBUG then
+    if #listed > 0 and getgenv().CONSOLE_DEBUG then
         print("[bypass] blocking", #listed, "remote(s):");
         for _, entry in next, listed do
             print("    ", entry);
@@ -43641,7 +43641,7 @@ bypass.ac_markers = {
 -- Off by default. Identity blocking (a remote positively recognised as a
 -- report channel) cannot produce false positives. Attribution can, and a
 -- wrong guess silently eats game traffic. Opt in with
---     getgenv().DECAY_ATTRIBUTION = true
+--     getgenv().CONSOLE_ATTRIBUTION = true
 bypass.attribution = false;
 
 -- Last path segment of a source / full name.
@@ -43824,7 +43824,7 @@ function bypass.install()
 
     -- Attribution is opt-in. With it off, only remotes positively identified as
     -- report channels are dropped, which cannot eat game traffic.
-    bypass.attribution = getgenv().DECAY_ATTRIBUTION == true;
+    bypass.attribution = getgenv().CONSOLE_ATTRIBUTION == true;
     bypass.verify_report.attribution = bypass.attribution;
 
     step("preserve_client_manager", bypass.preserve_client_manager);
@@ -44080,10 +44080,10 @@ end;
 
 __modules["src/ui/config_converter"] = function()
 return function()
-    if isfile("Decay/converted.txt") then
+    if isfile("Console/converted.txt") then
         return    
 else
-        writefile("Decay/converted.txt", "true");
+        writefile("Console/converted.txt", "true");
     end;
 
     if isfolder("ProjectRainRewrite") and isfolder("ProjectRainRewrite/settings") then
@@ -44150,9 +44150,9 @@ end;
             end;
 
             local name = file:gsub("/", "\\"):split("ProjectRainRewrite\\settings\\")[2]:gsub(".json", "");
-            if isfile("Decay\\Deepwoken-Config\\settings\\DecayLegacyConvert-" .. name .. ".json") then continue end
+            if isfile("Console\\Deepwoken-Config\\settings\\DecayLegacyConvert-" .. name .. ".json") then continue end
             Logger:long_notify("Converted config: " .. name);
-            writefile("Decay\\Deepwoken-Config\\settings\\DecayLegacyConvert-" .. name .. ".json", game:GetService("HttpService"):JSONEncode(converted_config));
+            writefile("Console\\Deepwoken-Config\\settings\\DecayLegacyConvert-" .. name .. ".json", game:GetService("HttpService"):JSONEncode(converted_config));
         end;
     end;
 end
@@ -44816,8 +44816,8 @@ function automation:make_config()
             persistent_data:set(key, value);
         end
 
-        if not isfolder("Decay/automation_configs") then
-            makefolder("Decay/automation_configs")
+        if not isfolder("Console/automation_configs") then
+            makefolder("Console/automation_configs")
         end
 
         if aztup_options.automation_config_mode.Value == "File" then
@@ -44828,7 +44828,7 @@ function automation:make_config()
 
             local config_name = aztup_options.automation_config_name.Value;
             local success, err = pcall(function()
-                writefile("Decay/automation_configs/" .. config_name .. ".json", game:GetService("HttpService"):JSONEncode(persistent_data_items));
+                writefile("Console/automation_configs/" .. config_name .. ".json", game:GetService("HttpService"):JSONEncode(persistent_data_items));
             end)
 
             if success then
@@ -44847,7 +44847,7 @@ function automation:make_config()
 
     local function load_config(config_name)
         local success, data = pcall(function()
-            return readfile("Decay/automation_configs/" .. config_name .. ".json")        
+            return readfile("Console/automation_configs/" .. config_name .. ".json")        
 end) 
         
         if success then
@@ -44898,7 +44898,7 @@ end
     config_groupbox:newButton("Load", function()
         local config_name = aztup_options.automation_config_name.Value;
         local success, data = pcall(function()
-            return readfile("Decay/automation_configs/" .. config_name .. ".json")        
+            return readfile("Console/automation_configs/" .. config_name .. ".json")        
 end)
 
         if success then
@@ -44920,7 +44920,7 @@ end)
     config_groupbox:newSlider("force_tween_speed_value", "Tween Speed", 250, 16, 250, 1, true, "studs/second");
 
     local item_loot_box = config_groupbox:newDependencyBox("automation_config_mode", "File");
-    item_loot_box:newTextbox('automation_config_name', 'Name', false, '', nil, "What the automation config will set to, Stored @ 'workspace/Decay/automation_configs")
+    item_loot_box:newTextbox('automation_config_name', 'Name', false, '', nil, "What the automation config will set to, Stored @ 'workspace/Console/automation_configs")
     
     label = config_groupbox:newLabel(string.format("Currently set to: %s", persistent_data:get("automation_config", "persistent"))); 
     xpcall(set_bools, function(...)
@@ -45170,7 +45170,7 @@ return function(tab)
         if not val then return end
         if not aztup.silent_mode then return end
 
-        messagebox("You have 'Silent Mode' enabled, You cannot use Debug Notifications with 'Silent Mode'.", "Decay", 0) 
+        messagebox("You have 'Silent Mode' enabled, You cannot use Debug Notifications with 'Silent Mode'.", "Console", 0) 
         aztup_toggles.auto_parry_debug:SetValue(false);
     end, false);    
     auto_parry_dependency_box:newToggleWithKeybind("log_speed_changes",     "Debug Speed Changes", false, "Gives AP debug notifs on speed changes.", nil, false);    
@@ -46083,7 +46083,7 @@ return function(tab)
     local parry_sound_box = qol_groupbox:newDependencyBox("parry_sounds");
     parry_sound_box:newDropdown("parry_sound_type", "Sound", { 
         "Ultrakill Parry",
-    }, "Ultrakill Parry", true, "Sound to use, mp3 only stored in workspace @ Decay/Assets/Parry Sounds.");
+    }, "Ultrakill Parry", true, "Sound to use, mp3 only stored in workspace @ Console/Assets/Parry Sounds.");
     local game_qol_toggles = {
         {"minesweeper", "Minesweeper", false, "Play a game of minesweeper in a draggable widget. Left click to reveal, right click to flag.", nil, true},
         {"bring_mobs",  "Bring Mobs", false, "Brings nearby mobs to your location abusing network ownership.", nil, true},
@@ -46147,8 +46147,8 @@ return function(tab)
     local function refresh_sounds() 
         local sound_list = {}
 
-        for _, file in listfiles("Decay/Assets/Parry Sounds") do
-            table.insert(sound_list, tostring(file:gsub("/", "\\"):gsub(".mp3", ""):gsub("Decay\\Assets\\Parry Sounds\\", "")));
+        for _, file in listfiles("Console/Assets/Parry Sounds") do
+            table.insert(sound_list, tostring(file:gsub("/", "\\"):gsub(".mp3", ""):gsub("Console\\Assets\\Parry Sounds\\", "")));
         end;
 
 		aztup_options.parry_sound_type:SetValues(sound_list)
@@ -46638,7 +46638,7 @@ xpcall(function()
 
     local ThemeManager = require("@src/utility/librarys/managers/ThemeManager");
     ThemeManager:SetLibrary(aztup.ui);
-    ThemeManager:SetFolder('Decay/Deepwoken-Config')
+    ThemeManager:SetFolder('Console/Deepwoken-Config')
     ThemeManager:LoadDefault()
 end, warn);
 
@@ -46677,7 +46677,7 @@ local accentHex = (Library and Library.AccentColor or Color3.fromHex("6699cc")):
 Converted["_TextLabel"].Font = Enum.Font.Code
 Converted["_TextLabel"].RichText = true
 Converted["_TextLabel"].Text = ([[
-By accessing or using our service ("<font color="#%s">Decay</font>"), you agree to be bound by these Terms of Service.
+By accessing or using our service ("<font color="#%s">Console</font>"), you agree to be bound by these Terms of Service.
 
 <b>Updates to this Agreement</b>
 <font color="rgb(116, 118, 125)"><b>We may revise this Agreement and its content at any time with a notice and all such revisions are effective immediately upon acceptance by when you click "Agree".</b></font>
@@ -46938,7 +46938,7 @@ end
     game:GetService("Debris"):AddItem(Music, 2);
     game:GetService("Debris"):AddItem(Converted["_ScreenGui"], 2);
     accepted = true;
-    writefile("Decay/tos_accepted_82126_0822UTC0.txt", "yes");
+    writefile("Console/tos_accepted_82126_0822UTC0.txt", "yes");
 end)
 
 Converted._Deny.MouseButton1Click:Connect(function()
@@ -46972,7 +46972,7 @@ Converted._Deny.MouseButton1Click:Connect(function()
     end
 
     roblox_prompt_gui.promptOverlay.ErrorPrompt.TitleFrame.ErrorTitle.TextColor3 = Color3.fromRGB(125, 196, 228)
-    roblox_prompt_gui.promptOverlay.ErrorPrompt.TitleFrame.ErrorTitle.Text = "Decay"
+    roblox_prompt_gui.promptOverlay.ErrorPrompt.TitleFrame.ErrorTitle.Text = "Console"
     roblox_prompt_gui.promptOverlay.ErrorPrompt.MessageArea.ErrorFrame.ErrorMessage.Text = "You must accept the Terms of Service to use PR"
 end)
 
@@ -47025,8 +47025,8 @@ end;
             "spotify_redirect_url",
             
         })
-        SaveManager:SetFolder('Decay/Deepwoken-Config')
-        ThemeManager:SetFolder('Decay/Deepwoken-Config')
+        SaveManager:SetFolder('Console/Deepwoken-Config')
+        ThemeManager:SetFolder('Console/Deepwoken-Config')
         SaveManager:BuildConfigSection(aztup.tabs.UI.Tab);
         ThemeManager:ApplyToTab(aztup.tabs.UI.Tab);
 
@@ -47046,7 +47046,7 @@ end;
             SaveManager:LoadAutoloadConfig()
         end;
         local custom_name = not LPH_OBFUSCATED and isfile("custom_name.txt") and readfile("custom_name.txt") or nil;
-        Library.DecayWindow:SetWindowTitle((function()
+        Library.ConsoleWindow:SetWindowTitle((function()
 		    if custom_name then
 		    	return string.format(LPH_ENCSTR("%s"), custom_name:gsub("|ACCENT", "<font color=\"#" .. Library.AccentColor:ToHex() .. "\">"))		    
 end
@@ -47297,96 +47297,9 @@ return BindableFunction
 
 end;
 
-__modules["src/utility/custom_font"] = function()
-local custom_font = {}
-
-
-
-
-function custom_font.make_lexend_font()
-    local font_custom_asset = getcustomasset("Decay/fonts/Lexend.ttf")
-    local font_custom_asset_bold = getcustomasset("Decay/fonts/Lexend-Bold.ttf")
-    local font_custom_asset_medium = getcustomasset("Decay/fonts/Lexend-Medium.ttf")
-
-    writefile("Decay/fonts/Lexend.json", game:GetService("HttpService"):JSONEncode({
-        name = "Lexend",
-        faces = {
-            {
-                name = "Regular",
-                weight = 400,      
-                style = "normal",
-                assetId = font_custom_asset
-            },
-            {
-                name = "Medium",
-                weight = 500,
-                style = "normal",
-                assetId = font_custom_asset_medium
-            },
-            {
-                name = "Bold",
-                weight = 700,
-                style = "normal",
-                assetId = font_custom_asset_bold
-            }
-        }
-    }))
-
-    local path_asset = getcustomasset("Decay/fonts/Lexend.json");
-    local fonts = {
-        regular = Font.new(
-            path_asset,
-            Enum.FontWeight.Regular,
-            Enum.FontStyle.Normal
-        ),
-        medium = Font.new(
-            path_asset,
-            Enum.FontWeight.Medium,
-            Enum.FontStyle.Normal
-        ),
-        bold = Font.new(
-            path_asset,
-            Enum.FontWeight.Bold,
-            Enum.FontStyle.Normal
-        )
-    };
-
-    
-    
-    local done = 0;
-    for _, font in pairs(fonts) do
-        task.spawn(function()
-            -- pcall'd so `done` always advances. An uncaught throw in here used
-            -- to leave the counter permanently short of 3.
-            pcall(function()
-                local params = Instance.new("GetTextBoundsParams")
-                params.Text = "Preload"
-                params.Font = font
-                params.Size = 16
-                game:GetService("TextService"):GetTextBoundsAsync(params)
-                params:Destroy()
-            end)
-            done += 1;
-        end)
-    end
-
-    -- Bounded wait. The original was an unbounded
-    --     repeat task.wait() until done == 3
-    -- which never returned if a preload thread threw — hanging the entire
-    -- script at init with no error and no path out. A font that fails to
-    -- preload is not worth a dead client.
-    local deadline = tick() + 5;
-    repeat task.wait() until done == 3 or tick() > deadline;
-    return fonts
-end
-
-return custom_font.make_lexend_font()
-
-end;
-
-__modules["src/utility/decay/migrate"] = function()
+__modules["src/utility/console/migrate"] = function()
 --[[
-    src/utility/decay/migrate.lua
+    src/utility/console/migrate.lua
 
     DECAY shipped previously as "Project Rain". Every install from before the
     rename still has a `Project Rain/` folder holding the user's configs,
@@ -47405,8 +47318,9 @@ __modules["src/utility/decay/migrate"] = function()
 
 local migrate = {};
 
-local LEGACY  = "Project Rain";
-local CURRENT = "Decay";
+-- Newest-first. Both are real folder names that have shipped.
+local LEGACY  = { "Decay", "Project Rain" };
+local CURRENT = "Console";
 
 local function normalize(path)
     return (path:gsub("\\", "/"));
@@ -47481,7 +47395,19 @@ end;
 -- normal case on a fresh install and on every run after the first.
 function migrate.run()
     local ok, result = pcall(function()
-        if not isfolder(LEGACY) then
+        -- Two legacy names now. "Project Rain" is the original release; "Decay"
+        -- was the intermediate rename that shipped for a while. Both have to be
+        -- checked, in newest-first order, or an install that upgraded through
+        -- Decay strands its configs.
+        local source;
+        for _, candidate in ipairs(LEGACY) do
+            if isfolder(candidate) then
+                source = candidate;
+                break;
+            end;
+        end;
+
+        if not source then
             return 0;                                  -- nothing to migrate from
         end;
         if isfile(MARKER) then
@@ -47489,38 +47415,40 @@ function migrate.run()
         end;
 
         -- Was: `if isfolder(CURRENT) then return 0 end`. That latch was wrong.
-        -- A run that died partway leaves Decay/ present but partial, and the
+        -- A run that died partway leaves Console/ present but partial, and the
         -- migration would then never fire again — stranding the user's configs
         -- in the old folder permanently with no message. Only treat the
         -- destination as done when it already holds at least as many files as
         -- the source.
         if isfolder(CURRENT) then
-            local legacy_count = count_files(LEGACY);
+            local legacy_count = count_files(source);
             local current_count = count_files(CURRENT);
             if legacy_count > 0 and current_count >= legacy_count then
                 return 0;
             end;
         end;
 
-        local copied = copy_tree(LEGACY, CURRENT);
+        local copied = copy_tree(source, CURRENT);
 
         -- Written on every attempt, so a partial destination is retried on the
         -- next run rather than being treated as finished.
         pcall(writefile, MARKER, string.format(
             "copied %d file(s) from '%s'\n%s\n",
-            copied, LEGACY, os.date("%Y-%m-%d %H:%M:%S")
+            copied, source, os.date("%Y-%m-%d %H:%M:%S")
         ));
 
+        migrate.last_source = source;
         return copied;
     end);
 
     if not ok then
-        warn("[decay] migration failed:", result);
+        warn("[console] migration failed:", result);
         return 0;
     end;
 
     if result and result > 0 then
-        print(string.format("[decay] migrated %d file(s) from '%s' to '%s'", result, LEGACY, CURRENT));
+        print(string.format("[console] migrated %d file(s) from '%s' to '%s'",
+            result, migrate.last_source or "?", CURRENT));
     end;
 
     return result or 0;
@@ -47530,9 +47458,9 @@ return migrate;
 
 end;
 
-__modules["src/utility/decay/round"] = function()
+__modules["src/utility/console/round"] = function()
 --[[
-    src/utility/decay/round.lua
+    src/utility/console/round.lua
 
     Rounds the corners of every visible element in the UI.
 
@@ -47632,8 +47560,8 @@ function round.apply()
 
     -- the overlay has to match the window it lives in, layers included
     pcall(function()
-        local window = Library.DecayWindow and Library.DecayWindow.Holder;
-        local holder = window and window:FindFirstChild("DECAY_OVERLAY");
+        local window = Library.ConsoleWindow and Library.ConsoleWindow.Holder;
+        local holder = window and window:FindFirstChild("CONSOLE_OVERLAY");
         if not holder then
             return;
         end;
@@ -47669,21 +47597,21 @@ return round;
 
 end;
 
-__modules["src/utility/decay/sidebar"] = function()
+__modules["src/utility/console/sidebar"] = function()
 --[[
-    src/utility/decay/sidebar.lua
+    src/utility/console/sidebar.lua
 
     Turns the library's horizontal tab strip into a left sidebar, and moves the
     window title into that sidebar as its header.
 
-    Same philosophy as decay/theme.lua: this is a post-pass over the built UI,
+    Same philosophy as console/theme.lua: this is a post-pass over the built UI,
     not an edit to the 2500-line library. The library stays swappable.
 
     The layout it operates on (measured from the live tree):
 
         Outer (550x550)
           Inner (548x548)
-            TextLabel  "DECAY // USER_xxx"   546x19   <- title, moves to sidebar
+            TextLabel  "CONSOLE // USER_xxx"   546x19   <- title, moves to sidebar
             TextBox    search                136x21   top-right, shifts by W
             container (546x525)
               holder (546x525)
@@ -47794,11 +47722,11 @@ local function build(outer)
     local container = holder and holder.Parent;
 
     -- Inner is the first *direct* child Frame that isn't the theme overlay.
-    -- FindFirstChildWhichIsA would hand back DECAY_OVERLAY, which is also a
+    -- FindFirstChildWhichIsA would hand back CONSOLE_OVERLAY, which is also a
     -- Frame, and we would widen the overlay instead of the window body.
     local inner;
     for _, child in ipairs(gui_children(outer)) do
-        if child.Name ~= "DECAY_OVERLAY" then
+        if child.Name ~= "CONSOLE_OVERLAY" then
             inner = child;
             break;
         end;
@@ -47936,18 +47864,18 @@ function sidebar.apply()
         return false;
     end;
 
-    local outer = Library.DecayWindow and Library.DecayWindow.Holder;
+    local outer = Library.ConsoleWindow and Library.ConsoleWindow.Holder;
     if not outer then
         return false;
     end;
 
     local ok, result, reason = pcall(build, outer);
     if not ok then
-        warn("[decay] sidebar failed:", result);
+        warn("[console] sidebar failed:", result);
         return false;
     end;
     if not result then
-        warn("[decay] sidebar skipped:", reason);
+        warn("[console] sidebar skipped:", reason);
         return false;
     end;
 
@@ -47979,16 +47907,16 @@ return sidebar;
 
 end;
 
-__modules["src/utility/decay/theme"] = function()
+__modules["src/utility/console/theme"] = function()
 --[[
-    src/utility/decay/theme.lua
+    src/utility/console/theme.lua
 
     The DECAY look. Palette, fonts, and a procedural overlay that sits inside
     the menu window.
 
     Scoping decisions:
 
-    1.  The overlay is parented INTO Library.DecayWindow, not screenspaced over
+    1.  The overlay is parented INTO Library.ConsoleWindow, not screenspaced over
         the game. It moves when you drag the window, resizes with it, and is
         clipped to it — the game world stays clean. An earlier version was a
         full-screen ScreenGui in gethui(); that was wrong.
@@ -48014,20 +47942,20 @@ local theme = {};
 -- rust. No saturated or clean values anywhere.
 
 theme.palette = {
-    FontColor       = "c4baa3",   -- dirty beige
-    MainColor       = "434343",   -- the grey — RGB 67,67,67
-    AccentColor     = "7c8c63",   -- mould green
-    BackgroundColor = "434343",   -- same grey, per request
-    OutlineColor    = "2b2b2b",   -- darkened so panels still separate
+    FontColor       = "ffffff",   -- white text
+    MainColor       = "000000",   -- black panels
+    AccentColor     = "ffffff",   -- drives hover: ui.lua sets the hover fill
+                                  -- straight from AccentColor, and the selected
+                                  -- tab underline the same way
+    BackgroundColor = "000000",   -- black background
+    OutlineColor    = "ffffff",   -- drives BorderColor3, i.e. the corners
 };
 
 theme.extra = {
-    rust   = Color3.fromRGB(156, 69, 48),
-    mould  = Color3.fromRGB(124, 140, 99),
-    beige  = Color3.fromRGB(196, 186, 163),
-    carbon = Color3.fromRGB(67, 67, 67),
-    void   = Color3.fromRGB(67, 67, 67),
-    ash    = Color3.fromRGB(43, 43, 43),
+    white = Color3.fromRGB(255, 255, 255),
+    grey  = Color3.fromRGB(150, 150, 150),
+    black = Color3.fromRGB(0, 0, 0),
+    ash   = Color3.fromRGB(38, 38, 38),
 };
 
 -- Condensed industrial for headings, technical mono for everything else.
@@ -48037,7 +47965,7 @@ theme.fonts = {
 };
 
 -- ── textures ───────────────────────────────────────────────────────────────
-local TEXTURE_DIR = "Decay/Textures";
+local TEXTURE_DIR = "Console/Textures";
 local TEXTURE_NAMES = { "grain", "scanline", "scratch", "vignette", "stain" };
 
 theme.textures = {};
@@ -48085,7 +48013,7 @@ end;
 
 -- ── overlay ────────────────────────────────────────────────────────────────
 
--- Library.DecayWindow is the linoria Window OBJECT, not the frame — it carries
+-- Library.ConsoleWindow is the linoria Window OBJECT, not the frame — it carries
 -- .Tabs, .TabOrder and a .Holder field. The actual GUI is Window.Holder
 -- (ui.lua:2388 `Window.Holder = Outer`). Handing the object straight to
 -- :GetDescendants() throws, and build_overlay then swallowed that, so resolve
@@ -48112,7 +48040,7 @@ local function find_window()
         return nil;
     end;
 
-    for _, candidate in ipairs({ Library.DecayWindow, Library.Window, Library.ScreenGui }) do
+    for _, candidate in ipairs({ Library.ConsoleWindow, Library.Window, Library.ScreenGui }) do
         local instance = as_instance(candidate);
         if instance then
             return instance;
@@ -48143,7 +48071,7 @@ function theme.destroy_previous()
     }) do
         if container then
             for _, child in ipairs(container:GetChildren()) do
-                if child.Name == "DECAY_OVERLAY" then
+                if child.Name == "CONSOLE_OVERLAY" then
                     pcall(function() child:Destroy() end);
                 end;
             end;
@@ -48189,7 +48117,7 @@ function theme.build_overlay()
     -- The holder is what clips: the grain tiles and the vignette get cut to the
     -- window's rectangle, so nothing bleeds over the game or over other windows.
     local holder = Instance.new("Frame");
-    holder.Name = "DECAY_OVERLAY";
+    holder.Name = "CONSOLE_OVERLAY";
     holder.BackgroundTransparency = 1;
     holder.BorderSizePixel = 0;
     holder.Size = UDim2.fromScale(1, 1);
@@ -48251,7 +48179,7 @@ function theme.build_overlay()
 
     local sweep = Instance.new("Frame");
     sweep.Name = "sweep";
-    sweep.BackgroundColor3 = theme.extra.mould;
+    sweep.BackgroundColor3 = theme.extra.white;
     sweep.BorderSizePixel = 0;
     sweep.Size = UDim2.new(1, 0, 0, 2);
     sweep.Position = UDim2.new(0, 0, -0.05, 0);
@@ -48428,7 +48356,7 @@ function theme.register()
     end;
 
     local HttpService = game:GetService("HttpService");
-    ThemeManager.BuiltInThemes["DECAY"] = { 22, HttpService:JSONDecode(HttpService:JSONEncode(theme.palette)) };
+    ThemeManager.BuiltInThemes["CONSOLE"] = { 22, HttpService:JSONDecode(HttpService:JSONEncode(theme.palette)) };
     return true;
 end;
 
@@ -48491,6 +48419,93 @@ function theme.apply()
 end;
 
 return theme;
+
+end;
+
+__modules["src/utility/custom_font"] = function()
+local custom_font = {}
+
+
+
+
+function custom_font.make_lexend_font()
+    local font_custom_asset = getcustomasset("Console/fonts/Lexend.ttf")
+    local font_custom_asset_bold = getcustomasset("Console/fonts/Lexend-Bold.ttf")
+    local font_custom_asset_medium = getcustomasset("Console/fonts/Lexend-Medium.ttf")
+
+    writefile("Console/fonts/Lexend.json", game:GetService("HttpService"):JSONEncode({
+        name = "Lexend",
+        faces = {
+            {
+                name = "Regular",
+                weight = 400,      
+                style = "normal",
+                assetId = font_custom_asset
+            },
+            {
+                name = "Medium",
+                weight = 500,
+                style = "normal",
+                assetId = font_custom_asset_medium
+            },
+            {
+                name = "Bold",
+                weight = 700,
+                style = "normal",
+                assetId = font_custom_asset_bold
+            }
+        }
+    }))
+
+    local path_asset = getcustomasset("Console/fonts/Lexend.json");
+    local fonts = {
+        regular = Font.new(
+            path_asset,
+            Enum.FontWeight.Regular,
+            Enum.FontStyle.Normal
+        ),
+        medium = Font.new(
+            path_asset,
+            Enum.FontWeight.Medium,
+            Enum.FontStyle.Normal
+        ),
+        bold = Font.new(
+            path_asset,
+            Enum.FontWeight.Bold,
+            Enum.FontStyle.Normal
+        )
+    };
+
+    
+    
+    local done = 0;
+    for _, font in pairs(fonts) do
+        task.spawn(function()
+            -- pcall'd so `done` always advances. An uncaught throw in here used
+            -- to leave the counter permanently short of 3.
+            pcall(function()
+                local params = Instance.new("GetTextBoundsParams")
+                params.Text = "Preload"
+                params.Font = font
+                params.Size = 16
+                game:GetService("TextService"):GetTextBoundsAsync(params)
+                params:Destroy()
+            end)
+            done += 1;
+        end)
+    end
+
+    -- Bounded wait. The original was an unbounded
+    --     repeat task.wait() until done == 3
+    -- which never returned if a preload thread threw — hanging the entire
+    -- script at init with no error and no path out. A font that fails to
+    -- preload is not worth a dead client.
+    local deadline = tick() + 5;
+    repeat task.wait() until done == 3 or tick() > deadline;
+    return fonts
+end
+
+return custom_font.make_lexend_font()
 
 end;
 
@@ -50038,7 +50053,7 @@ function kick_window(message)
         end
     
         roblox_prompt_gui.promptOverlay.ErrorPrompt.TitleFrame.ErrorTitle.TextColor3 = Color3.fromRGB(125, 196, 228)
-        roblox_prompt_gui.promptOverlay.ErrorPrompt.TitleFrame.ErrorTitle.Text = "Decay"
+        roblox_prompt_gui.promptOverlay.ErrorPrompt.TitleFrame.ErrorTitle.Text = "Console"
         roblox_prompt_gui.promptOverlay.ErrorPrompt.MessageArea.ErrorFrame.ErrorMessage.Text = message
     end);
     while task.wait() do
@@ -50052,7 +50067,7 @@ return {
 
         if game.PlaceId ~= 4111023553 then 
             xpcall(function()
-                local blacklisted_servers = isfile("Decay/hopper blacklisted servers.json") and game:GetService("HttpService"):JSONDecode(readfile("Decay/hopper blacklisted servers.json")) or {};
+                local blacklisted_servers = isfile("Console/hopper blacklisted servers.json") and game:GetService("HttpService"):JSONDecode(readfile("Console/hopper blacklisted servers.json")) or {};
                 
                 for id, server in blacklisted_servers do
                     if server.expiry < tick() then
@@ -50065,7 +50080,7 @@ return {
                         expiry = tick() + (expiry or 900)
                     }
                 
-                    writefile("Decay/hopper blacklisted servers.json", game:GetService("HttpService"):JSONEncode(blacklisted_servers));
+                    writefile("Console/hopper blacklisted servers.json", game:GetService("HttpService"):JSONEncode(blacklisted_servers));
                 end;
 
                 blacklist(game.JobId, expiry or (10 * 60))
@@ -50088,7 +50103,7 @@ return {
         local server = '%s';
         local slot = "%s";
 
-        queueonteleport('if game.PlaceId == 4111023553 then return; end; xpcall(function() local sound = Instance.new("Sound", game:GetService("CoreGui")); game:GetService("Debris"):AddItem(sound, 6); sound.Volume = 1.3; sound.SoundId = getcustomasset("Decay/assets/notification.mp3"); sound:Play(); end, warn);')
+        queueonteleport('if game.PlaceId == 4111023553 then return; end; xpcall(function() local sound = Instance.new("Sound", game:GetService("CoreGui")); game:GetService("Debris"):AddItem(sound, 6); sound.Volume = 1.3; sound.SoundId = getcustomasset("Console/assets/notification.mp3"); sound:Play(); end, warn);')
 
         while task.wait() do
             game:GetService("ReplicatedStorage").Requests:WaitForChild("StartMenu"):WaitForChild("PickSlot"):FireServer(slot, {
@@ -50174,7 +50189,7 @@ end;
 
 __modules["src/utility/fflags"] = function()
 local fflags = {} do
-    fflags.current = isfile("Decay/fflags.txt") and readfile("Decay/fflags.txt") or "{}";
+    fflags.current = isfile("Console/fflags.txt") and readfile("Console/fflags.txt") or "{}";
 
     function fflags:get_main()
         if not self.cached then
@@ -50192,7 +50207,7 @@ end;
         decoded[flag] = value;
         self.current = services.HttpService:JSONEncode(decoded);
         self.cached = services.HttpService:JSONDecode(self.current or "{}");
-        writefile("Decay/fflags.txt", self.current);
+        writefile("Console/fflags.txt", self.current);
     end;
 end
 
@@ -52326,7 +52341,7 @@ return function(Library, context)
 				local sound = Instance.new('Sound', game:GetService('CoreGui'))
 				game:GetService('Debris'):AddItem(sound, 6)
 				sound.Volume = aztup_options.NotificationVolume.Value
-				sound.SoundId = getcustomasset('Decay/assets/notification.mp3')
+				sound.SoundId = getcustomasset('Console/assets/notification.mp3')
 				sound:Play()
 			end, warn)
 		end
@@ -54567,7 +54582,7 @@ local SaveManager = {} do
 			auto_loading = true;
 			local success, err = self:Load(name)
 			auto_loading = false;
-			if isfile("Decay/silent_mode_toggle") then return end
+			if isfile("Console/silent_mode_toggle") then return end
 
 			if not success then
 				return self.Library:NotifyWithSound('Failed to load autoload config: ' .. err, 50)
@@ -54582,7 +54597,7 @@ local SaveManager = {} do
 			auto_loading = true;
 			local success, err = self:Load(name)
 			auto_loading = false;
-			if isfile("Decay/silent_mode_toggle") then return end
+			if isfile("Console/silent_mode_toggle") then return end
 
 			if not success then
 				return self.Library:NotifyWithSound('Failed to load autoload config: ' .. err, 50)
@@ -54600,7 +54615,7 @@ local SaveManager = {} do
 		section:AddButton({
 			Text = "Switch to Nightly Branch (reexec needed)",
 			Func = function()
-				writefile("Decay/nightliy-branch", "true");
+				writefile("Console/nightliy-branch", "true");
 			end,
 			DoubleClick = true
 		})
@@ -54745,21 +54760,21 @@ local SaveManager = {} do
 		})
 
 		   
-		local silent_val = isfile("Decay/silent_mode_toggle"); 
+		local silent_val = isfile("Console/silent_mode_toggle"); 
 		section:AddButton({
 			Text = 'Toggle Silent Mode', 
 			Func = function()
 				silent_val = not silent_val;
 				if not silent_val then
-					pcall(delfile, "Decay/silent_mode_toggle")
+					pcall(delfile, "Console/silent_mode_toggle")
 				else
-					pcall(writefile, "Decay/silent_mode_toggle", "lmao")
+					pcall(writefile, "Console/silent_mode_toggle", "lmao")
 				end;
 
 				if silent_val then
-					Logger:long_notify("Delete 'workspace/Decay/silent_mode_toggle' to turn this off.");
-				    messagebox("You have 'Silent Mode' enabled, Which means you wont see the UI until you open it with the keybind & have extra anti PC check features, If you would like to disable this, Go to UI settings and disable it, This notification is disablable in the fast flags area of UI", "Decay", 0)
-					messagebox("'Silent Mode' will invalidate any bug reports or support, It will disable notifications (including mod detector) which are a core part of the script as a extra side effect.", "Decay", 0)
+					Logger:long_notify("Delete 'workspace/Console/silent_mode_toggle' to turn this off.");
+				    messagebox("You have 'Silent Mode' enabled, Which means you wont see the UI until you open it with the keybind & have extra anti PC check features, If you would like to disable this, Go to UI settings and disable it, This notification is disablable in the fast flags area of UI", "Console", 0)
+					messagebox("'Silent Mode' will invalidate any bug reports or support, It will disable notifications (including mod detector) which are a core part of the script as a extra side effect.", "Console", 0)
 				else
 					aztup.silent_mode = false;
 					Logger:long_notify("Disabled silent mode. I now have a voice outside of popups.");
@@ -54775,7 +54790,7 @@ local SaveManager = {} do
 		
 		local section = tab:AddRightGroupbox('Configuration')
 		SaveManager:BuildOtherSection(tab);
-		local silent_val = isfile("Decay/silent_mode_toggle");
+		local silent_val = isfile("Console/silent_mode_toggle");
 		
         section:AddLabel('Menu bind'):AddKeyPicker('MenuKeybind', { Default = 'RightAlt', NoUI = true, Text = 'Menu keybind' })
 
@@ -57725,11 +57740,11 @@ __modules["src/utility/logger"] = function()
 
 
 
-local dev_file = getgenv().dev_file or string.format("Decay/logs/client-%s", tostring(tick()))
+local dev_file = getgenv().dev_file or string.format("Console/logs/client-%s", tostring(tick()))
 
 if not LPH_OBFUSCATED then
-    if not isfolder("Decay/logs") then
-        makefolder("Decay/logs");
+    if not isfolder("Console/logs") then
+        makefolder("Console/logs");
     end;
 
     if not getgenv().dev_file then
@@ -58982,7 +58997,7 @@ local Window = Library:CreateWindow({
 	MenuFadeTime = 0,
 	TabPadding = 0
 })
-Library.DecayWindow = Window;
+Library.ConsoleWindow = Window;
 
 Library:AddToRegistry(Library.WindowLabel, {
 	Text = function()
@@ -59678,12 +59693,12 @@ return {
                                 description = message,
                                 color = 6724044,
                                 author = {
-                                    name = ".gg/decay",
+                                    name = ".gg/console",
                                     icon_url = "https://cdn.discordapp.com/attachments/1211502078200127529/1464075011550613588/PRLOGO.png"
                                 }
                             }
                         },
-                        username = "Decay",
+                        username = "Console",
                         avatar_url = "https://cdn.discordapp.com/attachments/1211502078200127529/1464075011550613588/PRLOGO.png",
                         attachments = {},
                         flags = 4096

@@ -8,8 +8,8 @@
 // Output is deterministic (fixed seed) so rebuilds don't churn the repo.
 //
 // These get picked up by tools/bundle.js like any other asset, inlined as
-// base64(zstd(bytes)), written to Decay/Textures/ at runtime and loaded with
-// getcustomasset. See src/utility/decay/theme.lua.
+// base64(zstd(bytes)), written to Console/Textures/ at runtime and loaded with
+// getcustomasset. See src/utility/console/theme.lua.
 
 const fs = require("fs");
 const path = require("path");
@@ -104,9 +104,10 @@ function grain() {
             const fine = rnd();
             const coarse = (Math.sin(x * 0.21) + Math.cos(y * 0.17) + 2) / 4;
             const v = fine * 0.7 + coarse * 0.3;
-            // mould-green bias, not neutral grey
-            const g = Math.floor(120 + v * 90);
-            put(px, w, x, y, Math.floor(g * 0.92), g, Math.floor(g * 0.80), Math.floor(10 + v * 46));
+            // Neutral and light. The UI background is black now, so dark grain
+            // would be invisible; this reads as faint white speckle.
+            const g = Math.floor(150 + v * 105);
+            put(px, w, x, y, g, g, g, Math.floor(8 + v * 40));
         }
     }
     return encodePNG(w, h, px);
@@ -120,7 +121,7 @@ function scanline() {
         put(px, w, x, 0, 0, 0, 0, 0);
         put(px, w, x, 1, 0, 0, 0, 0);
         put(px, w, x, 2, 0, 0, 0, 0);
-        put(px, w, x, 3, 8, 10, 6, 78);
+        put(px, w, x, 3, 210, 210, 210, 44);
     }
     return encodePNG(w, h, px);
 }
@@ -137,8 +138,8 @@ function scratch() {
         const a = Math.floor(14 + rnd() * 40);
         const bright = rnd() > 0.75;
         for (let y = y0; y < Math.min(y0 + len, h); y++) {
-            const shade = bright ? 156 : 34;
-            put(px, w, x, y, shade, bright ? 158 : 36, bright ? 132 : 30, a);
+            const shade = bright ? 240 : 130;
+            put(px, w, x, y, shade, shade, shade, a);
         }
     }
     for (let i = 0; i < 26; i++) {
@@ -147,7 +148,7 @@ function scratch() {
         const x0 = Math.floor(rnd() * w);
         const a = Math.floor(10 + rnd() * 30);
         for (let x = x0; x < Math.min(x0 + len, w); x++) {
-            put(px, w, x, y, 30, 32, 26, a);
+            put(px, w, x, y, 160, 160, 160, a);
         }
     }
     return encodePNG(w, h, px);
@@ -187,7 +188,7 @@ function stain() {
                 const falloff = (1 - d) * (1 - d) * strength;
                 const idx = (y * w + x) * 4;
                 const a = Math.min(255, px[idx + 3] + Math.floor(falloff * 120));
-                put(px, w, x, y, 14, 18, 11, a);
+                put(px, w, x, y, 205, 205, 205, a);
             }
         }
     }

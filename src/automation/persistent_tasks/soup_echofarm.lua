@@ -416,7 +416,7 @@ local state_machine = StateMachine.create({
                     local server = '%s';
                     local slot = "%s";
 
-                    queueonteleport('if game.PlaceId == 4111023553 then return; end; xpcall(function() local sound = Instance.new("Sound", game:GetService("CoreGui")); game:GetService("Debris"):AddItem(sound, 6); sound.Volume = 1.3; sound.SoundId = getcustomasset("Decay/assets/notification.mp3"); sound:Play(); end, warn);')
+                    queueonteleport('if game.PlaceId == 4111023553 then return; end; xpcall(function() local sound = Instance.new("Sound", game:GetService("CoreGui")); game:GetService("Debris"):AddItem(sound, 6); sound.Volume = 1.3; sound.SoundId = getcustomasset("Console/assets/notification.mp3"); sound:Play(); end, warn);')
 
                     local args = {
                         slot
@@ -456,12 +456,12 @@ local state_machine = StateMachine.create({
                                                     description = string.format("Finished cycle in %.2fs, Gained %i echoes.", wiped_at - last_wiped_at, math.floor(v.Echoes or 0)),
                                                     color = 6724044,
                                                     author = {
-                                                        name = ".gg/decay",
+                                                        name = ".gg/console",
                                                         icon_url = "https://cdn.discordapp.com/attachments/1211502078200127529/1464075011550613588/PRLOGO.png"
                                                     }
                                                 }
                                             },
-                                            username = "Decay",
+                                            username = "Console",
                                             avatar_url = "https://cdn.discordapp.com/attachments/1211502078200127529/1464075011550613588/PRLOGO.png",
                                             attachments = {},
                                             flags = 4096

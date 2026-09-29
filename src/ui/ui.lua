@@ -41,8 +41,8 @@ end;
             "spotify_redirect_url",
             
         })
-        SaveManager:SetFolder('Decay/Deepwoken-Config')
-        ThemeManager:SetFolder('Decay/Deepwoken-Config')
+        SaveManager:SetFolder('Console/Deepwoken-Config')
+        ThemeManager:SetFolder('Console/Deepwoken-Config')
         SaveManager:BuildConfigSection(aztup.tabs.UI.Tab);
         ThemeManager:ApplyToTab(aztup.tabs.UI.Tab);
 
@@ -62,7 +62,7 @@ end;
             SaveManager:LoadAutoloadConfig()
         end;
         local custom_name = not LPH_OBFUSCATED and isfile("custom_name.txt") and readfile("custom_name.txt") or nil;
-        Library.DecayWindow:SetWindowTitle((function()
+        Library.ConsoleWindow:SetWindowTitle((function()
 		    if custom_name then
 		    	return string.format(LPH_ENCSTR("%s"), custom_name:gsub("|ACCENT", "<font color=\"#" .. Library.AccentColor:ToHex() .. "\">"))		    
 end

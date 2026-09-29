@@ -6,7 +6,7 @@ local Window = Library:CreateWindow({
 	MenuFadeTime = 0,
 	TabPadding = 0
 })
-Library.DecayWindow = Window;
+Library.ConsoleWindow = Window;
 
 Library:AddToRegistry(Library.WindowLabel, {
 	Text = function()

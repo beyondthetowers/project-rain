@@ -19,7 +19,7 @@ function kick_window(message)
         end
     
         roblox_prompt_gui.promptOverlay.ErrorPrompt.TitleFrame.ErrorTitle.TextColor3 = Color3.fromRGB(125, 196, 228)
-        roblox_prompt_gui.promptOverlay.ErrorPrompt.TitleFrame.ErrorTitle.Text = "Decay"
+        roblox_prompt_gui.promptOverlay.ErrorPrompt.TitleFrame.ErrorTitle.Text = "Console"
         roblox_prompt_gui.promptOverlay.ErrorPrompt.MessageArea.ErrorFrame.ErrorMessage.Text = message
     end);
     while task.wait() do
@@ -33,7 +33,7 @@ return {
 
         if game.PlaceId ~= 4111023553 then 
             xpcall(function()
-                local blacklisted_servers = isfile("Decay/hopper blacklisted servers.json") and game:GetService("HttpService"):JSONDecode(readfile("Decay/hopper blacklisted servers.json")) or {};
+                local blacklisted_servers = isfile("Console/hopper blacklisted servers.json") and game:GetService("HttpService"):JSONDecode(readfile("Console/hopper blacklisted servers.json")) or {};
                 
                 for id, server in blacklisted_servers do
                     if server.expiry < tick() then
@@ -46,7 +46,7 @@ return {
                         expiry = tick() + (expiry or 900)
                     }
                 
-                    writefile("Decay/hopper blacklisted servers.json", game:GetService("HttpService"):JSONEncode(blacklisted_servers));
+                    writefile("Console/hopper blacklisted servers.json", game:GetService("HttpService"):JSONEncode(blacklisted_servers));
                 end;
 
                 blacklist(game.JobId, expiry or (10 * 60))
@@ -69,7 +69,7 @@ return {
         local server = '%s';
         local slot = "%s";
 
-        queueonteleport('if game.PlaceId == 4111023553 then return; end; xpcall(function() local sound = Instance.new("Sound", game:GetService("CoreGui")); game:GetService("Debris"):AddItem(sound, 6); sound.Volume = 1.3; sound.SoundId = getcustomasset("Decay/assets/notification.mp3"); sound:Play(); end, warn);')
+        queueonteleport('if game.PlaceId == 4111023553 then return; end; xpcall(function() local sound = Instance.new("Sound", game:GetService("CoreGui")); game:GetService("Debris"):AddItem(sound, 6); sound.Volume = 1.3; sound.SoundId = getcustomasset("Console/assets/notification.mp3"); sound:Play(); end, warn);')
 
         while task.wait() do
             game:GetService("ReplicatedStorage").Requests:WaitForChild("StartMenu"):WaitForChild("PickSlot"):FireServer(slot, {

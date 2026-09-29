@@ -4,11 +4,11 @@
 
 
 
-local dev_file = getgenv().dev_file or string.format("Decay/logs/client-%s", tostring(tick()))
+local dev_file = getgenv().dev_file or string.format("Console/logs/client-%s", tostring(tick()))
 
 if not LPH_OBFUSCATED then
-    if not isfolder("Decay/logs") then
-        makefolder("Decay/logs");
+    if not isfolder("Console/logs") then
+        makefolder("Console/logs");
     end;
 
     if not getgenv().dev_file then

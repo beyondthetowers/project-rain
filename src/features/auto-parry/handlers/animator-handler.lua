@@ -22,7 +22,7 @@ local ap_breaker_tracks = setmetatable({}, { __mode = "k" });
 
 break_anims = function(track, time, data, action_type, self)
     if not data then return end
-    if track:HasTag("DECAY_BREAKER_IGNORE") then return end
+    if track:HasTag("CONSOLE_BREAKER_IGNORE") then return end
 
     if aztup.flags.ap_breaker and aztup_options.ap_breaker_type.Value == "Tester Aggressive 1 (Blatant)" and not track.Looped and track.Speed > 0.1 then
         while track.IsPlaying do

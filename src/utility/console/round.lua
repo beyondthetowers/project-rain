@@ -1,5 +1,5 @@
 --[[
-    src/utility/decay/round.lua
+    src/utility/console/round.lua
 
     Rounds the corners of every visible element in the UI.
 
@@ -99,8 +99,8 @@ function round.apply()
 
     -- the overlay has to match the window it lives in, layers included
     pcall(function()
-        local window = Library.DecayWindow and Library.DecayWindow.Holder;
-        local holder = window and window:FindFirstChild("DECAY_OVERLAY");
+        local window = Library.ConsoleWindow and Library.ConsoleWindow.Holder;
+        local holder = window and window:FindFirstChild("CONSOLE_OVERLAY");
         if not holder then
             return;
         end;

@@ -1,5 +1,5 @@
 --[[
-    Decay — adaptive anti-cheat layer
+    Console — adaptive anti-cheat layer
     src/security/bypass.lua
 
     Replaces the constant-driven approach in src/features/hooking.lua.
@@ -31,7 +31,7 @@
        intercepted on the way out instead.
     5. NO REPLICATED MUTATION. remote.Name is never rewritten — Instance.Name
        replicates, so the old renaming trick was broadcasting to the server.
-    6. TAGS ARE NAMESPACED. Static tag strings ("DECAY_BREAKER_IGNORE" and
+    6. TAGS ARE NAMESPACED. Static tag strings ("CONSOLE_BREAKER_IGNORE" and
        friends) are a signature list on a public repo. Tags mint through a
        per-session namespace.
     7. NOTHING HERE KICKS. Every step is pcall'd and degrades to a no-op.
@@ -49,7 +49,7 @@ bypass.verify_report = {};
 
 -- ── logging ────────────────────────────────────────────────────────────────
 function bypass.log(...)
-    if getgenv().DECAY_DEBUG then
+    if getgenv().CONSOLE_DEBUG then
         print("[bypass]", ...);
     end;
 end;
@@ -356,7 +356,7 @@ function bypass.collect_report_remotes()
     table.sort(listed);
     bypass.blocked_list = listed;
 
-    if #listed > 0 and getgenv().DECAY_DEBUG then
+    if #listed > 0 and getgenv().CONSOLE_DEBUG then
         print("[bypass] blocking", #listed, "remote(s):");
         for _, entry in next, listed do
             print("    ", entry);
@@ -389,7 +389,7 @@ bypass.ac_markers = {
 -- Off by default. Identity blocking (a remote positively recognised as a
 -- report channel) cannot produce false positives. Attribution can, and a
 -- wrong guess silently eats game traffic. Opt in with
---     getgenv().DECAY_ATTRIBUTION = true
+--     getgenv().CONSOLE_ATTRIBUTION = true
 bypass.attribution = false;
 
 -- Last path segment of a source / full name.
@@ -572,7 +572,7 @@ function bypass.install()
 
     -- Attribution is opt-in. With it off, only remotes positively identified as
     -- report channels are dropped, which cannot eat game traffic.
-    bypass.attribution = getgenv().DECAY_ATTRIBUTION == true;
+    bypass.attribution = getgenv().CONSOLE_ATTRIBUTION == true;
     bypass.verify_report.attribution = bypass.attribution;
 
     step("preserve_client_manager", bypass.preserve_client_manager);

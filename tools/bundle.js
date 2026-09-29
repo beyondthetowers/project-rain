@@ -1,6 +1,6 @@
 // tools/bundle.js
 //
-// Flattens the Decay module tree into one self-contained Lua chunk that
+// Flattens the Console module tree into one self-contained Lua chunk that
 // can be run through loadstring / game:HttpGet.
 //
 // What it does:
@@ -14,7 +14,7 @@
 //   - runs @src/init
 //
 // Usage:
-//   node tools/bundle.js                 -> dist/decay.lua
+//   node tools/bundle.js                 -> dist/console.lua
 //   node tools/bundle.js --no-assets     -> skip asset embedding (much smaller)
 //   node tools/bundle.js --out=path.lua
 
@@ -30,7 +30,7 @@ const argv = process.argv.slice(2);
 const EMBED_ASSETS = !argv.includes("--no-assets");
 const OUT = (() => {
     const flag = argv.find((a) => a.startsWith("--out="));
-    return flag ? flag.slice(6) : path.join(ROOT, "dist", "decay.lua");
+    return flag ? flag.slice(6) : path.join(ROOT, "dist", "console.lua");
 })();
 
 // ── helpers ────────────────────────────────────────────────────────────────
@@ -119,7 +119,7 @@ if (EMBED_ASSETS && fs.existsSync(ASSETS)) {
 const chunks = [];
 
 chunks.push(`--[[
-    Decay — bundled build
+    Console — bundled build
     generated ${new Date().toISOString()}
     modules: ${modules.length}
     assets:  ${assets.length}

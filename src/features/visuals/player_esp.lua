@@ -114,13 +114,13 @@ end;
     local PlayerESP = {} do
        PlayerESP.__index = PlayerESP;
     
-       local player_container = services.CoreGui:FindFirstChild("DECAY_PLAYER_CONTAINER");
+       local player_container = services.CoreGui:FindFirstChild("CONSOLE_PLAYER_CONTAINER");
         if player_container then
             player_container:Destroy();
         end;
     
         local pr_player_container = Instance.new("Folder", game:GetService("CoreGui"));
-        pr_player_container.Name = "DECAY_PLAYER_CONTAINER";
+        pr_player_container.Name = "CONSOLE_PLAYER_CONTAINER";
 
         local character_map = {};
     

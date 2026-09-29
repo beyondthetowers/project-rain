@@ -4,11 +4,11 @@ local custom_font = {}
 
 
 function custom_font.make_lexend_font()
-    local font_custom_asset = getcustomasset("Decay/fonts/Lexend.ttf")
-    local font_custom_asset_bold = getcustomasset("Decay/fonts/Lexend-Bold.ttf")
-    local font_custom_asset_medium = getcustomasset("Decay/fonts/Lexend-Medium.ttf")
+    local font_custom_asset = getcustomasset("Console/fonts/Lexend.ttf")
+    local font_custom_asset_bold = getcustomasset("Console/fonts/Lexend-Bold.ttf")
+    local font_custom_asset_medium = getcustomasset("Console/fonts/Lexend-Medium.ttf")
 
-    writefile("Decay/fonts/Lexend.json", game:GetService("HttpService"):JSONEncode({
+    writefile("Console/fonts/Lexend.json", game:GetService("HttpService"):JSONEncode({
         name = "Lexend",
         faces = {
             {
@@ -32,7 +32,7 @@ function custom_font.make_lexend_font()
         }
     }))
 
-    local path_asset = getcustomasset("Decay/fonts/Lexend.json");
+    local path_asset = getcustomasset("Console/fonts/Lexend.json");
     local fonts = {
         regular = Font.new(
             path_asset,

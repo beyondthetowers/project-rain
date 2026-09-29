@@ -17,14 +17,14 @@ aztup.maid:give_task(scheduler:add_task(0.5):Connect(function()
 
     local show_mem_data = aztup_toggles.WatermarkShowsMem and aztup_toggles.WatermarkShowsMem.Value;
 
-    local watermark, raw_watermark = ('DECAY // <font color=\"#%s\">DECOMPOSING</font> %i<font color="#%s">fps</font> %i<font color="#%s">ms</font>'):format(
+    local watermark, raw_watermark = ('CONSOLE // <font color=\"#%s\">DECOMPOSING</font> %i<font color="#%s">fps</font> %i<font color="#%s">ms</font>'):format(
         color_in_hex,
         math.floor(fps),
         color_in_hex,
         math.floor(Latency:get_ping() * 1000),
         color_in_hex
     ), ('%s %ifps %ims'):format(
-        "DECAY // DECOMPOSING",
+        "CONSOLE",
         math.floor(fps),
         math.floor(Latency:get_ping() * 1000)
     );

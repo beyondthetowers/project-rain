@@ -654,8 +654,8 @@ function automation:make_config()
             persistent_data:set(key, value);
         end
 
-        if not isfolder("Decay/automation_configs") then
-            makefolder("Decay/automation_configs")
+        if not isfolder("Console/automation_configs") then
+            makefolder("Console/automation_configs")
         end
 
         if aztup_options.automation_config_mode.Value == "File" then
@@ -666,7 +666,7 @@ function automation:make_config()
 
             local config_name = aztup_options.automation_config_name.Value;
             local success, err = pcall(function()
-                writefile("Decay/automation_configs/" .. config_name .. ".json", game:GetService("HttpService"):JSONEncode(persistent_data_items));
+                writefile("Console/automation_configs/" .. config_name .. ".json", game:GetService("HttpService"):JSONEncode(persistent_data_items));
             end)
 
             if success then
@@ -685,7 +685,7 @@ function automation:make_config()
 
     local function load_config(config_name)
         local success, data = pcall(function()
-            return readfile("Decay/automation_configs/" .. config_name .. ".json")        
+            return readfile("Console/automation_configs/" .. config_name .. ".json")        
 end) 
         
         if success then
@@ -736,7 +736,7 @@ end
     config_groupbox:newButton("Load", function()
         local config_name = aztup_options.automation_config_name.Value;
         local success, data = pcall(function()
-            return readfile("Decay/automation_configs/" .. config_name .. ".json")        
+            return readfile("Console/automation_configs/" .. config_name .. ".json")        
 end)
 
         if success then
@@ -758,7 +758,7 @@ end)
     config_groupbox:newSlider("force_tween_speed_value", "Tween Speed", 250, 16, 250, 1, true, "studs/second");
 
     local item_loot_box = config_groupbox:newDependencyBox("automation_config_mode", "File");
-    item_loot_box:newTextbox('automation_config_name', 'Name', false, '', nil, "What the automation config will set to, Stored @ 'workspace/Decay/automation_configs")
+    item_loot_box:newTextbox('automation_config_name', 'Name', false, '', nil, "What the automation config will set to, Stored @ 'workspace/Console/automation_configs")
     
     label = config_groupbox:newLabel(string.format("Currently set to: %s", persistent_data:get("automation_config", "persistent"))); 
     xpcall(set_bools, function(...)

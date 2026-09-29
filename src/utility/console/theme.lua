@@ -1,12 +1,12 @@
 --[[
-    src/utility/decay/theme.lua
+    src/utility/console/theme.lua
 
     The DECAY look. Palette, fonts, and a procedural overlay that sits inside
     the menu window.
 
     Scoping decisions:
 
-    1.  The overlay is parented INTO Library.DecayWindow, not screenspaced over
+    1.  The overlay is parented INTO Library.ConsoleWindow, not screenspaced over
         the game. It moves when you drag the window, resizes with it, and is
         clipped to it — the game world stays clean. An earlier version was a
         full-screen ScreenGui in gethui(); that was wrong.
@@ -32,20 +32,20 @@ local theme = {};
 -- rust. No saturated or clean values anywhere.
 
 theme.palette = {
-    FontColor       = "c4baa3",   -- dirty beige
-    MainColor       = "434343",   -- the grey — RGB 67,67,67
-    AccentColor     = "7c8c63",   -- mould green
-    BackgroundColor = "434343",   -- same grey, per request
-    OutlineColor    = "2b2b2b",   -- darkened so panels still separate
+    FontColor       = "ffffff",   -- white text
+    MainColor       = "000000",   -- black panels
+    AccentColor     = "ffffff",   -- drives hover: ui.lua sets the hover fill
+                                  -- straight from AccentColor, and the selected
+                                  -- tab underline the same way
+    BackgroundColor = "000000",   -- black background
+    OutlineColor    = "ffffff",   -- drives BorderColor3, i.e. the corners
 };
 
 theme.extra = {
-    rust   = Color3.fromRGB(156, 69, 48),
-    mould  = Color3.fromRGB(124, 140, 99),
-    beige  = Color3.fromRGB(196, 186, 163),
-    carbon = Color3.fromRGB(67, 67, 67),
-    void   = Color3.fromRGB(67, 67, 67),
-    ash    = Color3.fromRGB(43, 43, 43),
+    white = Color3.fromRGB(255, 255, 255),
+    grey  = Color3.fromRGB(150, 150, 150),
+    black = Color3.fromRGB(0, 0, 0),
+    ash   = Color3.fromRGB(38, 38, 38),
 };
 
 -- Condensed industrial for headings, technical mono for everything else.
@@ -55,7 +55,7 @@ theme.fonts = {
 };
 
 -- ── textures ───────────────────────────────────────────────────────────────
-local TEXTURE_DIR = "Decay/Textures";
+local TEXTURE_DIR = "Console/Textures";
 local TEXTURE_NAMES = { "grain", "scanline", "scratch", "vignette", "stain" };
 
 theme.textures = {};
@@ -103,7 +103,7 @@ end;
 
 -- ── overlay ────────────────────────────────────────────────────────────────
 
--- Library.DecayWindow is the linoria Window OBJECT, not the frame — it carries
+-- Library.ConsoleWindow is the linoria Window OBJECT, not the frame — it carries
 -- .Tabs, .TabOrder and a .Holder field. The actual GUI is Window.Holder
 -- (ui.lua:2388 `Window.Holder = Outer`). Handing the object straight to
 -- :GetDescendants() throws, and build_overlay then swallowed that, so resolve
@@ -130,7 +130,7 @@ local function find_window()
         return nil;
     end;
 
-    for _, candidate in ipairs({ Library.DecayWindow, Library.Window, Library.ScreenGui }) do
+    for _, candidate in ipairs({ Library.ConsoleWindow, Library.Window, Library.ScreenGui }) do
         local instance = as_instance(candidate);
         if instance then
             return instance;
@@ -161,7 +161,7 @@ function theme.destroy_previous()
     }) do
         if container then
             for _, child in ipairs(container:GetChildren()) do
-                if child.Name == "DECAY_OVERLAY" then
+                if child.Name == "CONSOLE_OVERLAY" then
                     pcall(function() child:Destroy() end);
                 end;
             end;
@@ -207,7 +207,7 @@ function theme.build_overlay()
     -- The holder is what clips: the grain tiles and the vignette get cut to the
     -- window's rectangle, so nothing bleeds over the game or over other windows.
     local holder = Instance.new("Frame");
-    holder.Name = "DECAY_OVERLAY";
+    holder.Name = "CONSOLE_OVERLAY";
     holder.BackgroundTransparency = 1;
     holder.BorderSizePixel = 0;
     holder.Size = UDim2.fromScale(1, 1);
@@ -269,7 +269,7 @@ function theme.build_overlay()
 
     local sweep = Instance.new("Frame");
     sweep.Name = "sweep";
-    sweep.BackgroundColor3 = theme.extra.mould;
+    sweep.BackgroundColor3 = theme.extra.white;
     sweep.BorderSizePixel = 0;
     sweep.Size = UDim2.new(1, 0, 0, 2);
     sweep.Position = UDim2.new(0, 0, -0.05, 0);
@@ -446,7 +446,7 @@ function theme.register()
     end;
 
     local HttpService = game:GetService("HttpService");
-    ThemeManager.BuiltInThemes["DECAY"] = { 22, HttpService:JSONDecode(HttpService:JSONEncode(theme.palette)) };
+    ThemeManager.BuiltInThemes["CONSOLE"] = { 22, HttpService:JSONDecode(HttpService:JSONEncode(theme.palette)) };
     return true;
 end;
 

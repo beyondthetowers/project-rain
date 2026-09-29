@@ -54,48 +54,48 @@ if not LPH_OBFUSCATED then
 end; 
 
 xpcall(function()
-    if not isfolder("Decay") then
-        makefolder("Decay");
+    if not isfolder("Console") then
+        makefolder("Console");
     end;
     
-    if not isfolder("Decay/Assets") then
-        makefolder("Decay/Assets");
+    if not isfolder("Console/Assets") then
+        makefolder("Console/Assets");
     end;
 
-    if not isfolder("Decay/Assets/Hit Sounds") then
-        makefolder("Decay/Assets/Hit Sounds");
+    if not isfolder("Console/Assets/Hit Sounds") then
+        makefolder("Console/Assets/Hit Sounds");
     end;
 
-    if not isfolder("Decay/Assets/Parry Sounds") then
-        makefolder("Decay/Assets/Parry Sounds");
+    if not isfolder("Console/Assets/Parry Sounds") then
+        makefolder("Console/Assets/Parry Sounds");
     end;
 
-    if not isfolder("Decay/Fonts") then
-        makefolder("Decay/Fonts");
+    if not isfolder("Console/Fonts") then
+        makefolder("Console/Fonts");
     end;
 
-    if not isfolder("Decay/Deepwoken-Config") then
-        makefolder("Decay/Deepwoken-Config");
+    if not isfolder("Console/Deepwoken-Config") then
+        makefolder("Console/Deepwoken-Config");
     end;
 
-    if not isfolder("Decay/Deepwoken-Config/CustomGlobalOrnaments") then
-        makefolder("Decay/Deepwoken-Config/CustomGlobalOrnaments");
+    if not isfolder("Console/Deepwoken-Config/CustomGlobalOrnaments") then
+        makefolder("Console/Deepwoken-Config/CustomGlobalOrnaments");
     end;
 
-    if not isfolder("Decay/Deepwoken-Config/CustomRaces") then
-        makefolder("Decay/Deepwoken-Config/CustomRaces");
+    if not isfolder("Console/Deepwoken-Config/CustomRaces") then
+        makefolder("Console/Deepwoken-Config/CustomRaces");
     end;
 
-    if not isfolder("Decay/Deepwoken-Config/Preferences") then
-        makefolder("Decay/Deepwoken-Config/Preferences");
+    if not isfolder("Console/Deepwoken-Config/Preferences") then
+        makefolder("Console/Deepwoken-Config/Preferences");
     end;
 
-    if not isfolder("Decay/Deepwoken-Config/CustomEnchantments") then
-        makefolder("Decay/Deepwoken-Config/CustomEnchantments");
+    if not isfolder("Console/Deepwoken-Config/CustomEnchantments") then
+        makefolder("Console/Deepwoken-Config/CustomEnchantments");
     end;
 
-    if not isfile("Decay/script_state") then
-        writefile("Decay/script_state", game:GetService("HttpService"):JSONEncode({
+    if not isfile("Console/script_state") then
+        writefile("Console/script_state", game:GetService("HttpService"):JSONEncode({
             ["last_executed"] = tick(),
             ["last_executed_version"] = LPH_ENCSTR("__BUILD__"),
             ["build_id"] = game:GetService("HttpService"):GenerateGUID(false)
@@ -145,7 +145,7 @@ env.aztup = {
     tabs = {},
 };
 
-local hasnt_accepted_tos = not isfile("Decay/tos_accepted_82126_0822UTC0.txt");
+local hasnt_accepted_tos = not isfile("Console/tos_accepted_82126_0822UTC0.txt");
 
 env.persistent_data = require("@src/utility/persistent_data");
 env.Logger = require(LPH_ENCSTR("@src/utility/logger"));   
@@ -183,33 +183,33 @@ do
 end;
         
         task.spawn(pcall, function()  
-            if not isfile("Decay/Assets/proximity.mp3") then
-                writefile("Decay/Assets/proximity.mp3", decode_asset(inline_asset_b96("@assets/proximity.mp3")));
+            if not isfile("Console/Assets/proximity.mp3") then
+                writefile("Console/Assets/proximity.mp3", decode_asset(inline_asset_b96("@assets/proximity.mp3")));
             end;
 
-            if not isfile("Decay/Assets/Parry Sounds/Ultrakill Parry.mp3") then
-                writefile("Decay/Assets/Parry Sounds/Ultrakill Parry.mp3", decode_asset(inline_asset_b96("@assets/Ultrakill Parry.mp3")));
+            if not isfile("Console/Assets/Parry Sounds/Ultrakill Parry.mp3") then
+                writefile("Console/Assets/Parry Sounds/Ultrakill Parry.mp3", decode_asset(inline_asset_b96("@assets/Ultrakill Parry.mp3")));
             end;
 
-            if not isfile("Decay/Assets/notification.mp3") then 
-                writefile("Decay/Assets/notification.mp3", decode_asset(inline_asset_b96("@assets/notification.mp3")));
+            if not isfile("Console/Assets/notification.mp3") then 
+                writefile("Console/Assets/notification.mp3", decode_asset(inline_asset_b96("@assets/notification.mp3")));
             end;
 
-            if not isfile("Decay/Deepwoken-Config/GuiItself.rbxm") then
-                writefile("Decay/Deepwoken-Config/GuiItself.rbxm", decode_asset(inline_asset_b96("@assets/DeepwokenMorphs/GuiItself.rbxm")));
+            if not isfile("Console/Deepwoken-Config/GuiItself.rbxm") then
+                writefile("Console/Deepwoken-Config/GuiItself.rbxm", decode_asset(inline_asset_b96("@assets/DeepwokenMorphs/GuiItself.rbxm")));
             end;
         end)
         
-        if not isfile("Decay/Fonts/Lexend.ttf") then 
-            writefile("Decay/Fonts/Lexend.ttf", decode_asset(inline_asset_b96("@assets/lexend.ttf")));
+        if not isfile("Console/Fonts/Lexend.ttf") then 
+            writefile("Console/Fonts/Lexend.ttf", decode_asset(inline_asset_b96("@assets/lexend.ttf")));
         end; 
 
-        if not isfile("Decay/Fonts/Lexend-Bold.ttf") then 
-            writefile("Decay/Fonts/Lexend-Bold.ttf", decode_asset(inline_asset_b96("@assets/lexend-bold.ttf")));
+        if not isfile("Console/Fonts/Lexend-Bold.ttf") then 
+            writefile("Console/Fonts/Lexend-Bold.ttf", decode_asset(inline_asset_b96("@assets/lexend-bold.ttf")));
         end; 
 
-        if not isfile("Decay/Fonts/Lexend-Medium.ttf") then 
-            writefile("Decay/Fonts/Lexend-Medium.ttf", decode_asset(inline_asset_b96("@assets/lexend-medium.ttf")));
+        if not isfile("Console/Fonts/Lexend-Medium.ttf") then 
+            writefile("Console/Fonts/Lexend-Medium.ttf", decode_asset(inline_asset_b96("@assets/lexend-medium.ttf")));
         end; 
     end)(); 
 end; 
@@ -225,14 +225,14 @@ end;
 if hasnt_accepted_tos then
     require(LPH_ENCSTR("@src/ui/tos"));
     
-    if not isfile("Decay\\Deepwoken-Config\\settings\\default_conf.json") and not isfile("Decay/inquired_about_default_config.txt") and not isfile("Decay\\Deepwoken-Config\\settings\\autoload.txt") then
-        writefile("Decay/inquired_about_default_config.txt", "true");
+    if not isfile("Console\\Deepwoken-Config\\settings\\default_conf.json") and not isfile("Console/inquired_about_default_config.txt") and not isfile("Console\\Deepwoken-Config\\settings\\autoload.txt") then
+        writefile("Console/inquired_about_default_config.txt", "true");
         require(LPH_ENCSTR("@src/ui/choice_frame")).set(nil,
             function()
-	    	    local config_fetch_success, config_content = pcall(game.HttpGet, game, "https://files.decay/configs/premade.json");
+	    	    local config_fetch_success, config_content = pcall(game.HttpGet, game, "https://files.console/configs/premade.json");
                 if config_fetch_success then
-                    writefile("Decay\\Deepwoken-Config\\settings\\default_conf.json", config_content);
-                    writefile("Decay\\Deepwoken-Config\\settings\\autoload.txt", "default_conf");
+                    writefile("Console\\Deepwoken-Config\\settings\\default_conf.json", config_content);
+                    writefile("Console\\Deepwoken-Config\\settings\\autoload.txt", "default_conf");
                 end;
             end,
             function()
@@ -275,7 +275,7 @@ end;
 env.signal = require("@src/utility/signal");
 loaded_signal = env.signal.new();
 env.LOAD_START_TIME = tick();
-aztup.silent_mode = isfile(LPH_ENCSTR("Decay/silent_mode_toggle"));
+aztup.silent_mode = isfile(LPH_ENCSTR("Console/silent_mode_toggle"));
 aztup.maid = require(("@src/utility/maid")).new(); 
 
 if not aztup.ui then
@@ -307,24 +307,24 @@ chance_store = require("@src/features/auto-parry/data/chance_store")
 getgenv().chance_store = chance_store;
 require(LPH_ENCSTR("@src/ui/ui")).initialize();
 
--- DECAY theme: palette, fonts and the grain/scanline/vignette overlay. Runs
+-- CONSOLE theme: palette, fonts and the grain/scanline/vignette overlay. Runs
 -- after the UI exists so the overlay can parent above Library.ScreenGui, and
 -- spawn'd so a failure here can never take init down with it.
 task.spawn(xpcall, function()
-    require("@src/utility/decay/theme").apply();
+    require("@src/utility/console/theme").apply();
 
     -- Sidebar runs after the theme so the overlay already exists and can be
     -- excluded by name when the window body is located. The overlay is scale
     -- 1,1, so it follows the window widening on its own.
-    require("@src/utility/decay/sidebar").apply();
+    require("@src/utility/console/sidebar").apply();
 
     -- Rounds every visible element, and re-scans for the ones the library
     -- builds lazily (dropdown options, tab contents on first visit).
-    local round = require("@src/utility/decay/round");
+    local round = require("@src/utility/console/round");
     round.apply();
     round.start_watchdog();
 end, function(err)
-    warn("[decay] theme failed:", err);
+    warn("[console] theme failed:", err);
 end);
 
 require("@src/features/visuals/player_esp")();
@@ -332,7 +332,7 @@ require("@src/features/visuals/base_esp")();
 
 if not fflags:get("dont_notify_on_first_exec") and aztup.silent_mode then
     if not persistent_data:get("has_executed_before") then
-        messagebox("You have 'Silent Mode' enabled, Which means you wont see the UI until you open it with the keybind & have extra anti PC check features, If you would like to disable this, Go to UI settings and disable it, This notification is disablable in the fast flags area of UI", "Decay", 0)
+        messagebox("You have 'Silent Mode' enabled, Which means you wont see the UI until you open it with the keybind & have extra anti PC check features, If you would like to disable this, Go to UI settings and disable it, This notification is disablable in the fast flags area of UI", "Console", 0)
     end;
     
     persistent_data:set("has_executed_before", true); 

@@ -1,5 +1,5 @@
 local fflags = {} do
-    fflags.current = isfile("Decay/fflags.txt") and readfile("Decay/fflags.txt") or "{}";
+    fflags.current = isfile("Console/fflags.txt") and readfile("Console/fflags.txt") or "{}";
 
     function fflags:get_main()
         if not self.cached then
@@ -17,7 +17,7 @@ end;
         decoded[flag] = value;
         self.current = services.HttpService:JSONEncode(decoded);
         self.cached = services.HttpService:JSONDecode(self.current or "{}");
-        writefile("Decay/fflags.txt", self.current);
+        writefile("Console/fflags.txt", self.current);
     end;
 end
 

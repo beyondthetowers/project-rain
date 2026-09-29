@@ -1,5 +1,5 @@
 --[[
-    src/utility/decay/migrate.lua
+    src/utility/console/migrate.lua
 
     DECAY shipped previously as "Project Rain". Every install from before the
     rename still has a `Project Rain/` folder holding the user's configs,
@@ -18,8 +18,9 @@
 
 local migrate = {};
 
-local LEGACY  = "Project Rain";
-local CURRENT = "Decay";
+-- Newest-first. Both are real folder names that have shipped.
+local LEGACY  = { "Decay", "Project Rain" };
+local CURRENT = "Console";
 
 local function normalize(path)
     return (path:gsub("\\", "/"));
@@ -94,7 +95,19 @@ end;
 -- normal case on a fresh install and on every run after the first.
 function migrate.run()
     local ok, result = pcall(function()
-        if not isfolder(LEGACY) then
+        -- Two legacy names now. "Project Rain" is the original release; "Decay"
+        -- was the intermediate rename that shipped for a while. Both have to be
+        -- checked, in newest-first order, or an install that upgraded through
+        -- Decay strands its configs.
+        local source;
+        for _, candidate in ipairs(LEGACY) do
+            if isfolder(candidate) then
+                source = candidate;
+                break;
+            end;
+        end;
+
+        if not source then
             return 0;                                  -- nothing to migrate from
         end;
         if isfile(MARKER) then
@@ -102,38 +115,40 @@ function migrate.run()
         end;
 
         -- Was: `if isfolder(CURRENT) then return 0 end`. That latch was wrong.
-        -- A run that died partway leaves Decay/ present but partial, and the
+        -- A run that died partway leaves Console/ present but partial, and the
         -- migration would then never fire again — stranding the user's configs
         -- in the old folder permanently with no message. Only treat the
         -- destination as done when it already holds at least as many files as
         -- the source.
         if isfolder(CURRENT) then
-            local legacy_count = count_files(LEGACY);
+            local legacy_count = count_files(source);
             local current_count = count_files(CURRENT);
             if legacy_count > 0 and current_count >= legacy_count then
                 return 0;
             end;
         end;
 
-        local copied = copy_tree(LEGACY, CURRENT);
+        local copied = copy_tree(source, CURRENT);
 
         -- Written on every attempt, so a partial destination is retried on the
         -- next run rather than being treated as finished.
         pcall(writefile, MARKER, string.format(
             "copied %d file(s) from '%s'\n%s\n",
-            copied, LEGACY, os.date("%Y-%m-%d %H:%M:%S")
+            copied, source, os.date("%Y-%m-%d %H:%M:%S")
         ));
 
+        migrate.last_source = source;
         return copied;
     end);
 
     if not ok then
-        warn("[decay] migration failed:", result);
+        warn("[console] migration failed:", result);
         return 0;
     end;
 
     if result and result > 0 then
-        print(string.format("[decay] migrated %d file(s) from '%s' to '%s'", result, LEGACY, CURRENT));
+        print(string.format("[console] migrated %d file(s) from '%s' to '%s'",
+            result, migrate.last_source or "?", CURRENT));
     end;
 
     return result or 0;
