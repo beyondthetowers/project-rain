@@ -323,6 +323,12 @@ task.spawn(xpcall, function()
     local round = require("@src/utility/console/round");
     round.apply();
     round.start_watchdog();
+
+    -- Hover inversion. Runs after round so it can also catch the corners the
+    -- library builds late, and re-scans for lazily created rows.
+    local hover = require("@src/utility/console/hover");
+    hover.apply();
+    hover.start_watchdog();
 end, function(err)
     warn("[console] theme failed:", err);
 end);
