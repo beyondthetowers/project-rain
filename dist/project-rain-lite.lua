@@ -1,6 +1,6 @@
 --[[
     Project Rain — bundled build
-    generated 2026-09-29T18:18:59.468Z
+    generated 2026-09-29T18:19:55.586Z
     modules: 274
     assets:  0
 ]]
@@ -43735,7 +43735,32 @@ function bypass.install()
 
     step("preserve_client_manager", bypass.preserve_client_manager);
 
+    -- Resolve KeyHandler first: its registry is the authoritative list of
+    -- "these are the game's own action remotes". Any remote in it must never be
+    -- dropped, whatever the name/Changed heuristics say.
+    local key_handler = step("resolve_keyhandler", bypass.resolve_keyhandler);
+    bypass.key_handler = key_handler;
+    if key_handler then
+        getgenv().PR_key_handler = key_handler;
+    end;
+
     local blocked = bypass.collect_report_remotes();
+
+    -- A live read showed two remotes in both the registry and the block list
+    -- (they carry a Changed listener, so collect_by_connections matched them).
+    -- Dropping those swallows real input — block, parry, feint all route
+    -- through these. The registry wins.
+    local excluded = 0;
+    if key_handler and typeof(key_handler.remotes) == "table" then
+        for _, remote in next, key_handler.remotes do
+            if blocked[remote] then
+                blocked[remote] = nil;
+                excluded = excluded + 1;
+            end;
+        end;
+    end;
+    bypass.verify_report.excluded_game_remotes = excluded;
+
     local blocked_count = 0;
     for _ in next, blocked do
         blocked_count = blocked_count + 1;
@@ -43749,12 +43774,6 @@ function bypass.install()
         -- No kick. Nothing matched the heuristics this build; leave the
         -- namecall chain untouched and carry on.
         bypass.log("no report remotes identified; filter not installed");
-    end;
-
-    local key_handler = step("resolve_keyhandler", bypass.resolve_keyhandler);
-    bypass.key_handler = key_handler;
-    if key_handler then
-        getgenv().PR_key_handler = key_handler;
     end;
 
     bypass.log("install complete", bypass.verify_report);
