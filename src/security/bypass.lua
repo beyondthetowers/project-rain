@@ -116,31 +116,44 @@ local function is_game_remote(value)
 end;
 bypass.is_game_remote = is_game_remote;
 
--- A KeyHandler-shaped table: >=6 game remotes plus a function. This is the
--- discriminator that replaces `tbl[9] == heaven_key`.
+-- The KeyHandler registry is a 13-slot array: slot 12 holds the remotes table,
+-- slot 13 the name -> key encoder. The original release matched it with
+--
+--     #tbl == 13 and tbl[9] == heaven_key
+--
+-- where heaven_key was a build constant that went stale on every update. Keep
+-- the structure, drop the constant.
+--
+-- This has to stay tight. An earlier version here accepted any table holding
+-- six or more remote references plus a function. That matched a 36,384-entry
+-- game cache instead of the registry, so PR handed the game a KeyHandler whose
+-- encoder returned nil for every name — which killed block, parry and feint
+-- (all of which resolve their remote through KeyHandler) while M1 kept working
+-- off a direct reference.
 local function classify_remote_table(value)
-    if typeof(value) ~= "table" then
+    if typeof(value) ~= "table" or #value ~= 13 then
+        return nil;
+    end;
+
+    local remotes = rawget(value, 12);
+    local encoder = rawget(value, 13);
+
+    if typeof(remotes) ~= "table" or typeof(encoder) ~= "function" then
         return nil;
     end;
 
     local remote_count = 0;
-    local encoder, lookup;
-
-    for _, item in next, value do
+    for _, item in next, remotes do
         if is_game_remote(item) then
             remote_count = remote_count + 1;
-        elseif typeof(item) == "function" and encoder == nil then
-            encoder = item;
-        elseif typeof(item) == "table" and lookup == nil then
-            lookup = item;
         end;
     end;
 
-    if remote_count >= 6 and encoder ~= nil then
-        return value, encoder, remote_count;
+    if remote_count < 6 then
+        return nil;
     end;
 
-    return nil;
+    return remotes, encoder;
 end;
 
 -- Recursively search a function's upvalue graph for the remotes table.

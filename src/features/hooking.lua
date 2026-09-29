@@ -92,7 +92,11 @@ end;
         self[STR_TBL_SF_INVOKE("remotes")] = resolved.remotes;
         self[STR_TBL_SF_INVOKE("enc_f")]   = resolved.encoder;
 
-        if shared.b then return Logger.log_for_devs("[kh] already bypassed this session")end
+        -- Was: `if shared.b then return ... end`. That guard meant a re-inject
+        -- never re-installed the hook, so the game kept calling the first
+        -- injection's closure — which still held whatever remotes table that
+        -- run resolved. Re-installing is idempotent: hookfunction replaces the
+        -- current value rather than stacking.
         Logger.log_for_devs("[kh] grabbed remotes & enc_f");
 
         
