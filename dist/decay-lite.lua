@@ -1,6 +1,6 @@
 --[[
     Decay — bundled build
-    generated 2026-09-29T20:26:14.364Z
+    generated 2026-09-29T20:26:56.981Z
     modules: 277
     assets:  0
 ]]
@@ -48203,6 +48203,78 @@ function theme.apply_colors()
     return true;
 end;
 
+-- ── recolour pass ──────────────────────────────────────────────────────────
+-- Setting Library.MainColor and calling ApplyTheme is not enough. The library
+-- only repaints elements it registered via AddToRegistry; the window chrome
+-- (the outer Frame, the inner container, the hairline separator, UIStrokes)
+-- bakes its colours at creation and is never revisited. Measured after a
+-- palette change: Library.MainColor was #434343 while Inner still rendered
+-- #1b2b34, the old PR blue.
+--
+-- So capture the palette that was live when the UI was built, then walk the
+-- tree and swap any colour that still matches one of those values.
+
+local function colors_close(a, b)
+    return math.abs(a.R - b.R) < 0.02
+       and math.abs(a.G - b.G) < 0.02
+       and math.abs(a.B - b.B) < 0.02;
+end;
+
+function theme.recolor(previous)
+    if not Library or not Library.ScreenGui or type(previous) ~= "table" then
+        return 0;
+    end;
+
+    local mapping = {};
+    for key, old in next, previous do
+        local hex = theme.palette[key];
+        if hex and typeof(old) == "Color3" then
+            mapping[#mapping + 1] = { old = old, new = Color3.fromHex(hex) };
+        end;
+    end;
+    if #mapping == 0 then
+        return 0;
+    end;
+
+    local function remap(object, property)
+        local ok, current = pcall(function() return object[property] end);
+        if not ok or typeof(current) ~= "Color3" then
+            return false;
+        end;
+
+        for _, pair in ipairs(mapping) do
+            if colors_close(current, pair.old) then
+                pcall(function() object[property] = pair.new end);
+                return true;
+            end;
+        end;
+        return false;
+    end;
+
+    local changed = 0;
+
+    for _, descendant in ipairs(Library.ScreenGui:GetDescendants()) do
+        if descendant:IsA("GuiObject") then
+            for _, property in ipairs({
+                "BackgroundColor3", "TextColor3", "ImageColor3",
+                "PlaceholderColor3", "BorderColor3",
+            }) do
+                if remap(descendant, property) then
+                    changed = changed + 1;
+                end;
+            end;
+        end;
+
+        if descendant:IsA("UIStroke") then
+            if remap(descendant, "Color") then
+                changed = changed + 1;
+            end;
+        end;
+    end;
+
+    return changed;
+end;
+
 -- Makes DECAY selectable in the theme dropdown, not just forced on.
 function theme.register()
     local ok, ThemeManager = pcall(require, "@src/utility/librarys/managers/ThemeManager");
@@ -48223,22 +48295,14 @@ function theme.apply()
     pcall(theme.load_textures);
     pcall(theme.register);
 
-    -- Selecting DECAY in the library's own theme dropdown is what makes the
-    -- palette durable. Setting Library.MainColor alone is a one-shot: the
-    -- library repaints from aztup_options.Theme whenever the UI is shown or
-    -- the theme manager refreshes, and would put the saved theme back. Because
-    -- register() published our palette under that name, selecting it is a
-    -- no-op repaint of the same colours.
-    pcall(function()
-        local options = aztup_options or getgenv().aztup_options;
-        local theme_option = options and options.Theme;
-        if theme_option and type(theme_option.SetValue) == "function" then
-            local current = theme_option.Value;
-            if current ~= "DECAY" then
-                theme_option:SetValue("DECAY");
-            end;
+    -- Capture the palette that was live when the UI was built, before
+    -- apply_colors overwrites it. This is the "from" set for the recolour pass.
+    local previous = {};
+    if Library then
+        for key in next, theme.palette do
+            pcall(function() previous[key] = Library[key] end);
         end;
-    end);
+    end;
 
     local colors = pcall(theme.apply_colors);
 
@@ -48255,11 +48319,30 @@ function theme.apply()
         end;
     end);
 
+    -- apply_colors + ApplyTheme only cover registered elements. This catches
+    -- the window chrome, separators and strokes that the library bakes once and
+    -- never revisits.
+    local recoloured = pcall(function()
+        return theme.recolor(previous);
+    end);
+
     pcall(theme.build_overlay);
     pcall(theme.start_motion);
 
     theme.applied = true;
-    return colors;
+    theme.previous_palette = previous;
+
+    -- The library repaints from its own state when the UI is shown, so run the
+    -- remap again shortly after and once more late, by which point any deferred
+    -- theme pass has finished.
+    task.spawn(function()
+        for _, delay in ipairs({ 1.5, 4 }) do
+            task.wait(delay);
+            pcall(function() theme.recolor(previous) end);
+        end;
+    end);
+
+    return colors and recoloured;
 end;
 
 return theme;
