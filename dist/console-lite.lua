@@ -1,6 +1,6 @@
 --[[
     Console — bundled build
-    generated 2026-09-29T20:45:37.365Z
+    generated 2026-09-29T20:46:52.567Z
     modules: 279
     assets:  0
 ]]
@@ -48588,7 +48588,54 @@ function theme.recolor(previous)
     return changed;
 end;
 
--- Makes DECAY selectable in the theme dropdown, not just forced on.
+-- ── contrast guard ─────────────────────────────────────────────────────────
+-- With a white accent, the library's derived shades (AccentColorDark and its
+-- relatives) come out light grey. Anything that ends up light-filled with white
+-- text on top is unreadable.
+--
+-- Measured on the "enable Ping Compensation" notification: a stable #a3a2a5
+-- fill at full opacity behind #ffffff text. Rather than work out which derived
+-- field each element reads, darken the fill wherever that pairing occurs.
+--
+-- Safe against the hover inversion: that produces white-on-black or
+-- black-on-white, neither of which is a light fill with light text.
+
+local function luminance(color)
+    return 0.299 * color.R + 0.587 * color.G + 0.114 * color.B;
+end;
+
+function theme.fix_contrast()
+    if not Library or not Library.ScreenGui then
+        return 0;
+    end;
+
+    local fixed = 0;
+
+    for _, descendant in ipairs(Library.ScreenGui:GetDescendants()) do
+        if descendant:IsA("GuiObject")
+            and descendant.BackgroundTransparency < 0.5
+            and luminance(descendant.BackgroundColor3) > 0.5 then
+
+            local light_text = false;
+            for _, child in ipairs(descendant:GetDescendants()) do
+                if (child:IsA("TextLabel") or child:IsA("TextBox"))
+                    and luminance(child.TextColor3) > 0.7 then
+                    light_text = true;
+                    break;
+                end;
+            end;
+
+            if light_text then
+                pcall(function() descendant.BackgroundColor3 = theme.extra.black end);
+                fixed = fixed + 1;
+            end;
+        end;
+    end;
+
+    return fixed;
+end;
+
+-- Makes CONSOLE selectable in the theme dropdown, not just forced on.
 function theme.register()
     local ok, ThemeManager = pcall(require, "@src/utility/librarys/managers/ThemeManager");
     if not ok or type(ThemeManager) ~= "table" or type(ThemeManager.BuiltInThemes) ~= "table" then
@@ -48651,19 +48698,23 @@ function theme.apply()
         end;
     end);
 
+    pcall(theme.fix_contrast);
+
     pcall(theme.build_overlay);
     pcall(theme.start_motion);
 
     theme.applied = true;
     theme.previous_palette = previous;
 
-    -- The library repaints from its own state when the UI is shown, so run the
-    -- remap again shortly after and once more late, by which point any deferred
-    -- theme pass has finished.
+    -- The library repaints from its own state when the UI is shown, and creates
+    -- some elements long after init -- notifications, toasts, dropdown options.
+    -- So keep re-running the remap and the contrast guard rather than doing it
+    -- once and hoping. Cheap: a single descendant walk every 2s.
     task.spawn(function()
-        for _, delay in ipairs({ 1.5, 4 }) do
-            task.wait(delay);
+        for _ = 1, 15 do
+            task.wait(2);
             pcall(function() theme.recolor(previous) end);
+            pcall(theme.fix_contrast);
         end;
     end);
 
