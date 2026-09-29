@@ -317,6 +317,12 @@ task.spawn(xpcall, function()
     -- excluded by name when the window body is located. The overlay is scale
     -- 1,1, so it follows the window widening on its own.
     require("@src/utility/decay/sidebar").apply();
+
+    -- Rounds every visible element, and re-scans for the ones the library
+    -- builds lazily (dropdown options, tab contents on first visit).
+    local round = require("@src/utility/decay/round");
+    round.apply();
+    round.start_watchdog();
 end, function(err)
     warn("[decay] theme failed:", err);
 end);
