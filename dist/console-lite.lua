@@ -1,6 +1,6 @@
 --[[
     Console — bundled build
-    generated 2026-09-29T20:35:32.852Z
+    generated 2026-09-29T20:36:29.063Z
     modules: 278
     assets:  0
 ]]
@@ -47050,7 +47050,7 @@ end;
 		    if custom_name then
 		    	return string.format(LPH_ENCSTR("%s"), custom_name:gsub("|ACCENT", "<font color=\"#" .. Library.AccentColor:ToHex() .. "\">"))		    
 end
-		    return string.format(LPH_ENCSTR("DECAY <font color=\"#%s\">// USER_%03d</font>"), Library.AccentColor:ToHex(), math.random(1, 999))
+		    return string.format(LPH_ENCSTR("CONSOLE <font color=\"#%s\">// USER_%03d</font>"), Library.AccentColor:ToHex(), math.random(1, 999))
 	    end)())
 
         aztup.auto_loaded = true;
@@ -48398,6 +48398,18 @@ function theme.apply()
     -- never revisits.
     local recoloured = pcall(function()
         return theme.recolor(previous);
+    end);
+
+    -- Then re-run the registry itself. Some properties are produced by
+    -- registered FUNCTIONS, not stored values -- the window title builds its
+    -- string from Library.AccentColor at evaluation time and is only evaluated
+    -- when the registry updates. Nothing re-ran it after the palette change, so
+    -- the title kept rendering the old accent (#6699cc, the PR blue) behind a
+    -- white AccentColor.
+    pcall(function()
+        if type(Library.UpdateColorsUsingRegistry) == "function" then
+            Library:UpdateColorsUsingRegistry();
+        end;
     end);
 
     pcall(theme.build_overlay);
@@ -59005,7 +59017,7 @@ Library:AddToRegistry(Library.WindowLabel, {
 		if custom_name then
 			return string.format(LPH_ENCSTR("%s"), custom_name:gsub("|ACCENT", "<font color=\"#" .. Library.AccentColor:ToHex() .. "\">"))		
 end
-		return string.format(LPH_ENCSTR("DECAY <font color=\"#%s\">// USER_%03d</font>"), Library.AccentColor:ToHex(), math.random(1, 999))
+		return string.format(LPH_ENCSTR("CONSOLE <font color=\"#%s\">// USER_%03d</font>"), Library.AccentColor:ToHex(), math.random(1, 999))
 	end
 })
 

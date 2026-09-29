@@ -66,7 +66,7 @@ end;
 		    if custom_name then
 		    	return string.format(LPH_ENCSTR("%s"), custom_name:gsub("|ACCENT", "<font color=\"#" .. Library.AccentColor:ToHex() .. "\">"))		    
 end
-		    return string.format(LPH_ENCSTR("DECAY <font color=\"#%s\">// USER_%03d</font>"), Library.AccentColor:ToHex(), math.random(1, 999))
+		    return string.format(LPH_ENCSTR("CONSOLE <font color=\"#%s\">// USER_%03d</font>"), Library.AccentColor:ToHex(), math.random(1, 999))
 	    end)())
 
         aztup.auto_loaded = true;

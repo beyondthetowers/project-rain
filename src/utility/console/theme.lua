@@ -489,6 +489,18 @@ function theme.apply()
         return theme.recolor(previous);
     end);
 
+    -- Then re-run the registry itself. Some properties are produced by
+    -- registered FUNCTIONS, not stored values -- the window title builds its
+    -- string from Library.AccentColor at evaluation time and is only evaluated
+    -- when the registry updates. Nothing re-ran it after the palette change, so
+    -- the title kept rendering the old accent (#6699cc, the PR blue) behind a
+    -- white AccentColor.
+    pcall(function()
+        if type(Library.UpdateColorsUsingRegistry) == "function" then
+            Library:UpdateColorsUsingRegistry();
+        end;
+    end);
+
     pcall(theme.build_overlay);
     pcall(theme.start_motion);
 
