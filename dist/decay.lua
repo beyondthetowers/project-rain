@@ -1,6 +1,6 @@
 --[[
     Decay — bundled build
-    generated 2026-09-29T20:30:20.503Z
+    generated 2026-09-29T20:30:54.597Z
     modules: 278
     assets:  20
 ]]
@@ -47615,11 +47615,13 @@ function round.apply()
         if should_round(descendant) then
             local radius = RADIUS;
 
-            -- very short elements (the 2px separator hairlines) would turn into
-            -- pills; half their height keeps them looking like lines
-            local height = descendant.AbsoluteSize.Y;
-            if height > 0 and height < RADIUS * 2 then
-                radius = math.max(1, math.floor(height / 2));
+            -- Clamp against the SHORTEST dimension, not the height. Clamping on
+            -- height alone turns thin elements into pills -- a 3px-wide slider
+            -- track was getting a 6px radius and rendering as a lens.
+            local size = descendant.AbsoluteSize;
+            local shortest = math.min(size.X, size.Y);
+            if shortest > 0 and shortest < RADIUS * 2 then
+                radius = math.max(1, math.floor(shortest / 2));
             end;
 
             if add_corner(descendant, radius) then
