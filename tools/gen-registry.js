@@ -156,7 +156,7 @@ for (const { id } of unresolved) {
 lines.push(`};
 
 function loader.initialize()
-    local loaded, failed = 0, 0;
+    local loaded, failed, skipped = 0, 0, 0;
 
     for id, module in pairs(MODULES) do
         if aztup.features[id] then
@@ -171,9 +171,14 @@ function loader.initialize()
             continue;
         end;
 
-        if type(feature) == "table" then
+        if type(feature) == "table" and type(feature.disable) == "function" then
             aztup.features[id] = feature;
             loaded = loaded + 1;
+        elseif type(feature) == "table" then
+            -- A plain table, not a Feature. Registering it would make
+            -- init.lua's detach call a disable() that does not exist
+            -- ("[detach none] attempt to call missing method 'disable'").
+            skipped = skipped + 1;
         elseif type(feature) == "function" then
             -- button-style module: the UI wires these through Func, not features
             aztup.functions = aztup.functions or {};
@@ -183,6 +188,10 @@ function loader.initialize()
             failed = failed + 1;
             warn(string.format("[features] %s (%s) returned %s", id, module, type(feature)));
         end;
+    end;
+
+    if skipped > 0 then
+        warn(string.format("[features] %d module(s) returned a plain table, not registered", skipped));
     end;
 
     getgenv().PR_registry = { loaded = loaded, failed = failed, modules = MODULES, options = OPTION_ONLY };
