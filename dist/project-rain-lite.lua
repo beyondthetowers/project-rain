@@ -1,6 +1,6 @@
 --[[
     Project Rain — bundled build
-    generated 2026-09-29T18:20:26.438Z
+    generated 2026-09-29T18:25:27.609Z
     modules: 274
     assets:  0
 ]]
@@ -27598,7 +27598,7 @@ __modules["src/features/loader"] = function()
          With the table empty, all 214 toggles in src/ui/tabs/*.lua set their
          flag and then do nothing.
 
-    99 ids resolved to a module. 126 ids have no module —
+    100 ids resolved to a module. 125 ids have no module —
     those are option flags consumed by other features, not features themselves.
 ]]
 
@@ -27638,6 +27638,7 @@ local MODULES = {
     ["auto_decline_guild_invites"] = "@src/features/automation/auto_decline_guild_invites",
     ["auto_decline_squad_invites"] = "@src/features/automation/auto_decline_squad_invites",
     ["auto_equip_weapon"] = "@src/features/automation/auto_equip_weapon",
+    ["auto_fight"] = "@src/features/auto-fight/auto-fight",
     ["auto_fish"] = "@src/features/automation/auto_fish",
     ["auto_flow_state"] = "@src/features/automation/auto_flow_state",
     ["auto_golden_tongue"] = "@src/features/combat/auto_golden_tongue",
@@ -27758,7 +27759,6 @@ local OPTION_ONLY = {
     "auto_builder_shrined",
     "auto_charisma",
     "auto_dustlunge_debug",
-    "auto_fight",
     "auto_golden_tongue_mode",
     "auto_math_book",
     "auto_progress_method",
@@ -27874,7 +27874,14 @@ function loader.initialize()
             continue;
         end;
 
-        if type(feature) == "table" and type(feature.disable) == "function" then
+        if feature == nil then
+            -- Side-effect module. src/features/auto-parry/auto-parry.lua is the
+            -- example: it returns nil, but requiring it installs the projectile
+            -- handlers and publishes getgenv().DefendActionManager, which
+            -- animator-handler calls 56 times. It is flag-driven, not a Feature,
+            -- so there is nothing to register — loading it is the whole job.
+            loaded = loaded + 1;
+        elseif type(feature) == "table" and type(feature.disable) == "function" then
             aztup.features[id] = feature;
             loaded = loaded + 1;
         elseif type(feature) == "table" then

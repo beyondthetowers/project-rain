@@ -47,7 +47,9 @@ for (const file of walk(FEATURES)) {
     if (!byBasename.has(base)) byBasename.set(base, "@" + rel.replace(/\.lua$/, ""));
 }
 
-const norm = (s) => s.toLowerCase().replace(/_/g, "");
+// Dashes and underscores are interchangeable: the UI calls the toggle
+// "auto_parry" but the module is src/features/auto-parry/auto-parry.lua.
+const norm = (s) => s.toLowerCase().replace(/[_-]/g, "");
 
 const byNorm = new Map();
 for (const [base, mod] of byBasename) {
@@ -171,7 +173,14 @@ function loader.initialize()
             continue;
         end;
 
-        if type(feature) == "table" and type(feature.disable) == "function" then
+        if feature == nil then
+            -- Side-effect module. src/features/auto-parry/auto-parry.lua is the
+            -- example: it returns nil, but requiring it installs the projectile
+            -- handlers and publishes getgenv().DefendActionManager, which
+            -- animator-handler calls 56 times. It is flag-driven, not a Feature,
+            -- so there is nothing to register — loading it is the whole job.
+            loaded = loaded + 1;
+        elseif type(feature) == "table" and type(feature.disable) == "function" then
             aztup.features[id] = feature;
             loaded = loaded + 1;
         elseif type(feature) == "table" then
