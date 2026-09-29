@@ -1,6 +1,6 @@
 --[[
     Decay — bundled build
-    generated 2026-09-29T20:16:01.944Z
+    generated 2026-09-29T20:17:05.151Z
     modules: 276
     assets:  20
 ]]
@@ -47625,14 +47625,40 @@ end;
 
 -- ── overlay ────────────────────────────────────────────────────────────────
 
--- The frame everything hangs off. Falls back through the library's window
--- handles; returns nil if none exist so the caller can skip cleanly.
-local function find_window()
-    if Library then
-        if Library.DecayWindow then return Library.DecayWindow end;
-        if Library.Window then return Library.Window end;
-        if Library.ScreenGui then return Library.ScreenGui end;
+-- Library.DecayWindow is the linoria Window OBJECT, not the frame — it carries
+-- .Tabs, .TabOrder and a .Holder field. The actual GUI is Window.Holder
+-- (ui.lua:2388 `Window.Holder = Outer`). Handing the object straight to
+-- :GetDescendants() throws, and build_overlay then swallowed that, so resolve
+-- it here and never let a table through.
+local function as_instance(candidate)
+    if typeof(candidate) == "Instance" then
+        return candidate;
     end;
+    if type(candidate) == "table" then
+        for _, key in ipairs({ "Holder", "Frame", "Container", "Root" }) do
+            local value = rawget(candidate, key);
+            if typeof(value) == "Instance" then
+                return value;
+            end;
+        end;
+    end;
+    return nil;
+end;
+
+-- The frame everything hangs off. Returns nil if nothing resolves, so the
+-- caller can skip cleanly instead of erroring.
+local function find_window()
+    if not Library then
+        return nil;
+    end;
+
+    for _, candidate in ipairs({ Library.DecayWindow, Library.Window, Library.ScreenGui }) do
+        local instance = as_instance(candidate);
+        if instance then
+            return instance;
+        end;
+    end;
+
     return nil;
 end;
 
