@@ -603,6 +603,16 @@ function bypass.install()
     end;
     bypass.verify_report.excluded_game_remotes = excluded;
 
+    -- Rebuild the diagnostic list so it reflects what is actually filtered.
+    -- (collect_report_remotes fills it before the exclusion above.)
+    local listed = {};
+    for remote, reason in next, blocked do
+        local name = (typeof(remote) == "Instance") and remote.Name or tostring(remote);
+        listed[#listed + 1] = string.format("%s (%s)", name, tostring(reason));
+    end;
+    table.sort(listed);
+    bypass.blocked_list = listed;
+
     local blocked_count = 0;
     for _ in next, blocked do
         blocked_count = blocked_count + 1;
