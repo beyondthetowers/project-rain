@@ -381,4 +381,10 @@ function loader.is_option(id)
     return table.find(OPTION_ONLY, id) ~= nil;
 end;
 
+-- >>> HAND-WRITTEN
+-- Nothing hand-written yet. Anything placed between the HAND-WRITTEN
+-- markers survives `node tools/gen-registry.js` verbatim. Everything
+-- above them is regenerated from the tree and will be replaced.
+-- <<< HAND-WRITTEN
+
 return loader;

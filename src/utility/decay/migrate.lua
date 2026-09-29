@@ -72,25 +72,57 @@ local function copy_tree(source, destination)
     return copied;
 end;
 
+local MARKER = CURRENT .. "/migrated_from_legacy.txt";
+
+local function count_files(path)
+    local ok, entries = pcall(listfiles, path);
+    if not ok or type(entries) ~= "table" then
+        return 0;
+    end;
+
+    local n = 0;
+    for _, entry in next, entries do
+        if isfile(entry) then
+            n = n + 1;
+        end;
+    end;
+
+    return n;
+end;
+
 -- Returns the number of files copied. Zero means "nothing to do", which is the
 -- normal case on a fresh install and on every run after the first.
 function migrate.run()
     local ok, result = pcall(function()
         if not isfolder(LEGACY) then
-            return 0;
+            return 0;                                  -- nothing to migrate from
         end;
+        if isfile(MARKER) then
+            return 0;                                  -- already done, once and for all
+        end;
+
+        -- Was: `if isfolder(CURRENT) then return 0 end`. That latch was wrong.
+        -- A run that died partway leaves Decay/ present but partial, and the
+        -- migration would then never fire again — stranding the user's configs
+        -- in the old folder permanently with no message. Only treat the
+        -- destination as done when it already holds at least as many files as
+        -- the source.
         if isfolder(CURRENT) then
-            return 0;
+            local legacy_count = count_files(LEGACY);
+            local current_count = count_files(CURRENT);
+            if legacy_count > 0 and current_count >= legacy_count then
+                return 0;
+            end;
         end;
 
         local copied = copy_tree(LEGACY, CURRENT);
 
-        if copied > 0 then
-            pcall(writefile, CURRENT .. "/migrated_from_legacy.txt", string.format(
-                "copied %d file(s) from '%s'\n%s\n",
-                copied, LEGACY, os.date("%Y-%m-%d %H:%M:%S")
-            ));
-        end;
+        -- Written on every attempt, so a partial destination is retried on the
+        -- next run rather than being treated as finished.
+        pcall(writefile, MARKER, string.format(
+            "copied %d file(s) from '%s'\n%s\n",
+            copied, LEGACY, os.date("%Y-%m-%d %H:%M:%S")
+        ));
 
         return copied;
     end);
