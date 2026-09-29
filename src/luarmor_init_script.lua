@@ -1,5 +1,5 @@
 --[[
-    Project Rain — build-time primitive layer
+    Decay — build-time primitive layer
     src/luarmor_init_script.lua
 
     In the shipped Luarmor build these symbols are injected by the obfuscator
@@ -14,6 +14,15 @@
 
 local genv = getgenv();
 
+-- ── legacy folder migration ────────────────────────────────────────────────
+-- DECAY was previously "Project Rain". This has to run before src/init.lua
+-- creates any folder: its `if not isfolder(x) then makefolder(x) end` checks
+-- would otherwise build an empty tree first and the migration would bail
+-- thinking the install was already current.
+pcall(function()
+    require("@src/utility/decay/migrate").run();
+end);
+
 -- ── Luarmor / Luraph macros ────────────────────────────────────────────────
 genv["LPH_OBFUSCATED"]      = false;                    -- take the readable branches
 genv["LPH_ENCSTR"]          = function(s) return s end;  -- string decryptor
@@ -27,8 +36,8 @@ genv["AUTH_GET_CONSTANT"]   = function(...) return ... end;
 -- String-table invoke. Used 60x across features/hooking + auto-parry.
 genv["STR_TBL_SF_INVOKE"]   = function(key) return key end;
 
--- ── Project Rain globals ───────────────────────────────────────────────────
-genv["LRM_ScriptName"]      = "Project Rain";
+-- ── Decay globals ───────────────────────────────────────────────────
+genv["LRM_ScriptName"]      = "Decay";
 genv["builder_require"]     = require;
 genv["base_require"]        = require;   -- require() on an Instance works in executors
 genv["luarmor_preload_time"] = nil;
@@ -53,7 +62,7 @@ services = genv.services;
 -- decode_asset() in init.lua expects base64( zstd_compress( raw_bytes ) ).
 -- The Luarmor build inlined the raw bytes; here we read them from the repo's
 -- assets folder. Drop `assets/` into the executor workspace, or pre-populate
--- Project Rain/Assets/Source/ with the same tree.
+-- Decay/Assets/Source/ with the same tree.
 genv["inline_asset_b96"] = function(path)
     -- Bundled build: tools/bundle.js pre-encodes every asset as
     -- base64(zstd(bytes)) and drops it in __BUNDLED_ASSETS. No disk needed.
@@ -68,7 +77,7 @@ genv["inline_asset_b96"] = function(path)
     local relative = path:gsub("^@assets/", "");
 
     local candidates = {
-        "Project Rain/Assets/Source/" .. relative,
+        "Decay/Assets/Source/" .. relative,
         "assets/" .. relative,
         relative,
     };

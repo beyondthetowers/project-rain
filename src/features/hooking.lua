@@ -144,7 +144,7 @@ end
             return {
                 [1] = get_key,
                 [2] = create_key,
-                [3] = "made with <3 from uni, hon, temped, soggy!!!",
+                [3] = "STATUS: DECOMPOSING // 0x1F",
             }
         end)
 

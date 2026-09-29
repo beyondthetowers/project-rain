@@ -237,7 +237,7 @@ return function(Library, context)
 				local sound = Instance.new('Sound', game:GetService('CoreGui'))
 				game:GetService('Debris'):AddItem(sound, 6)
 				sound.Volume = aztup_options.NotificationVolume.Value
-				sound.SoundId = getcustomasset('Project Rain/assets/notification.mp3')
+				sound.SoundId = getcustomasset('Decay/assets/notification.mp3')
 				sound:Play()
 			end, warn)
 		end

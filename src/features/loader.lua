@@ -366,7 +366,7 @@ function loader.initialize()
         warn(string.format("[features] %d module(s) returned a plain table, not registered", skipped));
     end;
 
-    getgenv().PR_registry = { loaded = loaded, failed = failed, modules = MODULES, options = OPTION_ONLY };
+    getgenv().DECAY_registry = { loaded = loaded, failed = failed, modules = MODULES, options = OPTION_ONLY };
 
     if not aztup.silent_mode and Logger and Logger.log then
         Logger.log(string.format("[features] registered %d, failed %d", loaded, failed));

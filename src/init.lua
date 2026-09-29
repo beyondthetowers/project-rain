@@ -54,48 +54,48 @@ if not LPH_OBFUSCATED then
 end; 
 
 xpcall(function()
-    if not isfolder("Project Rain") then
-        makefolder("Project Rain");
+    if not isfolder("Decay") then
+        makefolder("Decay");
     end;
     
-    if not isfolder("Project Rain/Assets") then
-        makefolder("Project Rain/Assets");
+    if not isfolder("Decay/Assets") then
+        makefolder("Decay/Assets");
     end;
 
-    if not isfolder("Project Rain/Assets/Hit Sounds") then
-        makefolder("Project Rain/Assets/Hit Sounds");
+    if not isfolder("Decay/Assets/Hit Sounds") then
+        makefolder("Decay/Assets/Hit Sounds");
     end;
 
-    if not isfolder("Project Rain/Assets/Parry Sounds") then
-        makefolder("Project Rain/Assets/Parry Sounds");
+    if not isfolder("Decay/Assets/Parry Sounds") then
+        makefolder("Decay/Assets/Parry Sounds");
     end;
 
-    if not isfolder("Project Rain/Fonts") then
-        makefolder("Project Rain/Fonts");
+    if not isfolder("Decay/Fonts") then
+        makefolder("Decay/Fonts");
     end;
 
-    if not isfolder("Project Rain/Deepwoken-Config") then
-        makefolder("Project Rain/Deepwoken-Config");
+    if not isfolder("Decay/Deepwoken-Config") then
+        makefolder("Decay/Deepwoken-Config");
     end;
 
-    if not isfolder("Project Rain/Deepwoken-Config/CustomGlobalOrnaments") then
-        makefolder("Project Rain/Deepwoken-Config/CustomGlobalOrnaments");
+    if not isfolder("Decay/Deepwoken-Config/CustomGlobalOrnaments") then
+        makefolder("Decay/Deepwoken-Config/CustomGlobalOrnaments");
     end;
 
-    if not isfolder("Project Rain/Deepwoken-Config/CustomRaces") then
-        makefolder("Project Rain/Deepwoken-Config/CustomRaces");
+    if not isfolder("Decay/Deepwoken-Config/CustomRaces") then
+        makefolder("Decay/Deepwoken-Config/CustomRaces");
     end;
 
-    if not isfolder("Project Rain/Deepwoken-Config/Preferences") then
-        makefolder("Project Rain/Deepwoken-Config/Preferences");
+    if not isfolder("Decay/Deepwoken-Config/Preferences") then
+        makefolder("Decay/Deepwoken-Config/Preferences");
     end;
 
-    if not isfolder("Project Rain/Deepwoken-Config/CustomEnchantments") then
-        makefolder("Project Rain/Deepwoken-Config/CustomEnchantments");
+    if not isfolder("Decay/Deepwoken-Config/CustomEnchantments") then
+        makefolder("Decay/Deepwoken-Config/CustomEnchantments");
     end;
 
-    if not isfile("Project Rain/script_state") then
-        writefile("Project Rain/script_state", game:GetService("HttpService"):JSONEncode({
+    if not isfile("Decay/script_state") then
+        writefile("Decay/script_state", game:GetService("HttpService"):JSONEncode({
             ["last_executed"] = tick(),
             ["last_executed_version"] = LPH_ENCSTR("__BUILD__"),
             ["build_id"] = game:GetService("HttpService"):GenerateGUID(false)
@@ -145,7 +145,7 @@ env.aztup = {
     tabs = {},
 };
 
-local hasnt_accepted_tos = not isfile("Project Rain/tos_accepted_82126_0822UTC0.txt");
+local hasnt_accepted_tos = not isfile("Decay/tos_accepted_82126_0822UTC0.txt");
 
 env.persistent_data = require("@src/utility/persistent_data");
 env.Logger = require(LPH_ENCSTR("@src/utility/logger"));   
@@ -183,33 +183,33 @@ do
 end;
         
         task.spawn(pcall, function()  
-            if not isfile("Project Rain/Assets/proximity.mp3") then
-                writefile("Project Rain/Assets/proximity.mp3", decode_asset(inline_asset_b96("@assets/proximity.mp3")));
+            if not isfile("Decay/Assets/proximity.mp3") then
+                writefile("Decay/Assets/proximity.mp3", decode_asset(inline_asset_b96("@assets/proximity.mp3")));
             end;
 
-            if not isfile("Project Rain/Assets/Parry Sounds/Ultrakill Parry.mp3") then
-                writefile("Project Rain/Assets/Parry Sounds/Ultrakill Parry.mp3", decode_asset(inline_asset_b96("@assets/Ultrakill Parry.mp3")));
+            if not isfile("Decay/Assets/Parry Sounds/Ultrakill Parry.mp3") then
+                writefile("Decay/Assets/Parry Sounds/Ultrakill Parry.mp3", decode_asset(inline_asset_b96("@assets/Ultrakill Parry.mp3")));
             end;
 
-            if not isfile("Project Rain/Assets/notification.mp3") then 
-                writefile("Project Rain/Assets/notification.mp3", decode_asset(inline_asset_b96("@assets/notification.mp3")));
+            if not isfile("Decay/Assets/notification.mp3") then 
+                writefile("Decay/Assets/notification.mp3", decode_asset(inline_asset_b96("@assets/notification.mp3")));
             end;
 
-            if not isfile("Project Rain/Deepwoken-Config/GuiItself.rbxm") then
-                writefile("Project Rain/Deepwoken-Config/GuiItself.rbxm", decode_asset(inline_asset_b96("@assets/DeepwokenMorphs/GuiItself.rbxm")));
+            if not isfile("Decay/Deepwoken-Config/GuiItself.rbxm") then
+                writefile("Decay/Deepwoken-Config/GuiItself.rbxm", decode_asset(inline_asset_b96("@assets/DeepwokenMorphs/GuiItself.rbxm")));
             end;
         end)
         
-        if not isfile("Project Rain/Fonts/Lexend.ttf") then 
-            writefile("Project Rain/Fonts/Lexend.ttf", decode_asset(inline_asset_b96("@assets/lexend.ttf")));
+        if not isfile("Decay/Fonts/Lexend.ttf") then 
+            writefile("Decay/Fonts/Lexend.ttf", decode_asset(inline_asset_b96("@assets/lexend.ttf")));
         end; 
 
-        if not isfile("Project Rain/Fonts/Lexend-Bold.ttf") then 
-            writefile("Project Rain/Fonts/Lexend-Bold.ttf", decode_asset(inline_asset_b96("@assets/lexend-bold.ttf")));
+        if not isfile("Decay/Fonts/Lexend-Bold.ttf") then 
+            writefile("Decay/Fonts/Lexend-Bold.ttf", decode_asset(inline_asset_b96("@assets/lexend-bold.ttf")));
         end; 
 
-        if not isfile("Project Rain/Fonts/Lexend-Medium.ttf") then 
-            writefile("Project Rain/Fonts/Lexend-Medium.ttf", decode_asset(inline_asset_b96("@assets/lexend-medium.ttf")));
+        if not isfile("Decay/Fonts/Lexend-Medium.ttf") then 
+            writefile("Decay/Fonts/Lexend-Medium.ttf", decode_asset(inline_asset_b96("@assets/lexend-medium.ttf")));
         end; 
     end)(); 
 end; 
@@ -225,14 +225,14 @@ end;
 if hasnt_accepted_tos then
     require(LPH_ENCSTR("@src/ui/tos"));
     
-    if not isfile("Project Rain\\Deepwoken-Config\\settings\\default_conf.json") and not isfile("Project Rain/inquired_about_default_config.txt") and not isfile("Project Rain\\Deepwoken-Config\\settings\\autoload.txt") then
-        writefile("Project Rain/inquired_about_default_config.txt", "true");
+    if not isfile("Decay\\Deepwoken-Config\\settings\\default_conf.json") and not isfile("Decay/inquired_about_default_config.txt") and not isfile("Decay\\Deepwoken-Config\\settings\\autoload.txt") then
+        writefile("Decay/inquired_about_default_config.txt", "true");
         require(LPH_ENCSTR("@src/ui/choice_frame")).set(nil,
             function()
-	    	    local config_fetch_success, config_content = pcall(game.HttpGet, game, "https://files.project-rain.net/configs/premade.json");
+	    	    local config_fetch_success, config_content = pcall(game.HttpGet, game, "https://files.decay/configs/premade.json");
                 if config_fetch_success then
-                    writefile("Project Rain\\Deepwoken-Config\\settings\\default_conf.json", config_content);
-                    writefile("Project Rain\\Deepwoken-Config\\settings\\autoload.txt", "default_conf");
+                    writefile("Decay\\Deepwoken-Config\\settings\\default_conf.json", config_content);
+                    writefile("Decay\\Deepwoken-Config\\settings\\autoload.txt", "default_conf");
                 end;
             end,
             function()
@@ -275,7 +275,7 @@ end;
 env.signal = require("@src/utility/signal");
 loaded_signal = env.signal.new();
 env.LOAD_START_TIME = tick();
-aztup.silent_mode = isfile(LPH_ENCSTR("Project Rain/silent_mode_toggle"));
+aztup.silent_mode = isfile(LPH_ENCSTR("Decay/silent_mode_toggle"));
 aztup.maid = require(("@src/utility/maid")).new(); 
 
 if not aztup.ui then
@@ -312,7 +312,7 @@ require("@src/features/visuals/base_esp")();
 
 if not fflags:get("dont_notify_on_first_exec") and aztup.silent_mode then
     if not persistent_data:get("has_executed_before") then
-        messagebox("You have 'Silent Mode' enabled, Which means you wont see the UI until you open it with the keybind & have extra anti PC check features, If you would like to disable this, Go to UI settings and disable it, This notification is disablable in the fast flags area of UI", "Project Rain", 0)
+        messagebox("You have 'Silent Mode' enabled, Which means you wont see the UI until you open it with the keybind & have extra anti PC check features, If you would like to disable this, Go to UI settings and disable it, This notification is disablable in the fast flags area of UI", "Decay", 0)
     end;
     
     persistent_data:set("has_executed_before", true); 
