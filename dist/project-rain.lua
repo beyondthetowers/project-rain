@@ -1,6 +1,6 @@
 --[[
     Project Rain — bundled build
-    generated 2026-09-29T18:17:51.394Z
+    generated 2026-09-29T18:18:59.365Z
     modules: 274
     assets:  15
 ]]
@@ -43274,35 +43274,39 @@ local function is_game_remote(value)
 end;
 bypass.is_game_remote = is_game_remote;
 
--- The KeyHandler registry is a 13-slot array: slot 12 holds the remotes table,
--- slot 13 the name -> key encoder. The original release matched it with
+-- The KeyHandler registry is a 13-slot array. Slot 9 is the build key (the
+-- original compared it against the hardcoded `heaven_key`, which went stale on
+-- every update), slot 12 holds the remotes table, slot 13 the name -> key
+-- encoder. Match the structure, drop the constant.
 --
---     #tbl == 13 and tbl[9] == heaven_key
+-- Two things this has to get right, both learned the hard way:
 --
--- where heaven_key was a build constant that went stale on every update. Keep
--- the structure, drop the constant.
---
--- This has to stay tight. An earlier version here accepted any table holding
--- six or more remote references plus a function. That matched a 36,384-entry
--- game cache instead of the registry, so PR handed the game a KeyHandler whose
--- encoder returned nil for every name — which killed block, parry and feint
--- (all of which resolve their remote through KeyHandler) while M1 kept working
--- off a direct reference.
+--   * Slot 12's remotes are NOT all parented under ReplicatedStorage. A live
+--     read showed 16 entries, 15 of them RemoteEvents, of which only 5 were
+--     RS-parented. Counting with `is_game_remote` here rejects the real table.
+--   * The registry is not reachable from the KeyHandler module's upvalues —
+--     there is no length-13 table in them. Only the whole-heap scan finds it.
 local function classify_remote_table(value)
     if typeof(value) ~= "table" or #value ~= 13 then
         return nil;
     end;
 
+    local build_key = rawget(value, 9);
     local remotes = rawget(value, 12);
     local encoder = rawget(value, 13);
 
+    if typeof(build_key) ~= "number" then
+        return nil;
+    end;
     if typeof(remotes) ~= "table" or typeof(encoder) ~= "function" then
         return nil;
     end;
 
     local remote_count = 0;
     for _, item in next, remotes do
-        if is_game_remote(item) then
+        if typeof(item) == "Instance"
+            and (item:IsA("RemoteEvent") or item:IsA("UnreliableRemoteEvent"))
+        then
             remote_count = remote_count + 1;
         end;
     end;
