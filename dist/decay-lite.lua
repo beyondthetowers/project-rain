@@ -1,6 +1,6 @@
 --[[
     Decay — bundled build
-    generated 2026-09-29T18:46:06.058Z
+    generated 2026-09-29T18:49:51.951Z
     modules: 275
     assets:  0
 ]]
@@ -47330,17 +47330,26 @@ function custom_font.make_lexend_font()
     local done = 0;
     for _, font in pairs(fonts) do
         task.spawn(function()
-            local params = Instance.new("GetTextBoundsParams")
-            params.Text = "Preload"
-            params.Font = font
-            params.Size = 16
-            game:GetService("TextService"):GetTextBoundsAsync(params)
-            params:Destroy()
+            -- pcall'd so `done` always advances. An uncaught throw in here used
+            -- to leave the counter permanently short of 3.
+            pcall(function()
+                local params = Instance.new("GetTextBoundsParams")
+                params.Text = "Preload"
+                params.Font = font
+                params.Size = 16
+                game:GetService("TextService"):GetTextBoundsAsync(params)
+                params:Destroy()
+            end)
             done += 1;
         end)
     end
 
-    repeat task.wait() until done == 3;
+    -- Bounded wait. The original was ,
+    -- which never returned if a preload thread threw — hanging the entire
+    -- script at init with no error and no path out. A font that fails to
+    -- preload is not worth a dead client.
+    local deadline = tick() + 5;
+    repeat task.wait() until done == 3 or tick() > deadline;
     return fonts
 end
 
