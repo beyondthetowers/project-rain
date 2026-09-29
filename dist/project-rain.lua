@@ -1,6 +1,6 @@
 --[[
     Project Rain — bundled build
-    generated 2026-09-29T18:25:55.275Z
+    generated 2026-09-29T18:27:28.828Z
     modules: 274
     assets:  15
 ]]
@@ -22058,8 +22058,20 @@ end
                 __index = base_env,
             })
             setfenv(data.run, fake_env)
-            data.run(actions, self)
-            setfenv(data.run, base_env)
+            -- Do NOT restore the env here. These bodies yield (`task.wait`) and
+            -- resume after this point, and setfenv mutates the shared closure —
+            -- so every global read after the first yield would come from
+            -- base_env instead. `weapon` is read before the first yield and
+            -- survives; `self` is read after it and goes nil, killing the run
+            -- with "attempt to index nil with 'is_playing'".
+            --
+            -- Keep fake_env installed for the whole run and restore it when the
+            -- thread finishes.
+            local run_thread = coroutine.create(function()
+                pcall(data.run, actions, self)
+                setfenv(data.run, base_env)
+            end)
+            coroutine.resume(run_thread)
     
             
             
