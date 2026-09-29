@@ -152,6 +152,11 @@ chunks.push(`local function __resolve(target)
     if __modules[key] then return key end;
     if __modules[key .. ".lua"] then return key .. ".lua" end;
     if __modules[key .. ".json"] then return key .. ".json" end;
+
+    -- Tolerate a module id that already carries its extension.
+    local stripped = key:gsub("%.lua$", ""):gsub("%.json$", "");
+    if stripped ~= key and __modules[stripped] then return stripped end;
+
     return nil;
 end;
 
@@ -193,7 +198,14 @@ local function __require(target)
     return __real_require(target);
 end;
 
-require = __require;`);
+require = __require;
+
+-- Assigned to the global only for the duration of this chunk. Executors give
+-- each executed script its own environment, so a later execute_script cannot
+-- see it. Expose it on getgenv() so diagnostics and hot-patches can reach the
+-- module table.
+getgenv().PR_require = __require;
+getgenv().PR_modules = __modules;`);
 
 // list_modules
 chunks.push("");
