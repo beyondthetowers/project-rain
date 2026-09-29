@@ -1,6 +1,6 @@
 --[[
     Project Rain — bundled build
-    generated 2026-09-29T17:44:09.238Z
+    generated 2026-09-29T17:54:02.652Z
     modules: 274
     assets:  15
 ]]
@@ -58073,27 +58073,38 @@ local function __resolve(target)
     return nil;
 end;
 
+local function __unpack_cached(key)
+    local packed = __cache[key];
+    if not packed then return end;
+    return table.unpack(packed, 1, packed.n);
+end;
+
 local function __require(target)
     if type(target) == "string" then
         local key = __resolve(target);
         if key then
-            if __loaded[key] then return __cache[key] end;
+            if __loaded[key] then return __unpack_cached(key) end;
             if __loading[key] then
                 -- circular require: hand back whatever is cached so far
-                return __cache[key];
+                return __unpack_cached(key);
             end;
 
             __loading[key] = true;
-            local ok, result = pcall(__modules[key]);
+            local results = table.pack(pcall(__modules[key]));
             __loading[key] = nil;
 
-            if not ok then
-                error(string.format("[bundle] module %s failed: %s", key, tostring(result)), 0);
+            if not results[1] then
+                error(string.format("[bundle] module %s failed: %s", key, tostring(results[2])), 0);
             end;
 
-            __cache[key] = result;
+            -- A Luau module may return more than one value, and require() has to
+            -- forward all of them. src/ui/ui.lua reads
+            --     local func, data = require(module)
+            -- and tab modules return  function(tab) ... end, { name = "Main" }.
+            -- Collapsing to a single value here leaves data nil.
+            __cache[key] = table.pack(table.unpack(results, 2, results.n));
             __loaded[key] = true;
-            return result;
+            return __unpack_cached(key);
         end;
     end;
 
