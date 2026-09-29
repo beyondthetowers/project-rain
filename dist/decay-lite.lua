@@ -1,6 +1,6 @@
 --[[
     Decay — bundled build
-    generated 2026-09-29T20:22:20.294Z
+    generated 2026-09-29T20:22:57.126Z
     modules: 277
     assets:  0
 ]]
@@ -47712,8 +47712,11 @@ local function build(outer)
     end;
 
     -- Right-anchored widgets keep their gap to the edge by shifting by the same
-    -- amount, which preserves whatever AnchorPoint or scale they already use.
-    if search then
+    -- amount -- but only when they are fixed-offset. One anchored with scale 1
+    -- is already following the widened parent, and shifting it again pushes it
+    -- clean off the window (measured: search box at x=1260 in a window that
+    -- ends at 1301).
+    if search and search.Position.X.Scale <= 0.5 then
         shift_x(search, SIDEBAR_WIDTH);
     end;
 
