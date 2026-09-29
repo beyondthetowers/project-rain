@@ -70,7 +70,8 @@ function custom_font.make_lexend_font()
         end)
     end
 
-    -- Bounded wait. The original was ,
+    -- Bounded wait. The original was an unbounded
+    --     repeat task.wait() until done == 3
     -- which never returned if a preload thread threw — hanging the entire
     -- script at init with no error and no path out. A font that fails to
     -- preload is not worth a dead client.
