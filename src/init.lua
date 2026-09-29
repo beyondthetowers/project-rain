@@ -312,6 +312,11 @@ require(LPH_ENCSTR("@src/ui/ui")).initialize();
 -- spawn'd so a failure here can never take init down with it.
 task.spawn(xpcall, function()
     require("@src/utility/decay/theme").apply();
+
+    -- Sidebar runs after the theme so the overlay already exists and can be
+    -- excluded by name when the window body is located. The overlay is scale
+    -- 1,1, so it follows the window widening on its own.
+    require("@src/utility/decay/sidebar").apply();
 end, function(err)
     warn("[decay] theme failed:", err);
 end);
