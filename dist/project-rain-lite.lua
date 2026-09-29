@@ -1,6 +1,6 @@
 --[[
     Project Rain — bundled build
-    generated 2026-09-29T17:54:02.775Z
+    generated 2026-09-29T18:00:26.573Z
     modules: 274
     assets:  0
 ]]
@@ -43135,7 +43135,10 @@ local function collect_by_name(blocked)
         return blocked;
     end;
 
-    local needles = { "report", "analytics", "log", "flag", "detect", "suspic" };
+    -- Deliberately narrow. "log" and "flag" were in here before and matched
+    -- Dialogue, Login and Prologue — ordinary game remotes whose calls then got
+    -- swallowed. Only tokens that cannot appear in normal traffic belong here.
+    local needles = { "report", "analytics", "telemetry", "anticheat", "suspicious" };
 
     for _, remote in next, requests:GetChildren() do
         if not is_game_remote(remote) then
@@ -43158,46 +43161,86 @@ function bypass.collect_report_remotes()
     step("collect.connections", collect_by_connections, blocked);
     step("collect.clientmanager", collect_by_clientmanager, blocked);
     step("collect.name", collect_by_name, blocked);
+
+    -- Record what was matched, per remote. If a legitimate game remote shows up
+    -- here its calls are being swallowed, which is the first thing to check
+    -- when features or animations stop working.
+    local listed = {};
+    for remote, reason in next, blocked do
+        local name = (typeof(remote) == "Instance") and remote.Name or tostring(remote);
+        listed[#listed + 1] = string.format("%s (%s)", name, tostring(reason));
+    end;
+    table.sort(listed);
+    bypass.blocked_list = listed;
+
+    if #listed > 0 and getgenv().PR_DEBUG then
+        print("[bypass] blocking", #listed, "remote(s):");
+        for _, entry in next, listed do
+            print("    ", entry);
+        end;
+    end;
+
     return blocked;
 end;
 
 -- ── caller attribution ─────────────────────────────────────────────────────
--- Identity-based blocking ("this remote is the report remote") only works
--- until the other side renames or re-parents it — which is exactly what a
--- public repo invites. Attribution works on the caller instead: whatever the
--- anti-cheat reports through, the report originates from anti-cheat code.
+-- Attribution guesses "this call came from anti-cheat code" off a script name.
+-- That guess has to be conservative. Deepwoken keeps its ENTIRE client module
+-- tree under ReplicatedStorage.Modules.ClientManager.* — KeyHandler, the
+-- gesture handlers, the character controllers (see features/hooking.lua:85,
+-- which resolves Modules.ClientManager.KeyHandler). A bare "ClientManager"
+-- marker therefore matches ordinary game code, and dropping its FireServer
+-- calls is what makes the character stop animating.
+--
+-- Only leaf names that cannot mean anything else belong in this list. Matching
+-- is done against the leaf only, never the full ancestor path.
 bypass.ac_markers = {
-    "ClientManager",
     "AntiCheat",
     "Anti_Cheat",
     "Anti-Cheat",
-    "Security",
     "Saturn",
     "Telemetry",
-    "Report",
+    "ReportGoogleAnalytics",
 };
+
+-- Off by default. Identity blocking (a remote positively recognised as a
+-- report channel) cannot produce false positives. Attribution can, and a
+-- wrong guess silently eats game traffic. Opt in with
+--     getgenv().PR_ATTRIBUTION = true
+bypass.attribution = false;
+
+-- Last path segment of a source / full name.
+local function leaf_of(identity)
+    return identity:match("([^%./\\|]+)$") or identity;
+end;
 
 -- True when the frames above this one belong to anti-cheat code.
 function bypass.caller_is_ac()
+    if not bypass.attribution then
+        return false;
+    end;
+
     if type(getcallingscript) == "function" then
         local ok, caller = pcall(getcallingscript);
         if ok and typeof(caller) == "Instance" then
-            local identity = caller.Name .. "|" .. caller:GetFullName();
+            local name = leaf_of(caller.Name);
             for _, marker in next, bypass.ac_markers do
-                if identity:find(marker, 1, true) then
-                    return true, identity;
+                if name == marker then
+                    return true, caller.Name;
                 end;
             end;
         end;
     end;
 
     -- Reporters frequently run inside task.spawn, so the immediate caller is a
-    -- thread rather than a script. Walk a few frames of source names.
+    -- thread rather than a script. Walk a few frames of source names, still
+    -- comparing leaves only.
     for level = 2, 8 do
         local ok, source = pcall(debug.info, level, "s");
         if ok and type(source) == "string" then
+            local leaf = leaf_of(source);
             for _, marker in next, bypass.ac_markers do
-                if source:find(marker, 1, true) then
+                if leaf == marker then
                     return true, source;
                 end;
             end;
@@ -43343,6 +43386,11 @@ end;
 -- ── install ────────────────────────────────────────────────────────────────
 function bypass.install()
     bypass.verify_report = {};
+
+    -- Attribution is opt-in. With it off, only remotes positively identified as
+    -- report channels are dropped, which cannot eat game traffic.
+    bypass.attribution = getgenv().PR_ATTRIBUTION == true;
+    bypass.verify_report.attribution = bypass.attribution;
 
     step("preserve_client_manager", bypass.preserve_client_manager);
 
