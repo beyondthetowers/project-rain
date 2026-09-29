@@ -59,13 +59,26 @@ for (const [base, mod] of byBasename) {
 // ── harvest ids from the UI ────────────────────────────────────────────────
 const ids = new Map(); // id -> source file
 
+// Every wrapper method whose first argument is the element id. Missing one
+// means the toggle exists in the UI but has no module behind it — which is how
+// auto_parry stayed unwired: it uses newToggleWithKeybind, not newToggle.
+const ID_FIRST_CONSTRUCTORS = [
+    "newToggle",
+    "newToggleWithKeybind",
+    "newRiskyToggle",
+    "newRiskyToggleWithKeybind",
+    "newSlider",
+    "newMinMaxSlider",
+    "newDropdown",
+    "newTextbox",
+    "newKeybind",
+    "newDependencyBox",
+    "newKeyPicker",
+];
+
 const patterns = [
-    /\{\s*"([a-z0-9_]+)"\s*,/g,                       // newToggleGroup tuples
-    /newToggle\(\s*"([a-z0-9_]+)"/g,
-    /newRiskyToggle\(\s*"([a-z0-9_]+)"/g,
-    /newSlider\(\s*"([a-z0-9_]+)"/g,
-    /newDropdown\(\s*"([a-z0-9_]+)"/g,
-    /newKeyPicker\(\s*"([a-z0-9_]+)"/g,
+    /\{\s*"([a-z0-9_-]+)"\s*,/g,   // newToggleGroup tuples
+    ...ID_FIRST_CONSTRUCTORS.map((n) => new RegExp(n + '\\(\\s*"([a-z0-9_-]+)"', "g")),
 ];
 
 for (const file of walk(TABS)) {
