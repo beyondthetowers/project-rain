@@ -1,6 +1,6 @@
 --[[
     Decay — bundled build
-    generated 2026-09-29T20:22:57.019Z
+    generated 2026-09-29T20:26:14.261Z
     modules: 277
     assets:  20
 ]]
@@ -47870,19 +47870,19 @@ local theme = {};
 
 theme.palette = {
     FontColor       = "c4baa3",   -- dirty beige
-    MainColor       = "1e201c",   -- carbon grey
+    MainColor       = "434343",   -- the grey — RGB 67,67,67
     AccentColor     = "7c8c63",   -- mould green
-    BackgroundColor = "0a0b09",   -- near black
-    OutlineColor    = "3a3d34",   -- dirty grey
+    BackgroundColor = "434343",   -- same grey, per request
+    OutlineColor    = "2b2b2b",   -- darkened so panels still separate
 };
 
 theme.extra = {
     rust   = Color3.fromRGB(156, 69, 48),
     mould  = Color3.fromRGB(124, 140, 99),
     beige  = Color3.fromRGB(196, 186, 163),
-    carbon = Color3.fromRGB(30, 32, 28),
-    void   = Color3.fromRGB(10, 11, 9),
-    ash    = Color3.fromRGB(58, 61, 52),
+    carbon = Color3.fromRGB(67, 67, 67),
+    void   = Color3.fromRGB(67, 67, 67),
+    ash    = Color3.fromRGB(43, 43, 43),
 };
 
 -- Condensed industrial for headings, technical mono for everything else.
@@ -48222,6 +48222,23 @@ function theme.apply()
 
     pcall(theme.load_textures);
     pcall(theme.register);
+
+    -- Selecting DECAY in the library's own theme dropdown is what makes the
+    -- palette durable. Setting Library.MainColor alone is a one-shot: the
+    -- library repaints from aztup_options.Theme whenever the UI is shown or
+    -- the theme manager refreshes, and would put the saved theme back. Because
+    -- register() published our palette under that name, selecting it is a
+    -- no-op repaint of the same colours.
+    pcall(function()
+        local options = aztup_options or getgenv().aztup_options;
+        local theme_option = options and options.Theme;
+        if theme_option and type(theme_option.SetValue) == "function" then
+            local current = theme_option.Value;
+            if current ~= "DECAY" then
+                theme_option:SetValue("DECAY");
+            end;
+        end;
+    end);
 
     local colors = pcall(theme.apply_colors);
 
