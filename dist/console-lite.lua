@@ -1,6 +1,6 @@
 --[[
     Console — bundled build
-    generated 2026-09-29T20:35:13.988Z
+    generated 2026-09-29T20:35:32.852Z
     modules: 278
     assets:  0
 ]]
@@ -47686,16 +47686,17 @@ local function find_strip(root)
     return nil;
 end;
 
--- The window title: a TextLabel near the top of the window carrying the brand.
-local function find_title(root)
+-- The window title. Matched structurally, not by brand string: this used to
+-- search for "DECAY" and would have silently stopped finding the title when the
+-- script was renamed to CONSOLE, leaving the header stuck in the old place.
+-- The title is the window body's own TextLabel, so look at direct children and
+-- take the topmost.
+local function find_title(inner)
     local best;
-    for _, descendant in ipairs(root:GetDescendants()) do
-        if descendant:IsA("TextLabel") then
-            local text = text_of(descendant);
-            if text:find("DECAY") then
-                if not best or descendant.AbsolutePosition.Y < best.AbsolutePosition.Y then
-                    best = descendant;
-                end;
+    for _, child in ipairs(gui_children(inner)) do
+        if child:IsA("TextLabel") then
+            if not best or child.AbsolutePosition.Y < best.AbsolutePosition.Y then
+                best = child;
             end;
         end;
     end;
