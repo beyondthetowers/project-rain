@@ -307,6 +307,15 @@ chance_store = require("@src/features/auto-parry/data/chance_store")
 getgenv().chance_store = chance_store;
 require(LPH_ENCSTR("@src/ui/ui")).initialize();
 
+-- DECAY theme: palette, fonts and the grain/scanline/vignette overlay. Runs
+-- after the UI exists so the overlay can parent above Library.ScreenGui, and
+-- spawn'd so a failure here can never take init down with it.
+task.spawn(xpcall, function()
+    require("@src/utility/decay/theme").apply();
+end, function(err)
+    warn("[decay] theme failed:", err);
+end);
+
 require("@src/features/visuals/player_esp")();
 require("@src/features/visuals/base_esp")();
 
