@@ -118,6 +118,24 @@ lines.push(`--[[
 
 Feature = require("@src/features/generic_feature");
 
+-- ── globals the stripped loader published ──────────────────────────────────
+-- Not features. These were set up by the original loader, and their absence
+-- is what makes live errors like "attempt to index nil with 'get_ping'".
+
+-- src/utility/latency.lua was only ever assigned from
+-- src/features/auto-parry/auto-parry.lua, and nothing requires that module any
+-- more, so bare \`Latency\` was nil. It is read 76 times, including on every
+-- animator tick, so it has to exist before any feature loads.
+Latency = require("@src/utility/latency");
+
+-- Used 56 times, mostly in the animator handler, and defined nowhere in the
+-- release. Silent unless a debug flag is on.
+debug_print = function(...)
+    if aztup and aztup.flags and aztup.flags.debug then
+        print("[pr]", ...);
+    end;
+end;
+
 local loader = {};
 
 -- id -> module. Generated from the toggle ids in src/ui/tabs/*.lua.
