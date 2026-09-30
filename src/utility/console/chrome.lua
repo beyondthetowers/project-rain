@@ -495,7 +495,7 @@ function chrome.restyle_keybinds()
             if current and current.Parent then
                 pcall(function()
                     current.AnchorPoint = Vector2.new(1, 1);
-                    current.Position = UDim2.new(1, -KEYBIND_MARGIN, 1, -KEYBIND_MARGIN);
+                    current.Position = corner_position();
                 end);
             end;
         end;

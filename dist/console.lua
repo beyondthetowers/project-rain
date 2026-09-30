@@ -1,6 +1,6 @@
 --[[
     Console — bundled build
-    generated 2026-09-30T01:22:48.841Z
+    generated 2026-09-30T01:23:26.169Z
     modules: 280
     assets:  20
 ]]
@@ -47808,7 +47808,7 @@ function chrome.restyle_keybinds()
             if current and current.Parent then
                 pcall(function()
                     current.AnchorPoint = Vector2.new(1, 1);
-                    current.Position = UDim2.new(1, -KEYBIND_MARGIN, 1, -KEYBIND_MARGIN);
+                    current.Position = corner_position();
                 end);
             end;
         end;
