@@ -69,7 +69,7 @@ local ap_breaker_tbl;
 local chance_store;
 local loaded_signal;
 
-local is_regular = LRM_ScriptName == "Console"
+local is_regular = LRM_ScriptName == "Frutiger"
 local old_fpp = fireproximityprompt;
 local fireproximityprompt = function(...)
     local prompt = ...;

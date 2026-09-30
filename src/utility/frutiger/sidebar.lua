@@ -1,17 +1,17 @@
 --[[
-    src/utility/console/sidebar.lua
+    src/utility/frutiger/sidebar.lua
 
     Turns the library's horizontal tab strip into a left sidebar, and moves the
     window title into that sidebar as its header.
 
-    Same philosophy as console/theme.lua: this is a post-pass over the built UI,
+    Same philosophy as frutiger/theme.lua: this is a post-pass over the built UI,
     not an edit to the 2500-line library. The library stays swappable.
 
     The layout it operates on (measured from the live tree):
 
         Outer (550x550)
           Inner (548x548)
-            TextLabel  "CONSOLE // USER_xxx"   546x19   <- title, moves to sidebar
+            TextLabel  "FRUTIGER // USER_xxx"   546x19   <- title, moves to sidebar
             TextBox    search                136x21   top-right, shifts by W
             container (546x525)
               holder (546x525)
@@ -123,11 +123,11 @@ local function build(outer)
     local container = holder and holder.Parent;
 
     -- Inner is the first *direct* child Frame that isn't the theme overlay.
-    -- FindFirstChildWhichIsA would hand back CONSOLE_OVERLAY, which is also a
+    -- FindFirstChildWhichIsA would hand back FRUTIGER_OVERLAY, which is also a
     -- Frame, and we would widen the overlay instead of the window body.
     local inner;
     for _, child in ipairs(gui_children(outer)) do
-        if child.Name ~= "CONSOLE_OVERLAY" then
+        if child.Name ~= "FRUTIGER_OVERLAY" then
             inner = child;
             break;
         end;
@@ -265,18 +265,18 @@ function sidebar.apply()
         return false;
     end;
 
-    local outer = Library.ConsoleWindow and Library.ConsoleWindow.Holder;
+    local outer = Library.FrutigerWindow and Library.FrutigerWindow.Holder;
     if not outer then
         return false;
     end;
 
     local ok, result, reason = pcall(build, outer);
     if not ok then
-        warn("[console] sidebar failed:", result);
+        warn("[frutiger] sidebar failed:", result);
         return false;
     end;
     if not result then
-        warn("[console] sidebar skipped:", reason);
+        warn("[frutiger] sidebar skipped:", reason);
         return false;
     end;
 

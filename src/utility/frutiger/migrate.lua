@@ -1,5 +1,5 @@
 --[[
-    src/utility/console/migrate.lua
+    src/utility/frutiger/migrate.lua
 
     DECAY shipped previously as "Project Rain". Every install from before the
     rename still has a `Project Rain/` folder holding the user's configs,
@@ -19,8 +19,8 @@
 local migrate = {};
 
 -- Newest-first. Both are real folder names that have shipped.
-local LEGACY  = { "Decay", "Project Rain" };
-local CURRENT = "Console";
+local LEGACY  = { "Console", "Decay", "Project Rain" };
+local CURRENT = "Frutiger";
 
 local function normalize(path)
     return (path:gsub("\\", "/"));
@@ -115,7 +115,7 @@ function migrate.run()
         end;
 
         -- Was: `if isfolder(CURRENT) then return 0 end`. That latch was wrong.
-        -- A run that died partway leaves Console/ present but partial, and the
+        -- A run that died partway leaves Frutiger/ present but partial, and the
         -- migration would then never fire again — stranding the user's configs
         -- in the old folder permanently with no message. Only treat the
         -- destination as done when it already holds at least as many files as
@@ -142,12 +142,12 @@ function migrate.run()
     end);
 
     if not ok then
-        warn("[console] migration failed:", result);
+        warn("[frutiger] migration failed:", result);
         return 0;
     end;
 
     if result and result > 0 then
-        print(string.format("[console] migrated %d file(s) from '%s' to '%s'",
+        print(string.format("[frutiger] migrated %d file(s) from '%s' to '%s'",
             result, migrate.last_source or "?", CURRENT));
     end;
 

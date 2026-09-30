@@ -1,12 +1,12 @@
 --[[
-    src/utility/console/theme.lua
+    src/utility/frutiger/theme.lua
 
     The DECAY look. Palette, fonts, and a procedural overlay that sits inside
     the menu window.
 
     Scoping decisions:
 
-    1.  The overlay is parented INTO Library.ConsoleWindow, not screenspaced over
+    1.  The overlay is parented INTO Library.FrutigerWindow, not screenspaced over
         the game. It moves when you drag the window, resizes with it, and is
         clipped to it — the game world stays clean. An earlier version was a
         full-screen ScreenGui in gethui(); that was wrong.
@@ -31,21 +31,27 @@ local theme = {};
 -- Near-absolute black, carbon grey, desaturated mould green, dirty beige,
 -- rust. No saturated or clean values anywhere.
 
+-- Frutiger Aero: light, glossy, glass. The exact inverse of the black/white
+-- brutalist pass that preceded it.
+--
+-- FontColor is dark on purpose. Every other slot is light now, so the text has
+-- to carry the contrast -- and it also leaves the contrast guard (which darkens
+-- light text on light fills) with nothing to do, instead of fighting the theme.
 theme.palette = {
-    FontColor       = "ffffff",   -- white text
-    MainColor       = "000000",   -- black panels
-    AccentColor     = "ffffff",   -- drives hover: ui.lua sets the hover fill
-                                  -- straight from AccentColor, and the selected
-                                  -- tab underline the same way
-    BackgroundColor = "000000",   -- black background
-    OutlineColor    = "ffffff",   -- drives BorderColor3, i.e. the corners
+    FontColor       = "0e3d5c",   -- deep sky navy, for contrast on light fills
+    MainColor       = "f4fbff",   -- glass white panels
+    AccentColor     = "29a8e0",   -- sky blue: hover fills, selections, toggles
+    BackgroundColor = "dbf0fb",   -- pale sky
+    OutlineColor    = "9fd4ef",   -- soft blue edge, i.e. the corners
 };
 
 theme.extra = {
+    aqua  = Color3.fromRGB(41, 168, 224),
+    sky   = Color3.fromRGB(159, 212, 239),
+    glass = Color3.fromRGB(244, 251, 255),
+    lime  = Color3.fromRGB(126, 200, 80),
     white = Color3.fromRGB(255, 255, 255),
-    grey  = Color3.fromRGB(150, 150, 150),
-    black = Color3.fromRGB(0, 0, 0),
-    ash   = Color3.fromRGB(38, 38, 38),
+    ink   = Color3.fromRGB(14, 61, 92),
 };
 
 -- Condensed industrial for headings, technical mono for everything else.
@@ -55,8 +61,8 @@ theme.fonts = {
 };
 
 -- ── textures ───────────────────────────────────────────────────────────────
-local TEXTURE_DIR = "Console/Textures";
-local TEXTURE_NAMES = { "grain", "scanline", "scratch", "vignette", "stain" };
+local TEXTURE_DIR = "Frutiger/Textures";
+local TEXTURE_NAMES = { "gloss", "bubbles", "sheen" };
 
 theme.textures = {};
 
@@ -103,7 +109,7 @@ end;
 
 -- ── overlay ────────────────────────────────────────────────────────────────
 
--- Library.ConsoleWindow is the linoria Window OBJECT, not the frame — it carries
+-- Library.FrutigerWindow is the linoria Window OBJECT, not the frame — it carries
 -- .Tabs, .TabOrder and a .Holder field. The actual GUI is Window.Holder
 -- (ui.lua:2388 `Window.Holder = Outer`). Handing the object straight to
 -- :GetDescendants() throws, and build_overlay then swallowed that, so resolve
@@ -130,7 +136,7 @@ local function find_window()
         return nil;
     end;
 
-    for _, candidate in ipairs({ Library.ConsoleWindow, Library.Window, Library.ScreenGui }) do
+    for _, candidate in ipairs({ Library.FrutigerWindow, Library.Window, Library.ScreenGui }) do
         local instance = as_instance(candidate);
         if instance then
             return instance;
@@ -161,7 +167,7 @@ function theme.destroy_previous()
     }) do
         if container then
             for _, child in ipairs(container:GetChildren()) do
-                if child.Name == "CONSOLE_OVERLAY" then
+                if child.Name == "FRUTIGER_OVERLAY" then
                     pcall(function() child:Destroy() end);
                 end;
             end;
@@ -207,7 +213,7 @@ function theme.build_overlay()
     -- The holder is what clips: the grain tiles and the vignette get cut to the
     -- window's rectangle, so nothing bleeds over the game or over other windows.
     local holder = Instance.new("Frame");
-    holder.Name = "CONSOLE_OVERLAY";
+    holder.Name = "FRUTIGER_OVERLAY";
     holder.BackgroundTransparency = 1;
     holder.BorderSizePixel = 0;
     holder.Size = UDim2.fromScale(1, 1);
@@ -228,64 +234,43 @@ function theme.build_overlay()
     theme.window = window;
     theme.base_zindex = base;
 
-    theme.vignette = layer(holder, "vignette", theme.textures.vignette, {
+    -- Frutiger Aero stacks four things, in this order:
+    --
+    --   gloss    the curved-glass highlight across the top. Static, stretched.
+    --   bubbles  translucent spheres, tiled, drifting slowly upward.
+    --   sheen    a soft highlight band that sweeps down the panel occasionally.
+    --
+    -- No grain, no scanlines, no vignette. All three read as damage or CRT on a
+    -- light glossy surface, which is the opposite of what this theme is.
+
+    theme.gloss = layer(holder, "gloss", theme.textures.gloss, {
         ZIndex = base + 1,
-        ImageTransparency = 0.28,
+        ImageTransparency = 0.42,
         ScaleType = Enum.ScaleType.Stretch,
     });
 
-    theme.stains = {};
-    if theme.textures.stain then
-        local rnd = Random.new(0xDECA7);
-        for i = 1, 3 do
-            theme.stains[i] = layer(holder, "stain" .. i, theme.textures.stain, {
-                ZIndex = base + 2,
-                ImageTransparency = 0.70,
-                Size = UDim2.fromScale(0.26, 0.34),
-                Position = UDim2.fromScale(rnd:NextNumber(0.1, 0.7), rnd:NextNumber(0.1, 0.6)),
-            });
-        end;
-    end;
-
-    theme.grain = layer(holder, "grain", theme.textures.grain, {
-        ZIndex = base + 3,
-        ImageTransparency = 0.87,
-        TileSize = UDim2.fromOffset(128, 128),
-        ResampleMode = Enum.ResamplerMode.Pixelated,
-    });
-
-    theme.scratch = layer(holder, "scratch", theme.textures.scratch, {
-        ZIndex = base + 4,
-        ImageTransparency = 0.78,
+    theme.bubbles = layer(holder, "bubbles", theme.textures.bubbles, {
+        ZIndex = base + 2,
+        ImageTransparency = 0.52,
         TileSize = UDim2.fromOffset(256, 256),
     });
 
-    theme.scanline = layer(holder, "scanline", theme.textures.scanline, {
-        ZIndex = base + 5,
-        ImageTransparency = 0.55,
-        TileSize = UDim2.fromOffset(4, 4),
-        ResampleMode = Enum.ResamplerMode.Pixelated,
+    theme.sheen = layer(holder, "sheen", theme.textures.sheen, {
+        ZIndex = base + 3,
+        ImageTransparency = 0.35,
+        ScaleType = Enum.ScaleType.Stretch,
+        Size = UDim2.new(1, 0, 0, 96),
+        Position = UDim2.new(0, 0, -1, 0),
+        Visible = false,
     });
-
-    local sweep = Instance.new("Frame");
-    sweep.Name = "sweep";
-    sweep.BackgroundColor3 = theme.extra.white;
-    sweep.BorderSizePixel = 0;
-    sweep.Size = UDim2.new(1, 0, 0, 2);
-    sweep.Position = UDim2.new(0, 0, -0.05, 0);
-    sweep.BackgroundTransparency = 0.82;
-    sweep.ZIndex = base + 6;
-    sweep.Active = false;
-    sweep.Parent = holder;
-    theme.sweep = sweep;
 
     return holder;
 end;
 
 -- ── motion ─────────────────────────────────────────────────────────────────
--- Slow and wrong rather than smooth and pleasant. Grain drifts a couple of
--- pixels, the pane occasionally jolts sideways for one frame, opacity never
--- quite settles.
+-- Slow and calm, which is the opposite of what was here before. The previous
+-- pass deliberately jittered grain at 12fps and jolted the pane sideways to
+-- read as a failing monitor. On Frutiger that is just a broken UI.
 
 function theme.start_motion()
     if theme.motion_started then
@@ -296,50 +281,42 @@ function theme.start_motion()
     local RunService = game:GetService("RunService");
     local rnd = Random.new();
 
-    -- grain + scratch drift, ~12fps so it reads as film rather than noise
+    -- Bubbles rise. Each step nudges the tile offset upward so the whole field
+    -- drifts, then wraps -- cheaper than animating instances and seamless
+    -- because the texture tiles.
     task.spawn(function()
+        local offset = 0;
         while theme.overlay and theme.overlay.Parent do
-            local dx = rnd:NextInteger(-2, 2);
-            local dy = rnd:NextInteger(-2, 2);
-
-            if theme.grain then
-                theme.grain.Position = UDim2.fromOffset(dx, dy);
-                theme.grain.ImageTransparency = 0.87 + rnd:NextNumber(-0.03, 0.03);
+            if theme.bubbles then
+                offset = (offset - 0.35) % 256;
+                theme.bubbles.Position = UDim2.fromOffset(0, offset);
             end;
-            if theme.scratch then
-                theme.scratch.Position = UDim2.fromOffset(-dx, -dy * 2);
-            end;
-
-            -- 1-2 frame jolt
-            if rnd:NextNumber() > 0.93 then
-                local shift = rnd:NextInteger(-3, 3);
-                for _, child in ipairs(theme.overlay:GetChildren()) do
-                    if child:IsA("ImageLabel") and child.Name ~= "vignette" then
-                        child.Position = UDim2.fromOffset(shift, 0);
-                    end;
-                end;
-                task.wait(0.033);
-            end;
-
-            task.wait(0.08);
+            RunService.RenderStepped:Wait();
         end;
     end);
 
-    -- the sweep crosses the window in 7s, then waits 5-18s
+    -- The sheen sweeps down over ~2.4s, then waits 9-22s. It is hidden between
+    -- passes rather than parked off-screen, so it cannot flash at the edges.
     task.spawn(function()
         while theme.overlay and theme.overlay.Parent do
+            task.wait(rnd:NextNumber(9, 22));
+
             local height = theme.overlay.AbsoluteSize.Y;
-            if theme.sweep and height > 0 then
-                theme.sweep.Position = UDim2.fromOffset(0, -4);
+            if theme.sheen and height > 0 then
+                theme.sheen.Visible = true;
                 local start = tick();
-                while tick() - start < 7 and theme.overlay.Parent do
-                    local t = (tick() - start) / 7;
-                    theme.sweep.Position = UDim2.fromOffset(0, t * height);
-                    theme.sweep.BackgroundTransparency = 0.72 + math.abs(t - 0.5) * 0.3;
+                local duration = 2.4;
+
+                while tick() - start < duration and theme.overlay.Parent do
+                    local t = (tick() - start) / duration;
+                    theme.sheen.Position = UDim2.fromOffset(0, t * (height + 96) - 96);
+                    -- fade in and out so it never pops
+                    theme.sheen.ImageTransparency = 0.35 + math.abs(t - 0.5) * 0.5;
                     RunService.RenderStepped:Wait();
                 end;
+
+                theme.sheen.Visible = false;
             end;
-            task.wait(rnd:NextNumber(5, 18));
         end;
     end);
 end;
@@ -547,7 +524,7 @@ function theme.register()
     end;
 
     local HttpService = game:GetService("HttpService");
-    ThemeManager.BuiltInThemes["CONSOLE"] = { 22, HttpService:JSONDecode(HttpService:JSONEncode(theme.palette)) };
+    ThemeManager.BuiltInThemes["FRUTIGER"] = { 22, HttpService:JSONDecode(HttpService:JSONEncode(theme.palette)) };
     return true;
 end;
 

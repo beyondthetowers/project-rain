@@ -159,7 +159,7 @@ return function(tab)
         if not val then return end
         if not aztup.silent_mode then return end
 
-        messagebox("You have 'Silent Mode' enabled, You cannot use Debug Notifications with 'Silent Mode'.", "Console", 0) 
+        messagebox("You have 'Silent Mode' enabled, You cannot use Debug Notifications with 'Silent Mode'.", "Frutiger", 0) 
         aztup_toggles.auto_parry_debug:SetValue(false);
     end, false);    
     auto_parry_dependency_box:newToggleWithKeybind("log_speed_changes",     "Debug Speed Changes", false, "Gives AP debug notifs on speed changes.", nil, false);    

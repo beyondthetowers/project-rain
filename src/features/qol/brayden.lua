@@ -15,8 +15,8 @@ local STATS_HEIGHT = 58;
 local ROW_HEIGHT = 24;
 local HEIGHT = TITLE_HEIGHT + STAGE_HEIGHT + STATS_HEIGHT + ROW_HEIGHT * 2 + 12;
 
-local SAVE_PATH = "Console/brayden.json";
-local PORTRAIT_PATH = "Console/Assets/brayden.png";
+local SAVE_PATH = "Frutiger/brayden.json";
+local PORTRAIT_PATH = "Frutiger/Assets/brayden.png";
 
 local FOODS = { "Burger", "Sushi", "Pizza", "Salad", "Tacos", "Curry", "Donut", "Natto", "Ramen", "Cake", "Steak", "Eel" };
 local GIFTS = { "Cap", "Hoodie", "Guitar", "Game", "Sunglasses", "Plushie", "Skateboard", "Houseplant" };

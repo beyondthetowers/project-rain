@@ -21,7 +21,7 @@ const APPLY = argv.includes("--apply");
 const INTERNALS = argv.includes("--internals");
 
 const NAME = "DECAY";
-const FOLDER = "Console";
+const FOLDER = "Frutiger";
 const DOMAIN = "decay";
 
 // ── replacement plan ───────────────────────────────────────────────────────
@@ -77,12 +77,12 @@ replacements.push({
 // 6. brand-prefixed identifiers. explicit list — a blanket /PR/ pass would eat
 //    PROTOCOL and PREVIEW_PANEL_*.
 for (const [from, to] of [
-    ["PRWindow", "ConsoleWindow"],
-    ["PR_registry", "CONSOLE_registry"],
-    ["PR_BREAKER_IGNORE", "CONSOLE_BREAKER_IGNORE"],
-    ["PR_DEBUG", "CONSOLE_DEBUG"],
-    ["PR_ATTRIBUTION", "CONSOLE_ATTRIBUTION"],
-    ["PR_PLAYER_CONTAINER", "CONSOLE_PLAYER_CONTAINER"],
+    ["PRWindow", "FrutigerWindow"],
+    ["PR_registry", "FRUTIGER_registry"],
+    ["PR_BREAKER_IGNORE", "FRUTIGER_BREAKER_IGNORE"],
+    ["PR_DEBUG", "FRUTIGER_DEBUG"],
+    ["PR_ATTRIBUTION", "FRUTIGER_ATTRIBUTION"],
+    ["PR_PLAYER_CONTAINER", "FRUTIGER_PLAYER_CONTAINER"],
     ["PRLegacyConvert", "DecayLegacyConvert"],
     ["PR_key_handler", "DECAY_key_handler"],
 ]) {

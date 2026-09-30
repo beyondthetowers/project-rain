@@ -1,15 +1,20 @@
 // tools/gen-textures.js
 //
-// Generates the DECAY overlay textures as PNGs into assets/Textures/.
+// Generates the FRUTIGER overlay textures as PNGs into assets/Textures/.
 // Pure node — zlib for the deflate stream, hand-rolled CRC32 and chunk writer.
 //
 //   node tools/gen-textures.js
 //
-// Output is deterministic (fixed seed) so rebuilds don't churn the repo.
+// Output is deterministic (fixed seeds) so rebuilds don't churn the repo.
+//
+// The set is built for Frutiger Aero: glass sheen, bubbles, a soft highlight
+// band. The previous grain / scanline / scratch / vignette set belonged to a
+// grunge theme and reads as damage rather than gloss on a light surface — the
+// scanlines especially, which are the opposite of the aesthetic.
 //
 // These get picked up by tools/bundle.js like any other asset, inlined as
-// base64(zstd(bytes)), written to Console/Textures/ at runtime and loaded with
-// getcustomasset. See src/utility/console/theme.lua.
+// base64(zstd(bytes)), written to Frutiger/Textures/ at runtime and loaded with
+// getcustomasset. See src/utility/frutiger/theme.lua.
 
 const fs = require("fs");
 const path = require("path");
@@ -54,23 +59,22 @@ function chunk(type, data) {
     return Buffer.concat([length, typeBuf, data, crc]);
 }
 
-// pixels: Uint8Array of width*height*4
 function encodePNG(width, height, pixels) {
     const stride = width * 4;
     const raw = Buffer.alloc((stride + 1) * height);
     for (let y = 0; y < height; y++) {
-        raw[y * (stride + 1)] = 0; // filter: none
+        raw[y * (stride + 1)] = 0;
         Buffer.from(pixels.buffer, pixels.byteOffset + y * stride, stride).copy(raw, y * (stride + 1) + 1);
     }
 
     const ihdr = Buffer.alloc(13);
     ihdr.writeUInt32BE(width, 0);
     ihdr.writeUInt32BE(height, 4);
-    ihdr[8] = 8;   // bit depth
-    ihdr[9] = 6;   // colour type: RGBA
-    ihdr[10] = 0;  // compression
-    ihdr[11] = 0;  // filter
-    ihdr[12] = 0;  // interlace
+    ihdr[8] = 8;
+    ihdr[9] = 6;
+    ihdr[10] = 0;
+    ihdr[11] = 0;
+    ihdr[12] = 0;
 
     return Buffer.concat([
         Buffer.from([0x89, 0x50, 0x4e, 0x47, 0x0d, 0x0a, 0x1a, 0x0a]),
@@ -84,126 +88,121 @@ function blank(w, h) {
     return new Uint8Array(w * h * 4);
 }
 
-function put(px, w, x, y, r, g, b, a) {
+// source-over, so overlapping bubbles composite the way they should
+function blend(px, w, x, y, r, g, b, a) {
+    if (a <= 0) return;
     const i = (y * w + x) * 4;
-    px[i] = r;
-    px[i + 1] = g;
-    px[i + 2] = b;
-    px[i + 3] = a;
+    const dstA = px[i + 3] / 255;
+    const srcA = Math.min(a, 255) / 255;
+    const outA = srcA + dstA * (1 - srcA);
+    if (outA <= 0) return;
+    px[i] = Math.round((r * srcA + px[i] * dstA * (1 - srcA)) / outA);
+    px[i + 1] = Math.round((g * srcA + px[i + 1] * dstA * (1 - srcA)) / outA);
+    px[i + 2] = Math.round((b * srcA + px[i + 2] * dstA * (1 - srcA)) / outA);
+    px[i + 3] = Math.round(outA * 255);
 }
 
 // ── textures ───────────────────────────────────────────────────────────────
 
-// Fine monochrome grain. Three octaves so it doesn't read as flat TV static.
-function grain() {
-    const w = 128, h = 128;
+// Glass sheen. A bright band across the top, fading out by ~40%, plus a faint
+// secondary highlight lower down. This is the single most "Aero" element -- it
+// is what makes a flat fill read as a curved glass panel. Stretched, not tiled.
+function gloss() {
+    const w = 8, h = 128;
     const px = blank(w, h);
-    const rnd = mulberry32(0x5eed);
     for (let y = 0; y < h; y++) {
+        const t = y / (h - 1);
+        let a = Math.pow(1 - Math.min(t / 0.40, 1), 1.6) * 150;
+        a += Math.pow(1 - Math.min(Math.abs(t - 0.62) / 0.16, 1), 2) * 26;
         for (let x = 0; x < w; x++) {
-            const fine = rnd();
-            const coarse = (Math.sin(x * 0.21) + Math.cos(y * 0.17) + 2) / 4;
-            const v = fine * 0.7 + coarse * 0.3;
-            // Neutral and light. The UI background is black now, so dark grain
-            // would be invisible; this reads as faint white speckle.
-            const g = Math.floor(150 + v * 105);
-            put(px, w, x, y, g, g, g, Math.floor(8 + v * 40));
+            blend(px, w, x, y, 255, 255, 255, a);
         }
     }
     return encodePNG(w, h, px);
 }
 
-// 4px tileable scanline: one dark row per 4.
-function scanline() {
-    const w = 4, h = 4;
-    const px = blank(w, h);
-    for (let x = 0; x < w; x++) {
-        put(px, w, x, 0, 0, 0, 0, 0);
-        put(px, w, x, 1, 0, 0, 0, 0);
-        put(px, w, x, 2, 0, 0, 0, 0);
-        put(px, w, x, 3, 210, 210, 210, 44);
-    }
-    return encodePNG(w, h, px);
-}
-
-// Sparse scratches and dust. Mostly transparent.
-function scratch() {
+// Bubbles. A soft translucent disc, a brighter rim, and a specular dot up and
+// to the left -- the stock Frutiger bubble.
+function bubbles() {
     const w = 256, h = 256;
     const px = blank(w, h);
-    const rnd = mulberry32(0xdead);
-    for (let i = 0; i < 48; i++) {
-        const x = Math.floor(rnd() * w);
-        const len = Math.floor(24 + rnd() * 190);
-        const y0 = Math.floor(rnd() * h);
-        const a = Math.floor(14 + rnd() * 40);
-        const bright = rnd() > 0.75;
-        for (let y = y0; y < Math.min(y0 + len, h); y++) {
-            const shade = bright ? 240 : 130;
-            put(px, w, x, y, shade, shade, shade, a);
-        }
-    }
-    for (let i = 0; i < 26; i++) {
-        const y = Math.floor(rnd() * h);
-        const len = Math.floor(20 + rnd() * 150);
-        const x0 = Math.floor(rnd() * w);
-        const a = Math.floor(10 + rnd() * 30);
-        for (let x = x0; x < Math.min(x0 + len, w); x++) {
-            put(px, w, x, y, 160, 160, 160, a);
-        }
-    }
-    return encodePNG(w, h, px);
-}
+    const rnd = mulberry32(0xb0bb1e);
 
-// Radial falloff. Black, alpha rises toward the edge.
-function vignette() {
-    const w = 256, h = 256;
-    const px = blank(w, h);
-    const cx = w / 2, cy = h / 2;
-    const max = Math.sqrt(cx * cx + cy * cy);
-    for (let y = 0; y < h; y++) {
-        for (let x = 0; x < w; x++) {
-            const dx = x - cx, dy = y - cy;
-            const d = Math.sqrt(dx * dx + dy * dy) / max;
-            const a = Math.max(0, Math.min(1, (d - 0.42) / 0.58));
-            put(px, w, x, y, 6, 7, 5, Math.floor(a * a * 205));
-        }
-    }
-    return encodePNG(w, h, px);
-}
+    for (let i = 0; i < 24; i++) {
+        const cx = rnd() * w;
+        const cy = rnd() * h;
+        const radius = 6 + rnd() * 26;
+        const tinted = rnd() > 0.75;
 
-// Soft irregular blotches — damp, not clean.
-function stain() {
-    const w = 128, h = 128;
-    const px = blank(w, h);
-    const rnd = mulberry32(0xb10b);
-    for (let i = 0; i < 9; i++) {
-        const bx = rnd() * w, by = rnd() * h;
-        const rad = 12 + rnd() * 30;
-        const strength = 0.25 + rnd() * 0.5;
-        for (let y = 0; y < h; y++) {
-            for (let x = 0; x < w; x++) {
-                const dx = x - bx, dy = y - by;
-                const d = Math.sqrt(dx * dx + dy * dy) / rad;
+        const x0 = Math.max(0, Math.floor(cx - radius - 2));
+        const x1 = Math.min(w - 1, Math.ceil(cx + radius + 2));
+        const y0 = Math.max(0, Math.floor(cy - radius - 2));
+        const y1 = Math.min(h - 1, Math.ceil(cy + radius + 2));
+
+        for (let y = y0; y <= y1; y++) {
+            for (let x = x0; x <= x1; x++) {
+                const dx = x - cx, dy = y - cy;
+                const d = Math.sqrt(dx * dx + dy * dy) / radius;
+                if (d > 1.15) continue;
+
+                if (d < 1) {
+                    const body = (1 - d) * (1 - d) * 40;
+                    blend(px, w, x, y, tinted ? 150 : 255, tinted ? 225 : 255, 255, body);
+                }
+
+                const rim = Math.pow(1 - Math.min(Math.abs(d - 0.93) / 0.11, 1), 2) * 105;
+                blend(px, w, x, y, 255, 255, 255, rim);
+            }
+        }
+
+        const hx = cx - radius * 0.35, hy = cy - radius * 0.38, hr = radius * 0.22;
+        for (let y = Math.floor(hy - hr); y <= Math.ceil(hy + hr); y++) {
+            for (let x = Math.floor(hx - hr); x <= Math.ceil(hx + hr); x++) {
+                if (x < 0 || y < 0 || x >= w || y >= h) continue;
+                const dx = x - hx, dy = y - hy;
+                const d = Math.sqrt(dx * dx + dy * dy) / hr;
                 if (d > 1) continue;
-                const falloff = (1 - d) * (1 - d) * strength;
-                const idx = (y * w + x) * 4;
-                const a = Math.min(255, px[idx + 3] + Math.floor(falloff * 120));
-                put(px, w, x, y, 205, 205, 205, a);
+                blend(px, w, x, y, 255, 255, 255, (1 - d) * (1 - d) * 170);
             }
         }
     }
     return encodePNG(w, h, px);
 }
 
+// Sweep band: a soft, slightly tilted highlight that is transparent at both
+// ends. Drawn moving down the panel for the slow shine pass.
+function sheen() {
+    const w = 256, h = 96;
+    const px = blank(w, h);
+    for (let y = 0; y < h; y++) {
+        const t = y / (h - 1);
+        const band = Math.pow(1 - Math.min(Math.abs(t - 0.5) / 0.5, 1), 2.2) * 120;
+        for (let x = 0; x < w; x++) {
+            const skew = (x / w - 0.5) * 0.30;
+            const a = Math.max(0, band * (1 - Math.abs(skew) * 2.2));
+            blend(px, w, x, y, 255, 255, 255, a);
+        }
+    }
+    return encodePNG(w, h, px);
+}
+
 // ── write ──────────────────────────────────────────────────────────────────
-const textures = { grain, scanline, scratch, vignette, stain };
+const textures = { gloss, bubbles, sheen };
 
 if (!fs.existsSync(OUT)) fs.mkdirSync(OUT, { recursive: true });
 
+// remove the previous grunge set so nothing stale gets inlined
+for (const stale of ["grain", "scanline", "scratch", "vignette", "stain"]) {
+    const file = path.join(OUT, stale + ".png");
+    if (fs.existsSync(file)) {
+        fs.unlinkSync(file);
+        console.log(`removed stale ${stale}.png`);
+    }
+}
+
 for (const [name, fn] of Object.entries(textures)) {
     const buf = fn();
-    const file = path.join(OUT, name + ".png");
-    fs.writeFileSync(file, buf);
+    fs.writeFileSync(path.join(OUT, name + ".png"), buf);
     console.log(`${name.padEnd(10)} ${buf.length.toString().padStart(7)} bytes`);
 }
 

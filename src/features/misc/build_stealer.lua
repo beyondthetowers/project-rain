@@ -55,7 +55,7 @@ end
         stats = {
             buildName = string.format("%s %s's Stolen Build", os.date("%B %d %Y"), player.Name),
             buildDescription = "Talents are not stealable anymore - This is just the opponents stats.",
-            buildAuthor = "console",
+            buildAuthor = "frutiger",
             power = level,
             pointsUntilNextPower = 67,
             points = 67,
@@ -245,10 +245,10 @@ end
     local path = string.format("%s %s Stolen Build", os.date("%B %d %Y"), player.Name);
     Logger:notify_sound(string.format("Successfully stole %s's build, %s & saved to file.", player.Name, buildUrl))
 
-    if not isfolder("Console/Stolen Builds") then
-        makefolder("Console/Stolen Builds")
+    if not isfolder("Frutiger/Stolen Builds") then
+        makefolder("Frutiger/Stolen Builds")
     end
-    writefile("Console/Stolen Builds/" .. path .. ".txt", string.format([[https://decay
+    writefile("Frutiger/Stolen Builds/" .. path .. ".txt", string.format([[https://decay
 stolen on %s
 build url: %s
 %s]], os.date("%B %d %Y"), buildUrl, data.content.notes));

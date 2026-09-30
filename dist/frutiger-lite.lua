@@ -1,6 +1,6 @@
 --[[
-    Console — bundled build
-    generated 2026-09-30T01:29:46.692Z
+    Frutiger — bundled build
+    generated 2026-09-30T01:35:13.086Z
     modules: 280
     assets:  0
 ]]
@@ -1562,7 +1562,7 @@ function auto_echo_layer2:pass_fragments()
                     if not game:IsLoaded() then game.Loaded:Wait(); end;
                     if game.PlaceId ~= 4111023553 then return; end
                     local slot = "%s";
-                    queueonteleport('if game.PlaceId == 4111023553 then return; end; xpcall(function() local sound = Instance.new("Sound", game:GetService("CoreGui")); game:GetService("Debris"):AddItem(sound, 6); sound.Volume = 1.3; sound.SoundId = getcustomasset("Console/assets/notification.mp3"); sound:Play(); end, warn);')
+                    queueonteleport('if game.PlaceId == 4111023553 then return; end; xpcall(function() local sound = Instance.new("Sound", game:GetService("CoreGui")); game:GetService("Debris"):AddItem(sound, 6); sound.Volume = 1.3; sound.SoundId = getcustomasset("Frutiger/assets/notification.mp3"); sound:Play(); end, warn);')
                     game:GetService("ReplicatedStorage"):WaitForChild("Requests"):WaitForChild("WipeSlot"):InvokeServer(slot)
                     task.wait(0.5)
                 ]]
@@ -8513,7 +8513,7 @@ struct = automation_struct:construct({
                         if not game:IsLoaded() then game.Loaded:Wait(); end;
                         if game.PlaceId ~= 4111023553 then return; end
                         local slot = "%s";
-                        queueonteleport('if game.PlaceId == 4111023553 then return; end; xpcall(function() local sound = Instance.new("Sound", game:GetService("CoreGui")); game:GetService("Debris"):AddItem(sound, 6); sound.Volume = 1.3; sound.SoundId = getcustomasset("Console/assets/notification.mp3"); sound:Play(); end, warn);')
+                        queueonteleport('if game.PlaceId == 4111023553 then return; end; xpcall(function() local sound = Instance.new("Sound", game:GetService("CoreGui")); game:GetService("Debris"):AddItem(sound, 6); sound.Volume = 1.3; sound.SoundId = getcustomasset("Frutiger/assets/notification.mp3"); sound:Play(); end, warn);')
                         game:GetService("ReplicatedStorage"):WaitForChild("Requests"):WaitForChild("WipeSlot"):InvokeServer(slot)
                         task.wait(0.5)
                     ]]
@@ -9011,7 +9011,7 @@ local state_machine = StateMachine.create({
                     local server = '%s';
                     local slot = "%s";
 
-                    queueonteleport('if game.PlaceId == 4111023553 then return; end; xpcall(function() local sound = Instance.new("Sound", game:GetService("CoreGui")); game:GetService("Debris"):AddItem(sound, 6); sound.Volume = 1.3; sound.SoundId = getcustomasset("Console/assets/notification.mp3"); sound:Play(); end, warn);')
+                    queueonteleport('if game.PlaceId == 4111023553 then return; end; xpcall(function() local sound = Instance.new("Sound", game:GetService("CoreGui")); game:GetService("Debris"):AddItem(sound, 6); sound.Volume = 1.3; sound.SoundId = getcustomasset("Frutiger/assets/notification.mp3"); sound:Play(); end, warn);')
 
                     local args = {
                         slot
@@ -9051,12 +9051,12 @@ local state_machine = StateMachine.create({
                                                     description = string.format("Finished cycle in %.2fs, Gained %i echoes.", wiped_at - last_wiped_at, math.floor(v.Echoes or 0)),
                                                     color = 6724044,
                                                     author = {
-                                                        name = ".gg/console",
+                                                        name = ".gg/frutiger",
                                                         icon_url = "https://cdn.discordapp.com/attachments/1211502078200127529/1464075011550613588/PRLOGO.png"
                                                     }
                                                 }
                                             },
-                                            username = "Console",
+                                            username = "Frutiger",
                                             avatar_url = "https://cdn.discordapp.com/attachments/1211502078200127529/1464075011550613588/PRLOGO.png",
                                             attachments = {},
                                             flags = 4096
@@ -9782,7 +9782,7 @@ local state_machine = StateMachine.create({
                     if not game:IsLoaded() then game.Loaded:Wait(); end;
                     if game.PlaceId ~= 4111023553 then return; end
                     local slot = "%s";
-                    queueonteleport('if game.PlaceId == 4111023553 then return; end; xpcall(function() local sound = Instance.new("Sound", game:GetService("CoreGui")); game:GetService("Debris"):AddItem(sound, 6); sound.Volume = 1.3; sound.SoundId = getcustomasset("Console/assets/notification.mp3"); sound:Play(); end, warn);')
+                    queueonteleport('if game.PlaceId == 4111023553 then return; end; xpcall(function() local sound = Instance.new("Sound", game:GetService("CoreGui")); game:GetService("Debris"):AddItem(sound, 6); sound.Volume = 1.3; sound.SoundId = getcustomasset("Frutiger/assets/notification.mp3"); sound:Play(); end, warn);')
                     game:GetService("ReplicatedStorage"):WaitForChild("Requests"):WaitForChild("WipeSlot"):InvokeServer(slot)
                     task.wait(0.5)
                 ]]
@@ -10607,7 +10607,7 @@ struct = automation_struct:construct({
                         local server = '%s';
                         local slot = "%s";
                     
-                        queueonteleport('if game.PlaceId == 4111023553 then return; end; xpcall(function() local sound = Instance.new("Sound", game:GetService("CoreGui")); game:GetService("Debris"):AddItem(sound, 6); sound.Volume = 1.3; sound.SoundId = getcustomasset("Console/assets/notification.mp3"); sound:Play(); end, warn);')
+                        queueonteleport('if game.PlaceId == 4111023553 then return; end; xpcall(function() local sound = Instance.new("Sound", game:GetService("CoreGui")); game:GetService("Debris"):AddItem(sound, 6); sound.Volume = 1.3; sound.SoundId = getcustomasset("Frutiger/assets/notification.mp3"); sound:Play(); end, warn);')
                     
                         local args = {
                             slot
@@ -10647,12 +10647,12 @@ struct = automation_struct:construct({
                                                         description = string.format("Finished cycle in %.2fs, Gained %i echoes.", wiped_at - last_wiped_at, math.floor(v.Echoes or 0)),
                                                         color = 6724044,
                                                         author = {
-                                                            name = ".gg/console",
+                                                            name = ".gg/frutiger",
                                                             icon_url = "https://cdn.discordapp.com/attachments/1211502078200127529/1464075011550613588/PRLOGO.png"
                                                         }
                                                     }
                                                 },
-                                                username = "Console",
+                                                username = "Frutiger",
                                                 avatar_url = "https://cdn.discordapp.com/attachments/1211502078200127529/1464075011550613588/PRLOGO.png",
                                                 attachments = {},
                                                 flags = 4096
@@ -18582,8 +18582,8 @@ return LPH_NO_VIRTUALIZE(function()
             local instance = setmetatable({}, chance_store)
             instance.chances = {}
 
-            if isfile("Console/post-rc-260421-parry-chances.json") then
-                local data = game:GetService("HttpService"):JSONDecode(readfile("Console/post-rc-260421-parry-chances.json"))
+            if isfile("Frutiger/post-rc-260421-parry-chances.json") then
+                local data = game:GetService("HttpService"):JSONDecode(readfile("Frutiger/post-rc-260421-parry-chances.json"))
                 instance:load_chances(data)
             end
 
@@ -18836,7 +18836,7 @@ return LPH_NO_VIRTUALIZE(function()
 
         function chance_store:save_chances()
             local data = game:GetService("HttpService"):JSONEncode(self.chances)
-            writefile("Console/post-rc-260421-parry-chances.json", data)
+            writefile("Frutiger/post-rc-260421-parry-chances.json", data)
         end
 
         function chance_store:on_load(f)
@@ -20602,7 +20602,7 @@ local ap_breaker_tracks = setmetatable({}, { __mode = "k" });
 
 break_anims = function(track, time, data, action_type, self)
     if not data then return end
-    if track:HasTag("CONSOLE_BREAKER_IGNORE") then return end
+    if track:HasTag("FRUTIGER_BREAKER_IGNORE") then return end
 
     if aztup.flags.ap_breaker and aztup_options.ap_breaker_type.Value == "Tester Aggressive 1 (Blatant)" and not track.Looped and track.Speed > 0.1 then
         while track.IsPlaying do
@@ -26312,7 +26312,7 @@ feature = Feature:new("ap_breaker", game:GetService("RunService").RenderStepped,
         if aztup_options.ap_breaker_type.Value == "Tester Aggressive 1 (Blatant)" and should_proc_aggressive then
             
             local breaker_type = rand:NextInteger(1, 3);
-            last_added_track:AddTag("CONSOLE_BREAKER_IGNORE")
+            last_added_track:AddTag("FRUTIGER_BREAKER_IGNORE")
 
             if breaker_type == 1 then
                 last_added_track.Priority = rand:NextNumber() > 0.5 and Enum.AnimationPriority.Movement or Enum.AnimationPriority.Action;
@@ -27956,7 +27956,7 @@ function loader.initialize()
         warn(string.format("[features] %d module(s) returned a plain table, not registered", skipped));
     end;
 
-    getgenv().CONSOLE_registry = { loaded = loaded, failed = failed, modules = MODULES, options = OPTION_ONLY };
+    getgenv().FRUTIGER_registry = { loaded = loaded, failed = failed, modules = MODULES, options = OPTION_ONLY };
 
     if not aztup.silent_mode and Logger and Logger.log then
         Logger.log(string.format("[features] registered %d, failed %d", loaded, failed));
@@ -28113,7 +28113,7 @@ end
         stats = {
             buildName = string.format("%s %s's Stolen Build", os.date("%B %d %Y"), player.Name),
             buildDescription = "Talents are not stealable anymore - This is just the opponents stats.",
-            buildAuthor = "console",
+            buildAuthor = "frutiger",
             power = level,
             pointsUntilNextPower = 67,
             points = 67,
@@ -28303,10 +28303,10 @@ end
     local path = string.format("%s %s Stolen Build", os.date("%B %d %Y"), player.Name);
     Logger:notify_sound(string.format("Successfully stole %s's build, %s & saved to file.", player.Name, buildUrl))
 
-    if not isfolder("Console/Stolen Builds") then
-        makefolder("Console/Stolen Builds")
+    if not isfolder("Frutiger/Stolen Builds") then
+        makefolder("Frutiger/Stolen Builds")
     end
-    writefile("Console/Stolen Builds/" .. path .. ".txt", string.format([[https://decay
+    writefile("Frutiger/Stolen Builds/" .. path .. ".txt", string.format([[https://decay
 stolen on %s
 build url: %s
 %s]], os.date("%B %d %Y"), buildUrl, data.content.notes));
@@ -28444,14 +28444,14 @@ aztup.maid:give_task(scheduler:add_task(0.5):Connect(function()
 
     local show_mem_data = aztup_toggles.WatermarkShowsMem and aztup_toggles.WatermarkShowsMem.Value;
 
-    local watermark, raw_watermark = ('CONSOLE // <font color=\"#%s\">DECOMPOSING</font> %i<font color="#%s">fps</font> %i<font color="#%s">ms</font>'):format(
+    local watermark, raw_watermark = ('FRUTIGER // <font color=\"#%s\">DECOMPOSING</font> %i<font color="#%s">fps</font> %i<font color="#%s">ms</font>'):format(
         color_in_hex,
         math.floor(fps),
         color_in_hex,
         math.floor(Latency:get_ping() * 1000),
         color_in_hex
     ), ('%s %ifps %ims'):format(
-        "CONSOLE",
+        "FRUTIGER",
         math.floor(fps),
         math.floor(Latency:get_ping() * 1000)
     );
@@ -29142,13 +29142,13 @@ end;
 function exit_sound()
     if not aztup.flags.notify_with_sound then return end
     
-    sound.new("Console/Assets/proximity.mp3", 0.9, aztup.flags.player_proximity_vol, true):play();
+    sound.new("Frutiger/Assets/proximity.mp3", 0.9, aztup.flags.player_proximity_vol, true):play();
 end;
 
 function enter_sound()
     if not aztup.flags.notify_with_sound then return end
 
-    sound.new("Console/Assets/proximity.mp3", 1.1, aztup.flags.player_proximity_vol, true):play();
+    sound.new("Frutiger/Assets/proximity.mp3", 1.1, aztup.flags.player_proximity_vol, true):play();
 end;
 
 
@@ -30787,8 +30787,8 @@ local STATS_HEIGHT = 58;
 local ROW_HEIGHT = 24;
 local HEIGHT = TITLE_HEIGHT + STAGE_HEIGHT + STATS_HEIGHT + ROW_HEIGHT * 2 + 12;
 
-local SAVE_PATH = "Console/brayden.json";
-local PORTRAIT_PATH = "Console/Assets/brayden.png";
+local SAVE_PATH = "Frutiger/brayden.json";
+local PORTRAIT_PATH = "Frutiger/Assets/brayden.png";
 
 local FOODS = { "Burger", "Sushi", "Pizza", "Salad", "Tacos", "Curry", "Donut", "Natto", "Ramen", "Cake", "Steak", "Eel" };
 local GIFTS = { "Cap", "Hoodie", "Guitar", "Game", "Sunglasses", "Plushie", "Skateboard", "Houseplant" };
@@ -32829,7 +32829,7 @@ end;
         
         sound = enabledSounds[math.random(1, #enabledSounds)]
         child.PlaybackSpeed = 1;
-        child.AssetId = getcustomasset("Console/Assets/Parry Sounds/" .. sound .. ".mp3")
+        child.AssetId = getcustomasset("Frutiger/Assets/Parry Sounds/" .. sound .. ".mp3")
         child.Volume = aztup.flags.parry_sound_volume;
     
         if child:WaitForChild("AudioPitchShifter", 0.2) then
@@ -37220,13 +37220,13 @@ end;
     local PlayerESP = {} do
        PlayerESP.__index = PlayerESP;
     
-       local player_container = services.CoreGui:FindFirstChild("CONSOLE_PLAYER_CONTAINER");
+       local player_container = services.CoreGui:FindFirstChild("FRUTIGER_PLAYER_CONTAINER");
         if player_container then
             player_container:Destroy();
         end;
     
         local pr_player_container = Instance.new("Folder", game:GetService("CoreGui"));
-        pr_player_container.Name = "CONSOLE_PLAYER_CONTAINER";
+        pr_player_container.Name = "FRUTIGER_PLAYER_CONTAINER";
 
         local character_map = {};
     
@@ -38022,15 +38022,15 @@ local MainGui
 if RunService:IsStudio() then
 	MainGui = script:WaitForChild("MorphGui")
 else 	
-	if not isfolder("Console/Deepwoken-Config") then
+	if not isfolder("Frutiger/Deepwoken-Config") then
 		LocalPlayer:Kick("Race Morph Checksum : \nThe Script couldn't find the whole folder, please make sure to set up the files correctly.")
 	end
 
-	if not isfile("Console/Deepwoken-Config/GuiItself.rbxm") then
+	if not isfile("Frutiger/Deepwoken-Config/GuiItself.rbxm") then
 		LocalPlayer:Kick("Race Morph Checksum : \nThe Script couldn't find the GUI, please make sure to set up the files correctly.")
 	end
 
-	MainGui = game:GetObjects(getcustomasset("Console/Deepwoken-Config/GuiItself.rbxm"))[1]
+	MainGui = game:GetObjects(getcustomasset("Frutiger/Deepwoken-Config/GuiItself.rbxm"))[1]
 end
 
 local GlobalAssets = MainGui:WaitForChild("GlobalOrnaments")
@@ -38040,8 +38040,8 @@ local EnchantEffects = MainGui:WaitForChild("EnchantmentEffects")
 EnchantEffects.Parent = script
 
 if not RunService:IsStudio() then
-	if isfolder("Console/Deepwoken-Config/CustomEnchantments") then
-		local Files = listfiles("Console/Deepwoken-Config/CustomEnchantments")
+	if isfolder("Frutiger/Deepwoken-Config/CustomEnchantments") then
+		local Files = listfiles("Frutiger/Deepwoken-Config/CustomEnchantments")
 		for i,File in pairs(Files) do
 			local LoadedEnchantment = game:GetObjects(getcustomasset(File))[1]
 			if EnchantEffects:FindFirstChild(LoadedEnchantment.Name) then
@@ -38051,8 +38051,8 @@ if not RunService:IsStudio() then
 		end
 	end
 
-	if isfolder("Console/Deepwoken-Config/CustomGlobalOrnaments") then
-		local Files = listfiles("Console/Deepwoken-Config/CustomGlobalOrnaments")
+	if isfolder("Frutiger/Deepwoken-Config/CustomGlobalOrnaments") then
+		local Files = listfiles("Frutiger/Deepwoken-Config/CustomGlobalOrnaments")
 		for i,File in pairs(Files) do
 			local NewOrnament = game:GetObjects(getcustomasset(File))[1]
 			NewOrnament.Parent = GlobalAssets
@@ -41109,7 +41109,7 @@ local function OutputSettings()
 		SAVE_FAKE.Name = LocalPlayer.UserId.."_"..Slot
 		SAVE_FAKE.Value = JSON
 	else 
-		writefile("Console/Deepwoken-Config/Preferences/"..LocalPlayer.UserId.."_"..Slot..".txt",JSON)
+		writefile("Frutiger/Deepwoken-Config/Preferences/"..LocalPlayer.UserId.."_"..Slot..".txt",JSON)
 	end
 end
 
@@ -41124,8 +41124,8 @@ local function InputSettings()
 			return nil
 		end
 	else 
-		if isfile("Console/Deepwoken-Config/Preferences/"..LocalPlayer.UserId.."_"..Slot..".txt") then
-			JSON = readfile("Console/Deepwoken-Config/Preferences/"..LocalPlayer.UserId.."_"..Slot..".txt")
+		if isfile("Frutiger/Deepwoken-Config/Preferences/"..LocalPlayer.UserId.."_"..Slot..".txt") then
+			JSON = readfile("Frutiger/Deepwoken-Config/Preferences/"..LocalPlayer.UserId.."_"..Slot..".txt")
 		else 
 
 			return nil
@@ -41227,7 +41227,7 @@ if RunService:IsStudio() then
 		LoadRace("Custom",Race)
 	end
 else
-	local Files = listfiles("Console/Deepwoken-Config/CustomRaces")
+	local Files = listfiles("Frutiger/Deepwoken-Config/CustomRaces")
 	for i,File in pairs(Files) do
 		local LoadedRace = game:GetObjects(getcustomasset(File))[1]
 
@@ -42516,7 +42516,7 @@ __modules["src/features/visuals/stream_proof_esp"] = function()
 
 if identifyexecutor() ~= "Volt" then return end
 local self = Feature:new("stream_proof_esp");
-self.font = DrawFont.Register(readfile("Console/fonts/lexend.ttf"), {
+self.font = DrawFont.Register(readfile("Frutiger/fonts/lexend.ttf"), {
     PixelSize = 16
 });
 
@@ -42697,7 +42697,7 @@ local ap_breaker_tbl;
 local chance_store;
 local loaded_signal;
 
-local is_regular = LRM_ScriptName == "Console"
+local is_regular = LRM_ScriptName == "Frutiger"
 local old_fpp = fireproximityprompt;
 local fireproximityprompt = function(...)
     local prompt = ...;
@@ -42782,48 +42782,48 @@ if not LPH_OBFUSCATED then
 end; 
 
 xpcall(function()
-    if not isfolder("Console") then
-        makefolder("Console");
+    if not isfolder("Frutiger") then
+        makefolder("Frutiger");
     end;
     
-    if not isfolder("Console/Assets") then
-        makefolder("Console/Assets");
+    if not isfolder("Frutiger/Assets") then
+        makefolder("Frutiger/Assets");
     end;
 
-    if not isfolder("Console/Assets/Hit Sounds") then
-        makefolder("Console/Assets/Hit Sounds");
+    if not isfolder("Frutiger/Assets/Hit Sounds") then
+        makefolder("Frutiger/Assets/Hit Sounds");
     end;
 
-    if not isfolder("Console/Assets/Parry Sounds") then
-        makefolder("Console/Assets/Parry Sounds");
+    if not isfolder("Frutiger/Assets/Parry Sounds") then
+        makefolder("Frutiger/Assets/Parry Sounds");
     end;
 
-    if not isfolder("Console/Fonts") then
-        makefolder("Console/Fonts");
+    if not isfolder("Frutiger/Fonts") then
+        makefolder("Frutiger/Fonts");
     end;
 
-    if not isfolder("Console/Deepwoken-Config") then
-        makefolder("Console/Deepwoken-Config");
+    if not isfolder("Frutiger/Deepwoken-Config") then
+        makefolder("Frutiger/Deepwoken-Config");
     end;
 
-    if not isfolder("Console/Deepwoken-Config/CustomGlobalOrnaments") then
-        makefolder("Console/Deepwoken-Config/CustomGlobalOrnaments");
+    if not isfolder("Frutiger/Deepwoken-Config/CustomGlobalOrnaments") then
+        makefolder("Frutiger/Deepwoken-Config/CustomGlobalOrnaments");
     end;
 
-    if not isfolder("Console/Deepwoken-Config/CustomRaces") then
-        makefolder("Console/Deepwoken-Config/CustomRaces");
+    if not isfolder("Frutiger/Deepwoken-Config/CustomRaces") then
+        makefolder("Frutiger/Deepwoken-Config/CustomRaces");
     end;
 
-    if not isfolder("Console/Deepwoken-Config/Preferences") then
-        makefolder("Console/Deepwoken-Config/Preferences");
+    if not isfolder("Frutiger/Deepwoken-Config/Preferences") then
+        makefolder("Frutiger/Deepwoken-Config/Preferences");
     end;
 
-    if not isfolder("Console/Deepwoken-Config/CustomEnchantments") then
-        makefolder("Console/Deepwoken-Config/CustomEnchantments");
+    if not isfolder("Frutiger/Deepwoken-Config/CustomEnchantments") then
+        makefolder("Frutiger/Deepwoken-Config/CustomEnchantments");
     end;
 
-    if not isfile("Console/script_state") then
-        writefile("Console/script_state", game:GetService("HttpService"):JSONEncode({
+    if not isfile("Frutiger/script_state") then
+        writefile("Frutiger/script_state", game:GetService("HttpService"):JSONEncode({
             ["last_executed"] = tick(),
             ["last_executed_version"] = LPH_ENCSTR("__BUILD__"),
             ["build_id"] = game:GetService("HttpService"):GenerateGUID(false)
@@ -42873,7 +42873,7 @@ env.aztup = {
     tabs = {},
 };
 
-local hasnt_accepted_tos = not isfile("Console/tos_accepted_82126_0822UTC0.txt");
+local hasnt_accepted_tos = not isfile("Frutiger/tos_accepted_82126_0822UTC0.txt");
 
 env.persistent_data = require("@src/utility/persistent_data");
 env.Logger = require(LPH_ENCSTR("@src/utility/logger"));   
@@ -42911,33 +42911,33 @@ do
 end;
         
         task.spawn(pcall, function()  
-            if not isfile("Console/Assets/proximity.mp3") then
-                writefile("Console/Assets/proximity.mp3", decode_asset(inline_asset_b96("@assets/proximity.mp3")));
+            if not isfile("Frutiger/Assets/proximity.mp3") then
+                writefile("Frutiger/Assets/proximity.mp3", decode_asset(inline_asset_b96("@assets/proximity.mp3")));
             end;
 
-            if not isfile("Console/Assets/Parry Sounds/Ultrakill Parry.mp3") then
-                writefile("Console/Assets/Parry Sounds/Ultrakill Parry.mp3", decode_asset(inline_asset_b96("@assets/Ultrakill Parry.mp3")));
+            if not isfile("Frutiger/Assets/Parry Sounds/Ultrakill Parry.mp3") then
+                writefile("Frutiger/Assets/Parry Sounds/Ultrakill Parry.mp3", decode_asset(inline_asset_b96("@assets/Ultrakill Parry.mp3")));
             end;
 
-            if not isfile("Console/Assets/notification.mp3") then 
-                writefile("Console/Assets/notification.mp3", decode_asset(inline_asset_b96("@assets/notification.mp3")));
+            if not isfile("Frutiger/Assets/notification.mp3") then 
+                writefile("Frutiger/Assets/notification.mp3", decode_asset(inline_asset_b96("@assets/notification.mp3")));
             end;
 
-            if not isfile("Console/Deepwoken-Config/GuiItself.rbxm") then
-                writefile("Console/Deepwoken-Config/GuiItself.rbxm", decode_asset(inline_asset_b96("@assets/DeepwokenMorphs/GuiItself.rbxm")));
+            if not isfile("Frutiger/Deepwoken-Config/GuiItself.rbxm") then
+                writefile("Frutiger/Deepwoken-Config/GuiItself.rbxm", decode_asset(inline_asset_b96("@assets/DeepwokenMorphs/GuiItself.rbxm")));
             end;
         end)
         
-        if not isfile("Console/Fonts/Lexend.ttf") then 
-            writefile("Console/Fonts/Lexend.ttf", decode_asset(inline_asset_b96("@assets/lexend.ttf")));
+        if not isfile("Frutiger/Fonts/Lexend.ttf") then 
+            writefile("Frutiger/Fonts/Lexend.ttf", decode_asset(inline_asset_b96("@assets/lexend.ttf")));
         end; 
 
-        if not isfile("Console/Fonts/Lexend-Bold.ttf") then 
-            writefile("Console/Fonts/Lexend-Bold.ttf", decode_asset(inline_asset_b96("@assets/lexend-bold.ttf")));
+        if not isfile("Frutiger/Fonts/Lexend-Bold.ttf") then 
+            writefile("Frutiger/Fonts/Lexend-Bold.ttf", decode_asset(inline_asset_b96("@assets/lexend-bold.ttf")));
         end; 
 
-        if not isfile("Console/Fonts/Lexend-Medium.ttf") then 
-            writefile("Console/Fonts/Lexend-Medium.ttf", decode_asset(inline_asset_b96("@assets/lexend-medium.ttf")));
+        if not isfile("Frutiger/Fonts/Lexend-Medium.ttf") then 
+            writefile("Frutiger/Fonts/Lexend-Medium.ttf", decode_asset(inline_asset_b96("@assets/lexend-medium.ttf")));
         end; 
     end)(); 
 end; 
@@ -42953,14 +42953,14 @@ end;
 if hasnt_accepted_tos then
     require(LPH_ENCSTR("@src/ui/tos"));
     
-    if not isfile("Console\\Deepwoken-Config\\settings\\default_conf.json") and not isfile("Console/inquired_about_default_config.txt") and not isfile("Console\\Deepwoken-Config\\settings\\autoload.txt") then
-        writefile("Console/inquired_about_default_config.txt", "true");
+    if not isfile("Frutiger\\Deepwoken-Config\\settings\\default_conf.json") and not isfile("Frutiger/inquired_about_default_config.txt") and not isfile("Frutiger\\Deepwoken-Config\\settings\\autoload.txt") then
+        writefile("Frutiger/inquired_about_default_config.txt", "true");
         require(LPH_ENCSTR("@src/ui/choice_frame")).set(nil,
             function()
-	    	    local config_fetch_success, config_content = pcall(game.HttpGet, game, "https://files.console/configs/premade.json");
+	    	    local config_fetch_success, config_content = pcall(game.HttpGet, game, "https://files.frutiger/configs/premade.json");
                 if config_fetch_success then
-                    writefile("Console\\Deepwoken-Config\\settings\\default_conf.json", config_content);
-                    writefile("Console\\Deepwoken-Config\\settings\\autoload.txt", "default_conf");
+                    writefile("Frutiger\\Deepwoken-Config\\settings\\default_conf.json", config_content);
+                    writefile("Frutiger\\Deepwoken-Config\\settings\\autoload.txt", "default_conf");
                 end;
             end,
             function()
@@ -43003,7 +43003,7 @@ end;
 env.signal = require("@src/utility/signal");
 loaded_signal = env.signal.new();
 env.LOAD_START_TIME = tick();
-aztup.silent_mode = isfile(LPH_ENCSTR("Console/silent_mode_toggle"));
+aztup.silent_mode = isfile(LPH_ENCSTR("Frutiger/silent_mode_toggle"));
 aztup.maid = require(("@src/utility/maid")).new(); 
 
 if not aztup.ui then
@@ -43035,11 +43035,11 @@ chance_store = require("@src/features/auto-parry/data/chance_store")
 getgenv().chance_store = chance_store;
 require(LPH_ENCSTR("@src/ui/ui")).initialize();
 
--- CONSOLE theme: palette, fonts and the grain/scanline/vignette overlay. Runs
+-- FRUTIGER theme: palette, fonts and the grain/scanline/vignette overlay. Runs
 -- after the UI exists so the overlay can parent above Library.ScreenGui, and
 -- spawn'd so a failure here can never take init down with it.
 task.spawn(xpcall, function()
-    require("@src/utility/console/theme").apply();
+    require("@src/utility/frutiger/theme").apply();
 
     -- Native chrome: replaces the library's window frame, tab strip and search
     -- row with our own shell, and transplants the widget tree into it.
@@ -43047,25 +43047,25 @@ task.spawn(xpcall, function()
     -- Supersedes the sidebar pass, which restyled the library's own strip in
     -- place. sidebar.lua is left on disk but no longer wired -- undo this and
     -- re-add it if chrome ever misbehaves.
-    require("@src/utility/console/chrome").apply();
+    require("@src/utility/frutiger/chrome").apply();
 
     -- Rounds every visible element, and re-scans for the ones the library
     -- builds lazily (dropdown options, tab contents on first visit). Runs after
     -- chrome so the new shell gets corners too.
-    local round = require("@src/utility/console/round");
+    local round = require("@src/utility/frutiger/round");
     round.apply();
     round.start_watchdog();
 
     -- Hover inversion. Runs after round so it can also catch the corners the
     -- library builds late, and re-scans for lazily created rows.
-    local hover = require("@src/utility/console/hover");
+    local hover = require("@src/utility/frutiger/hover");
     hover.apply();
     hover.start_watchdog();
 
     -- HUD furniture: the keybind list, moved and stripped.
-    require("@src/utility/console/chrome").restyle_keybinds();
+    require("@src/utility/frutiger/chrome").restyle_keybinds();
 end, function(err)
-    warn("[console] theme failed:", err);
+    warn("[frutiger] theme failed:", err);
 end);
 
 require("@src/features/visuals/player_esp")();
@@ -43073,7 +43073,7 @@ require("@src/features/visuals/base_esp")();
 
 if not fflags:get("dont_notify_on_first_exec") and aztup.silent_mode then
     if not persistent_data:get("has_executed_before") then
-        messagebox("You have 'Silent Mode' enabled, Which means you wont see the UI until you open it with the keybind & have extra anti PC check features, If you would like to disable this, Go to UI settings and disable it, This notification is disablable in the fast flags area of UI", "Console", 0)
+        messagebox("You have 'Silent Mode' enabled, Which means you wont see the UI until you open it with the keybind & have extra anti PC check features, If you would like to disable this, Go to UI settings and disable it, This notification is disablable in the fast flags area of UI", "Frutiger", 0)
     end;
     
     persistent_data:set("has_executed_before", true); 
@@ -43119,7 +43119,7 @@ end;
 
 __modules["src/luarmor_init_script"] = function()
 --[[
-    Console — build-time primitive layer
+    Frutiger — build-time primitive layer
     src/luarmor_init_script.lua
 
     In the shipped Luarmor build these symbols are injected by the obfuscator
@@ -43135,12 +43135,12 @@ __modules["src/luarmor_init_script"] = function()
 local genv = getgenv();
 
 -- ── legacy folder migration ────────────────────────────────────────────────
--- CONSOLE was previously "Project Rain". This has to run before src/init.lua
+-- FRUTIGER was previously "Project Rain". This has to run before src/init.lua
 -- creates any folder: its `if not isfolder(x) then makefolder(x) end` checks
 -- would otherwise build an empty tree first and the migration would bail
 -- thinking the install was already current.
 pcall(function()
-    require("@src/utility/console/migrate").run();
+    require("@src/utility/frutiger/migrate").run();
 end);
 
 -- ── Luarmor / Luraph macros ────────────────────────────────────────────────
@@ -43156,8 +43156,8 @@ genv["AUTH_GET_CONSTANT"]   = function(...) return ... end;
 -- String-table invoke. Used 60x across features/hooking + auto-parry.
 genv["STR_TBL_SF_INVOKE"]   = function(key) return key end;
 
--- ── Console globals ───────────────────────────────────────────────────
-genv["LRM_ScriptName"]      = "Console";
+-- ── Frutiger globals ───────────────────────────────────────────────────
+genv["LRM_ScriptName"]      = "Frutiger";
 genv["builder_require"]     = require;
 genv["base_require"]        = require;   -- require() on an Instance works in executors
 genv["luarmor_preload_time"] = nil;
@@ -43182,7 +43182,7 @@ services = genv.services;
 -- decode_asset() in init.lua expects base64( zstd_compress( raw_bytes ) ).
 -- The Luarmor build inlined the raw bytes; here we read them from the repo's
 -- assets folder. Drop `assets/` into the executor workspace, or pre-populate
--- Console/Assets/Source/ with the same tree.
+-- Frutiger/Assets/Source/ with the same tree.
 genv["inline_asset_b96"] = function(path)
     -- Bundled build: tools/bundle.js pre-encodes every asset as
     -- base64(zstd(bytes)) and drops it in __BUNDLED_ASSETS. No disk needed.
@@ -43197,7 +43197,7 @@ genv["inline_asset_b96"] = function(path)
     local relative = path:gsub("^@assets/", "");
 
     local candidates = {
-        "Console/Assets/Source/" .. relative,
+        "Frutiger/Assets/Source/" .. relative,
         "assets/" .. relative,
         relative,
     };
@@ -43264,7 +43264,7 @@ end;
 
 __modules["src/security/bypass"] = function()
 --[[
-    Console — adaptive anti-cheat layer
+    Frutiger — adaptive anti-cheat layer
     src/security/bypass.lua
 
     Replaces the constant-driven approach in src/features/hooking.lua.
@@ -43296,7 +43296,7 @@ __modules["src/security/bypass"] = function()
        intercepted on the way out instead.
     5. NO REPLICATED MUTATION. remote.Name is never rewritten — Instance.Name
        replicates, so the old renaming trick was broadcasting to the server.
-    6. TAGS ARE NAMESPACED. Static tag strings ("CONSOLE_BREAKER_IGNORE" and
+    6. TAGS ARE NAMESPACED. Static tag strings ("FRUTIGER_BREAKER_IGNORE" and
        friends) are a signature list on a public repo. Tags mint through a
        per-session namespace.
     7. NOTHING HERE KICKS. Every step is pcall'd and degrades to a no-op.
@@ -43314,7 +43314,7 @@ bypass.verify_report = {};
 
 -- ── logging ────────────────────────────────────────────────────────────────
 function bypass.log(...)
-    if getgenv().CONSOLE_DEBUG then
+    if getgenv().FRUTIGER_DEBUG then
         print("[bypass]", ...);
     end;
 end;
@@ -43621,7 +43621,7 @@ function bypass.collect_report_remotes()
     table.sort(listed);
     bypass.blocked_list = listed;
 
-    if #listed > 0 and getgenv().CONSOLE_DEBUG then
+    if #listed > 0 and getgenv().FRUTIGER_DEBUG then
         print("[bypass] blocking", #listed, "remote(s):");
         for _, entry in next, listed do
             print("    ", entry);
@@ -43654,7 +43654,7 @@ bypass.ac_markers = {
 -- Off by default. Identity blocking (a remote positively recognised as a
 -- report channel) cannot produce false positives. Attribution can, and a
 -- wrong guess silently eats game traffic. Opt in with
---     getgenv().CONSOLE_ATTRIBUTION = true
+--     getgenv().FRUTIGER_ATTRIBUTION = true
 bypass.attribution = false;
 
 -- Last path segment of a source / full name.
@@ -43837,7 +43837,7 @@ function bypass.install()
 
     -- Attribution is opt-in. With it off, only remotes positively identified as
     -- report channels are dropped, which cannot eat game traffic.
-    bypass.attribution = getgenv().CONSOLE_ATTRIBUTION == true;
+    bypass.attribution = getgenv().FRUTIGER_ATTRIBUTION == true;
     bypass.verify_report.attribution = bypass.attribution;
 
     step("preserve_client_manager", bypass.preserve_client_manager);
@@ -44093,10 +44093,10 @@ end;
 
 __modules["src/ui/config_converter"] = function()
 return function()
-    if isfile("Console/converted.txt") then
+    if isfile("Frutiger/converted.txt") then
         return    
 else
-        writefile("Console/converted.txt", "true");
+        writefile("Frutiger/converted.txt", "true");
     end;
 
     if isfolder("ProjectRainRewrite") and isfolder("ProjectRainRewrite/settings") then
@@ -44163,9 +44163,9 @@ end;
             end;
 
             local name = file:gsub("/", "\\"):split("ProjectRainRewrite\\settings\\")[2]:gsub(".json", "");
-            if isfile("Console\\Deepwoken-Config\\settings\\DecayLegacyConvert-" .. name .. ".json") then continue end
+            if isfile("Frutiger\\Deepwoken-Config\\settings\\DecayLegacyConvert-" .. name .. ".json") then continue end
             Logger:long_notify("Converted config: " .. name);
-            writefile("Console\\Deepwoken-Config\\settings\\DecayLegacyConvert-" .. name .. ".json", game:GetService("HttpService"):JSONEncode(converted_config));
+            writefile("Frutiger\\Deepwoken-Config\\settings\\DecayLegacyConvert-" .. name .. ".json", game:GetService("HttpService"):JSONEncode(converted_config));
         end;
     end;
 end
@@ -44829,8 +44829,8 @@ function automation:make_config()
             persistent_data:set(key, value);
         end
 
-        if not isfolder("Console/automation_configs") then
-            makefolder("Console/automation_configs")
+        if not isfolder("Frutiger/automation_configs") then
+            makefolder("Frutiger/automation_configs")
         end
 
         if aztup_options.automation_config_mode.Value == "File" then
@@ -44841,7 +44841,7 @@ function automation:make_config()
 
             local config_name = aztup_options.automation_config_name.Value;
             local success, err = pcall(function()
-                writefile("Console/automation_configs/" .. config_name .. ".json", game:GetService("HttpService"):JSONEncode(persistent_data_items));
+                writefile("Frutiger/automation_configs/" .. config_name .. ".json", game:GetService("HttpService"):JSONEncode(persistent_data_items));
             end)
 
             if success then
@@ -44860,7 +44860,7 @@ function automation:make_config()
 
     local function load_config(config_name)
         local success, data = pcall(function()
-            return readfile("Console/automation_configs/" .. config_name .. ".json")        
+            return readfile("Frutiger/automation_configs/" .. config_name .. ".json")        
 end) 
         
         if success then
@@ -44911,7 +44911,7 @@ end
     config_groupbox:newButton("Load", function()
         local config_name = aztup_options.automation_config_name.Value;
         local success, data = pcall(function()
-            return readfile("Console/automation_configs/" .. config_name .. ".json")        
+            return readfile("Frutiger/automation_configs/" .. config_name .. ".json")        
 end)
 
         if success then
@@ -44933,7 +44933,7 @@ end)
     config_groupbox:newSlider("force_tween_speed_value", "Tween Speed", 250, 16, 250, 1, true, "studs/second");
 
     local item_loot_box = config_groupbox:newDependencyBox("automation_config_mode", "File");
-    item_loot_box:newTextbox('automation_config_name', 'Name', false, '', nil, "What the automation config will set to, Stored @ 'workspace/Console/automation_configs")
+    item_loot_box:newTextbox('automation_config_name', 'Name', false, '', nil, "What the automation config will set to, Stored @ 'workspace/Frutiger/automation_configs")
     
     label = config_groupbox:newLabel(string.format("Currently set to: %s", persistent_data:get("automation_config", "persistent"))); 
     xpcall(set_bools, function(...)
@@ -45183,7 +45183,7 @@ return function(tab)
         if not val then return end
         if not aztup.silent_mode then return end
 
-        messagebox("You have 'Silent Mode' enabled, You cannot use Debug Notifications with 'Silent Mode'.", "Console", 0) 
+        messagebox("You have 'Silent Mode' enabled, You cannot use Debug Notifications with 'Silent Mode'.", "Frutiger", 0) 
         aztup_toggles.auto_parry_debug:SetValue(false);
     end, false);    
     auto_parry_dependency_box:newToggleWithKeybind("log_speed_changes",     "Debug Speed Changes", false, "Gives AP debug notifs on speed changes.", nil, false);    
@@ -46096,7 +46096,7 @@ return function(tab)
     local parry_sound_box = qol_groupbox:newDependencyBox("parry_sounds");
     parry_sound_box:newDropdown("parry_sound_type", "Sound", { 
         "Ultrakill Parry",
-    }, "Ultrakill Parry", true, "Sound to use, mp3 only stored in workspace @ Console/Assets/Parry Sounds.");
+    }, "Ultrakill Parry", true, "Sound to use, mp3 only stored in workspace @ Frutiger/Assets/Parry Sounds.");
     local game_qol_toggles = {
         {"minesweeper", "Minesweeper", false, "Play a game of minesweeper in a draggable widget. Left click to reveal, right click to flag.", nil, true},
         {"bring_mobs",  "Bring Mobs", false, "Brings nearby mobs to your location abusing network ownership.", nil, true},
@@ -46160,8 +46160,8 @@ return function(tab)
     local function refresh_sounds() 
         local sound_list = {}
 
-        for _, file in listfiles("Console/Assets/Parry Sounds") do
-            table.insert(sound_list, tostring(file:gsub("/", "\\"):gsub(".mp3", ""):gsub("Console\\Assets\\Parry Sounds\\", "")));
+        for _, file in listfiles("Frutiger/Assets/Parry Sounds") do
+            table.insert(sound_list, tostring(file:gsub("/", "\\"):gsub(".mp3", ""):gsub("Frutiger\\Assets\\Parry Sounds\\", "")));
         end;
 
 		aztup_options.parry_sound_type:SetValues(sound_list)
@@ -46651,7 +46651,7 @@ xpcall(function()
 
     local ThemeManager = require("@src/utility/librarys/managers/ThemeManager");
     ThemeManager:SetLibrary(aztup.ui);
-    ThemeManager:SetFolder('Console/Deepwoken-Config')
+    ThemeManager:SetFolder('Frutiger/Deepwoken-Config')
     ThemeManager:LoadDefault()
 end, warn);
 
@@ -46690,7 +46690,7 @@ local accentHex = (Library and Library.AccentColor or Color3.fromHex("6699cc")):
 Converted["_TextLabel"].Font = Enum.Font.Code
 Converted["_TextLabel"].RichText = true
 Converted["_TextLabel"].Text = ([[
-By accessing or using our service ("<font color="#%s">Console</font>"), you agree to be bound by these Terms of Service.
+By accessing or using our service ("<font color="#%s">Frutiger</font>"), you agree to be bound by these Terms of Service.
 
 <b>Updates to this Agreement</b>
 <font color="rgb(116, 118, 125)"><b>We may revise this Agreement and its content at any time with a notice and all such revisions are effective immediately upon acceptance by when you click "Agree".</b></font>
@@ -46951,7 +46951,7 @@ end
     game:GetService("Debris"):AddItem(Music, 2);
     game:GetService("Debris"):AddItem(Converted["_ScreenGui"], 2);
     accepted = true;
-    writefile("Console/tos_accepted_82126_0822UTC0.txt", "yes");
+    writefile("Frutiger/tos_accepted_82126_0822UTC0.txt", "yes");
 end)
 
 Converted._Deny.MouseButton1Click:Connect(function()
@@ -46985,7 +46985,7 @@ Converted._Deny.MouseButton1Click:Connect(function()
     end
 
     roblox_prompt_gui.promptOverlay.ErrorPrompt.TitleFrame.ErrorTitle.TextColor3 = Color3.fromRGB(125, 196, 228)
-    roblox_prompt_gui.promptOverlay.ErrorPrompt.TitleFrame.ErrorTitle.Text = "Console"
+    roblox_prompt_gui.promptOverlay.ErrorPrompt.TitleFrame.ErrorTitle.Text = "Frutiger"
     roblox_prompt_gui.promptOverlay.ErrorPrompt.MessageArea.ErrorFrame.ErrorMessage.Text = "You must accept the Terms of Service to use PR"
 end)
 
@@ -47038,8 +47038,8 @@ end;
             "spotify_redirect_url",
             
         })
-        SaveManager:SetFolder('Console/Deepwoken-Config')
-        ThemeManager:SetFolder('Console/Deepwoken-Config')
+        SaveManager:SetFolder('Frutiger/Deepwoken-Config')
+        ThemeManager:SetFolder('Frutiger/Deepwoken-Config')
         SaveManager:BuildConfigSection(aztup.tabs.UI.Tab);
         ThemeManager:ApplyToTab(aztup.tabs.UI.Tab);
 
@@ -47059,11 +47059,11 @@ end;
             SaveManager:LoadAutoloadConfig()
         end;
         local custom_name = not LPH_OBFUSCATED and isfile("custom_name.txt") and readfile("custom_name.txt") or nil;
-        Library.ConsoleWindow:SetWindowTitle((function()
+        Library.FrutigerWindow:SetWindowTitle((function()
 		    if custom_name then
 		    	return string.format(LPH_ENCSTR("%s"), custom_name:gsub("|ACCENT", "<font color=\"#" .. Library.AccentColor:ToHex() .. "\">"))		    
 end
-		    return string.format(LPH_ENCSTR("CONSOLE <font color=\"#%s\">// USER_%03d</font>"), Library.AccentColor:ToHex(), math.random(1, 999))
+		    return string.format(LPH_ENCSTR("FRUTIGER <font color=\"#%s\">// USER_%03d</font>"), Library.AccentColor:ToHex(), math.random(1, 999))
 	    end)())
 
         aztup.auto_loaded = true;
@@ -47310,2006 +47310,6 @@ return BindableFunction
 
 end;
 
-__modules["src/utility/console/chrome"] = function()
---[[
-    src/utility/console/chrome.lua
-
-    Native chrome, borrowed widgets.
-
-    The library keeps doing what it is good at -- toggles, sliders, dropdowns,
-    dependency boxes, keybinds, config round-tripping. Rewriting that would mean
-    reproducing 16 constructors, 16 Library methods and 103 option objects
-    across 60 files.
-
-    What it is bad at is being the frame around those widgets. Its chrome fights
-    decoration: it re-tweens properties, rebuilds pieces on tab switch, and
-    bakes a font per label, so fonts, torn borders and glitch effects can only
-    be bolted on from outside. So the chrome is replaced and the widget tree
-    transplanted into it.
-
-    The shell lives INSIDE Outer, the library's window frame, and that is the
-    whole trick:
-
-    *   Outer already carries the UIScale, so the transplanted widgets render at
-        the scale the user set without any of it being re-derived.
-
-    *   Outer already carries the drag binding -- MakeUIDraggable(Outer, 21) at
-        ui.lua:1297, a 21px grab zone at the top -- and this shell puts its title
-        bar in exactly that strip, so dragging keeps working untouched.
-
-    *   The theme overlay is also a child of Outer at scale 1,1, so it resizes
-        with the new window instead of drifting away from it. Parenting the
-        shell to the ScreenGui instead would have desynced all three.
-
-    *   Outer.Visible is the library's own show/hide state (Library:Toggle sets
-        it at ui.lua ~2369), so visibility needs no syncing at all --
-        everything is inside it.
-
-    How the pieces are moved:
-
-    *   Tab switching is Tab:ShowTab() (ui.lua ~1882), which sets
-        TabFrame.Visible. Those frames live inside the library's content frame,
-        so the whole content frame moves in one piece.
-
-    *   It is moved at its MEASURED size, never stretched. Every tab page inside
-        uses fixed offsets and two 266px columns; letting it resize drags them
-        out of position -- the trap the sidebar pass already fell into once.
-
-    *   The library's own chrome (title, strip, separator, search) is hidden by
-        hiding Inner, but LEFT ALIVE. Tab:ShowTab() still writes to
-        TabButtonLabel, the underline and the registry, and those have to keep
-        resolving.
-]]
-
-local chrome = {};
-
-local SIDEBAR_WIDTH = 150;
-local TITLE_HEIGHT = 26;
-local TAB_HEIGHT = 26;
-local TAB_PADDING = 2;
-
--- ── helpers ────────────────────────────────────────────────────────────────
-local function gui_children(parent)
-    local out = {};
-    for _, child in ipairs(parent:GetChildren()) do
-        if child:IsA("GuiObject") then
-            out[#out + 1] = child;
-        end;
-    end;
-    return out;
-end;
-
-local function make(class, props)
-    local object = Instance.new(class);
-    for key, value in next, props do
-        object[key] = value;
-    end;
-    return object;
-end;
-
--- ── locate the library's pieces ────────────────────────────────────────────
-local function find_window_body(outer)
-    for _, child in ipairs(gui_children(outer)) do
-        if child.Name ~= "CONSOLE_OVERLAY" then
-            return child;
-        end;
-    end;
-    return nil;
-end;
-
-local function find_strip(root)
-    for _, descendant in ipairs(root:GetDescendants()) do
-        if descendant:IsA("Frame") then
-            local layout = descendant:FindFirstChildOfClass("UIListLayout");
-            if layout
-                and layout.FillDirection == Enum.FillDirection.Horizontal
-                and descendant.AbsoluteSize.X > descendant.AbsoluteSize.Y * 4 then
-                return descendant;
-            end;
-        end;
-    end;
-    return nil;
-end;
-
--- ── build ──────────────────────────────────────────────────────────────────
-local function build(outer)
-    local inner = find_window_body(outer);
-    if not inner then
-        return false, "no window body";
-    end;
-
-    local strip = find_strip(inner);
-    if not strip then
-        return false, "no tab strip";
-    end;
-
-    local holder = strip.Parent;
-    local container = holder and holder.Parent;
-    if not holder or not container then
-        return false, "no frame chain";
-    end;
-
-    local content;
-    for _, sibling in ipairs(gui_children(holder)) do
-        if sibling ~= strip and sibling.AbsoluteSize.Y > 100 then
-            content = content or sibling;
-        end;
-    end;
-    if not content then
-        return false, "no content frame";
-    end;
-
-    -- measure BEFORE moving, and restore at exactly this size
-    local content_size = content.AbsoluteSize;
-
-    -- ── the shell ──────────────────────────────────────────────────────────
-    local window_width = SIDEBAR_WIDTH + content_size.X;
-    local window_height = TITLE_HEIGHT + content_size.Y;
-
-    local root = make("Frame", {
-        Name = "CONSOLE_CHROME",
-        BackgroundColor3 = Color3.new(0, 0, 0),
-        BorderSizePixel = 0,
-        Size = UDim2.fromScale(1, 1),
-        Position = UDim2.fromScale(0, 0),
-        ZIndex = 1,
-        Parent = outer,
-    });
-
-    make("UICorner", { CornerRadius = UDim.new(0, 6), Parent = root });
-
-    local stroke = make("UIStroke", {
-        Color = Color3.fromRGB(255, 255, 255),
-        Thickness = 1,
-        Parent = root,
-    });
-    make("UICorner", { CornerRadius = UDim.new(0, 6), Parent = stroke });
-
-    -- title bar. sits inside Outer's existing 21px drag zone.
-    local title_bar = make("Frame", {
-        Name = "title",
-        BackgroundTransparency = 1,
-        Size = UDim2.new(1, 0, 0, TITLE_HEIGHT),
-        ZIndex = 2,
-        Parent = root,
-    });
-
-    local title_label = make("TextLabel", {
-        Name = "title_text",
-        BackgroundTransparency = 1,
-        Font = Enum.Font.RobotoMono,
-        Text = string.format("CONSOLE // USER_%03d", math.random(1, 999)),
-        TextColor3 = Color3.new(1, 1, 1),
-        TextSize = 13,
-        TextXAlignment = Enum.TextXAlignment.Left,
-        Size = UDim2.new(1, -12, 1, 0),
-        Position = UDim2.fromOffset(8, 0),
-        ZIndex = 2,
-        Parent = title_bar,
-    });
-
-    make("Frame", {
-        Name = "title_rule",
-        BackgroundColor3 = Color3.fromRGB(255, 255, 255),
-        BorderSizePixel = 0,
-        Size = UDim2.new(1, 0, 0, 1),
-        Position = UDim2.new(0, 0, 0, TITLE_HEIGHT - 1),
-        ZIndex = 2,
-        Parent = root,
-    });
-
-    -- sidebar
-    local sidebar = make("Frame", {
-        Name = "sidebar",
-        BackgroundTransparency = 1,
-        Size = UDim2.new(0, SIDEBAR_WIDTH, 1, -TITLE_HEIGHT),
-        Position = UDim2.fromOffset(0, TITLE_HEIGHT),
-        ZIndex = 2,
-        Parent = root,
-    });
-
-    make("UIListLayout", {
-        FillDirection = Enum.FillDirection.Vertical,
-        SortOrder = Enum.SortOrder.LayoutOrder,
-        Padding = UDim.new(0, TAB_PADDING),
-        Parent = sidebar,
-    });
-    make("UIPadding", {
-        PaddingLeft = UDim.new(0, 6),
-        PaddingRight = UDim.new(0, 6),
-        PaddingTop = UDim.new(0, 6),
-        Parent = sidebar,
-    });
-
-    make("Frame", {
-        Name = "sidebar_rule",
-        BackgroundColor3 = Color3.fromRGB(255, 255, 255),
-        BorderSizePixel = 0,
-        Size = UDim2.new(0, 1, 1, -TITLE_HEIGHT),
-        Position = UDim2.new(0, SIDEBAR_WIDTH, 0, TITLE_HEIGHT),
-        ZIndex = 2,
-        Parent = root,
-    });
-
-    -- content host
-    local host = make("Frame", {
-        Name = "content_host",
-        BackgroundTransparency = 1,
-        ClipsDescendants = true,
-        Size = UDim2.fromOffset(content_size.X, content_size.Y),
-        Position = UDim2.fromOffset(SIDEBAR_WIDTH + 1, TITLE_HEIGHT),
-        ZIndex = 1,
-        Parent = root,
-    });
-
-    -- ── transplant ─────────────────────────────────────────────────────────
-    content.Parent = host;
-    content.Position = UDim2.fromOffset(0, 0);
-    content.Size = UDim2.fromOffset(content_size.X, content_size.Y);
-
-    -- ── hide the library chrome, keep it alive ─────────────────────────────
-    pcall(function() inner.Visible = false end);
-    pcall(function() outer.BackgroundTransparency = 1 end);
-
-    -- ── resize the library window around the new chrome ────────────────────
-    -- Outer keeps its UIScale, its drag binding and the theme overlay child,
-    -- all of which follow this size.
-    pcall(function()
-        outer.Size = UDim2.fromOffset(window_width, window_height);
-    end);
-
-    -- ── tabs ───────────────────────────────────────────────────────────────
-    local window = Library.ConsoleWindow;
-    local entries = {};
-
-    local function sorted_tabs()
-        -- Window.TabOrder is the library's authoritative order, and it is an
-        -- array of Tab OBJECTS in creation order (ui.lua:2290).
-        --
-        -- The first version sorted by tab.LayoutOrder, which does not exist:
-        -- Tab:SetLayoutOrder writes to TabButton.LayoutOrder, not to the Tab.
-        -- So the comparator compared nil with nil and returned false every
-        -- time, and table.sort produced arbitrary order.
-        local order = window.TabOrder;
-        if type(order) == "table" and #order > 0 then
-            local ordered = {};
-            for _, tab in ipairs(order) do
-                if tab then
-                    ordered[#ordered + 1] = tab;
-                end;
-            end;
-            return ordered;
-        end;
-
-        -- fallback for a window built without TabOrder
-        local tabs = window.Tabs or {};
-        local names = {};
-        for name in next, tabs do
-            names[#names + 1] = name;
-        end;
-        table.sort(names);
-
-        local out = {};
-        for _, name in ipairs(names) do
-            if tabs[name] then
-                out[#out + 1] = tabs[name];
-            end;
-        end;
-        return out;
-    end;
-
-    local function paint_active(active)
-        for tab, entry in next, entries do
-            local is_active = (tab == active);
-            pcall(function()
-                entry.frame.BackgroundColor3 = is_active and Color3.new(1, 1, 1) or Color3.new(0, 0, 0);
-                entry.label.TextColor3 = is_active and Color3.new(0, 0, 0) or Color3.new(1, 1, 1);
-            end);
-        end;
-    end;
-
-    local function build_entries()
-        local ordered = sorted_tabs();
-
-        for index, tab in ipairs(ordered) do
-            if not entries[tab] then
-                local row = make("Frame", {
-                    Name = "tab_" .. index,
-                    BackgroundColor3 = Color3.new(0, 0, 0),
-                    BorderSizePixel = 0,
-                    Size = UDim2.new(1, 0, 0, TAB_HEIGHT),
-                    LayoutOrder = index,
-                    ZIndex = 3,
-                    Parent = sidebar,
-                });
-                make("UICorner", { CornerRadius = UDim.new(0, 4), Parent = row });
-                make("UIStroke", {
-                    Color = Color3.fromRGB(255, 255, 255),
-                    Thickness = 1,
-                    Parent = row,
-                });
-
-                local label = make("TextLabel", {
-                    Name = "label",
-                    BackgroundTransparency = 1,
-                    Font = Enum.Font.RobotoMono,
-                    Text = tostring(tab.Name or ("TAB_" .. index)):upper(),
-                    TextColor3 = Color3.new(1, 1, 1),
-                    TextSize = 12,
-                    TextXAlignment = Enum.TextXAlignment.Left,
-                    Size = UDim2.new(1, -12, 1, 0),
-                    Position = UDim2.fromOffset(8, 0),
-                    ZIndex = 4,
-                    Parent = row,
-                });
-
-                entries[tab] = { frame = row, label = label };
-
-                -- clicking drives the library's own tab switch, so its internal
-                -- state (ActiveTab, search refresh, registry) stays correct
-                row.InputBegan:Connect(function(input)
-                    if input.UserInputType == Enum.UserInputType.MouseButton1 then
-                        pcall(function() tab:ShowTab() end);
-                        paint_active(tab);
-                    end
-                end);
-            end
-        end;
-
-        if window.ActiveTab then
-            paint_active(window.ActiveTab);
-        elseif ordered[1] then
-            pcall(function() ordered[1]:ShowTab() end);
-            paint_active(ordered[1]);
-        end;
-    end;
-
-    build_entries();
-
-    -- The library can add or rebuild tabs (search, config load), so re-sync for
-    -- a while rather than assuming the set is fixed.
-    task.spawn(function()
-        for _ = 1, 10 do
-            task.wait(1);
-            pcall(build_entries);
-            pcall(function() paint_active(Library.ConsoleWindow.ActiveTab) end);
-        end;
-    end);
-
-    chrome.root = root;
-    chrome.sidebar = sidebar;
-    chrome.host = host;
-    chrome.title = title_label;
-    chrome.entries = entries;
-    chrome.transplanted = content;
-    chrome.outer = outer;
-
-    return true;
-end;
-
-function chrome.apply()
-    if chrome.applied then
-        return true;
-    end;
-
-    if not Library or not Library.ScreenGui or not Library.ConsoleWindow then
-        return false;
-    end;
-
-    local outer = Library.ConsoleWindow.Holder;
-    if not outer then
-        return false;
-    end;
-
-    local ok, result, reason = pcall(build, outer);
-    if not ok then
-        warn("[console] chrome failed:", result);
-        return false;
-    end;
-    if not result then
-        warn("[console] chrome skipped:", reason);
-        return false;
-    end;
-
-    chrome.applied = true;
-    return true;
-end;
-
--- ── keybind list ───────────────────────────────────────────────────────────
--- Library.KeybindFrame (ui.lua:1246) is a PanelComponent panel: four nested
--- fills with the text buried inside them.
---
---     Outer    accent-coloured, BorderSizePixel 1   <- the border you see
---       Inner  main fill
---         Header   background fill, 22px
---           HeaderLabel  "Keybinds", centred
---         Divider  outline-coloured 1px
---         Content  (transparent) <- the entries live here
---
--- So stripping the background is a walk: every Frame in the panel loses its
--- fill and its classic border. The labels are untouched, which is the point --
--- text only, no box.
---
--- The header is centred because it used to sit inside a filled bar. With the
--- bar gone it reads as a stray float in the middle of nothing, so it is aligned
--- left to line up with the entries under it.
-
--- Which corner the bind list sits in. Bottom-left: the anchor is the bottom
--- edge, so the list grows upward as binds are added and the bottom stays put.
---
--- Flip these two to move it -- Vector2.new(0, 0) is top-left, Vector2.new(1, 1)
--- is bottom-right. Note the bottom-anchored Y value (1) is also what tells
--- toggle.lua to skip its vertical-centre compensation; a centre anchor (0.5)
--- would drag the list down as it grows.
-local KEYBIND_ANCHOR = Vector2.new(0, 1);
-local KEYBIND_MARGIN = 10;
-
--- Corner position, computed from the camera viewport in OFFSETS rather than
--- from scale.
---
--- Scale-1 Y does not mean "the bottom of the screen" here: the library's
--- ScreenGui has IgnoreGuiInset = false and GuiService reports a 58px inset, so
--- ScreenGui.AbsoluteSize is 1920x1022 against a 1920x1080 viewport. Anchoring
--- at scale 1 left the panel 68px above the physical bottom -- measured. Offsets
--- are absolute screen pixels, so they land where you actually want.
---
--- Offsets also suit the library: toggle.lua's resize code reads
--- Position.Y.Offset, and SaveManager stores the position as a UDim2 anyway.
-local function corner_position()
-    local camera = workspace.CurrentCamera;
-    local viewport = (camera and camera.ViewportSize) or Vector2.new(1920, 1080);
-
-    local x = (KEYBIND_ANCHOR.X == 1)
-        and (viewport.X - KEYBIND_MARGIN)
-        or KEYBIND_MARGIN;
-
-    local y = (KEYBIND_ANCHOR.Y == 1)
-        and (viewport.Y - KEYBIND_MARGIN)
-        or KEYBIND_MARGIN;
-
-    return UDim2.fromOffset(x, y);
-end;
-
-function chrome.restyle_keybinds()
-    if not Library or not Library.KeybindFrame then
-        return false;
-    end;
-
-    local frame = Library.KeybindFrame;
-
-    -- bottom-left. The list reads as an overlay on the game rather than a
-    -- panel, and the left edge is otherwise clear once the quest tracker is
-    -- dismissed.
-    pcall(function()
-        frame.AnchorPoint = KEYBIND_ANCHOR;
-        frame.Position = corner_position();
-    end);
-
-    local stripped = 0;
-
-    for _, descendant in ipairs(frame:GetDescendants()) do
-        if descendant:IsA("Frame") then
-            local ok = pcall(function()
-                descendant.BackgroundTransparency = 1;
-                descendant.BorderSizePixel = 0;
-            end);
-            if ok then
-                stripped = stripped + 1;
-            end;
-        elseif descendant:IsA("TextLabel") then
-            -- the panel title, once centred in its bar
-            if descendant.Text and descendant.Text:lower():find("keybind") then
-                pcall(function()
-                    descendant.TextXAlignment = Enum.TextXAlignment.Left;
-                end);
-            end;
-        end;
-    end;
-
-    pcall(function()
-        frame.BackgroundTransparency = 1;
-        frame.BorderSizePixel = 0;
-    end);
-
-    chrome.keybind_frame = frame;
-    chrome.keybinds_stripped = stripped;
-
-    -- SaveManager persists and restores a keybindPosition (SaveManager.lua:149
-    -- saves, :266 restores), and that restore can land after this runs. An older
-    -- saved position is offset-based, which under this anchor puts the panel off
-    -- screen. So re-assert for a few seconds; once the position has been saved
-    -- back as ours, later launches restore correctly on their own.
-    task.spawn(function()
-        for _, delay in ipairs({ 0.5, 1.5, 3, 5, 8 }) do
-            task.wait(delay);
-            local current = chrome.keybind_frame;
-            if current and current.Parent then
-                pcall(function()
-                    current.AnchorPoint = KEYBIND_ANCHOR;
-                    current.Position = corner_position();
-                end);
-            end;
-        end;
-    end);
-
-    return true;
-end;
-
-return chrome;
-
-end;
-
-__modules["src/utility/console/hover"] = function()
---[[
-    src/utility/console/hover.lua
-
-    Hover effect for the CONSOLE theme: the element inverts.
-
-    The library already has a hover, but it is only a faint tint -- it spawns a
-    child Frame inside the hovered element with BackgroundColor3 =
-    Library.AccentColor and tweens its transparency (ui.lua ~2156). On a black
-    surface that is almost invisible, and it never touches the label.
-
-    This inverts instead: a black row goes solid white with black text, a light
-    element goes the other way, with a two-frame flicker on the way in. Same
-    spirit as the "inversione dei colori" in the art brief.
-
-    Finding targets: the library ships ZERO TextButtons -- everything clickable
-    is a Frame with an input connection, which cannot be queried. So elements
-    are matched on shape instead: a fill you can see, a label inside, 14-44px
-    tall, at least 80px wide. That measured 463 elements on a live client.
-]]
-
-local hover = {};
-
-local states = setmetatable({}, { __mode = "k" });
-local attached_count = 0;
-
-local FLICKER_STEPS = 3;
-local FLICKER_DELAY = 0.028;
-
--- ── target selection ───────────────────────────────────────────────────────
-local function has_label(object)
-    for _, child in ipairs(object:GetDescendants()) do
-        if child:IsA("TextLabel") then
-            return true;
-        end;
-    end;
-    return false;
-end;
-
-local function is_candidate(object)
-    if states[object] then
-        return false;
-    end;
-
-    local ok, result = pcall(function()
-        if object:IsA("TextButton") or object:IsA("ImageButton") then
-            return true;
-        end;
-
-        if not (object:IsA("Frame") or object:IsA("TextBox")) then
-            return false;
-        end;
-
-        local height = object.AbsoluteSize.Y;
-        if height < 14 or height > 44 then
-            return false;
-        end;
-        if object.AbsoluteSize.X < 80 then
-            return false;
-        end;
-
-        -- needs some fill to invert; a fully transparent layout row has nothing
-        -- to turn white
-        if object.BackgroundTransparency >= 0.9 then
-            return false;
-        end;
-
-        return has_label(object);
-    end);
-
-    return ok and result == true;
-end;
-
--- ── the effect ─────────────────────────────────────────────────────────────
-local function collect_text(object)
-    local list = {};
-    for _, child in ipairs(object:GetDescendants()) do
-        if child:IsA("TextLabel") or child:IsA("TextBox") then
-            list[#list + 1] = child;
-        end;
-    end;
-    return list;
-end;
-
--- Invert, whichever way round the element currently is. A white row would
--- otherwise "invert" to white and look like nothing happened.
-local function invert_targets(background)
-    local luminance = 0.299 * background.R + 0.587 * background.G + 0.114 * background.B;
-    if luminance < 0.5 then
-        return Color3.new(1, 1, 1), Color3.new(0, 0, 0);
-    end;
-    return Color3.new(0, 0, 0), Color3.new(1, 1, 1);
-end;
-
-local function paint(state, inverted)
-    local object = state.object;
-
-    if inverted then
-        pcall(function()
-            object.BackgroundColor3 = state.target_bg;
-            object.BackgroundTransparency = state.target_transparency;
-        end);
-        for _, label in ipairs(state.targets) do
-            pcall(function() label.TextColor3 = state.target_text end);
-        end;
-    else
-        pcall(function()
-            if state.original_bg then
-                object.BackgroundColor3 = state.original_bg;
-            end;
-            object.BackgroundTransparency = state.original_transparency;
-        end);
-        for index, label in ipairs(state.targets) do
-            local original = state.original_text[index];
-            if original then
-                pcall(function() label.TextColor3 = original end);
-            end;
-        end;
-    end;
-end;
-
--- Snapshot at enter, not at attach. The library repaints text colours on theme
--- changes, so a snapshot taken when the connection was made goes stale and
--- leaving the element would restore a colour from an earlier theme.
-local function snapshot(state)
-    local object = state.object;
-
-    state.targets = collect_text(object);
-    state.original_text = {};
-    for index, label in ipairs(state.targets) do
-        state.original_text[index] = label.TextColor3;
-    end;
-
-    state.original_bg = object.BackgroundColor3;
-    state.original_transparency = object.BackgroundTransparency;
-
-    local background, text = invert_targets(object.BackgroundColor3);
-    state.target_bg = background;
-    state.target_text = text;
-    state.target_transparency = math.min(object.BackgroundTransparency, 0.06);
-end;
-
-local function on_enter(object)
-    local state = states[object];
-    if not state then
-        return;
-    end;
-
-    snapshot(state);
-    state.hovered = true;
-    state.token = (state.token or 0) + 1;
-    local token = state.token;
-
-    -- flicker in rather than fade. 1-2 hard toggles over ~60ms.
-    task.spawn(function()
-        for step = 1, FLICKER_STEPS do
-            if not state.hovered or state.token ~= token then
-                return;
-            end;
-            paint(state, step % 2 == 1);
-            task.wait(FLICKER_DELAY);
-        end;
-        if state.hovered and state.token == token then
-            paint(state, true);
-        end;
-    end);
-end;
-
-local function on_leave(object)
-    local state = states[object];
-    if not state then
-        return;
-    end;
-
-    state.hovered = false;
-    state.token = (state.token or 0) + 1;   -- invalidate any in-flight flicker
-    paint(state, false);
-end;
-
--- ── attach ─────────────────────────────────────────────────────────────────
-function hover.apply()
-    if not Library or not Library.ScreenGui then
-        return 0;
-    end;
-
-    local attached = 0;
-
-    for _, descendant in ipairs(Library.ScreenGui:GetDescendants()) do
-        if is_candidate(descendant) then
-            local state = { object = descendant };
-            states[descendant] = state;
-
-            local ok = pcall(function()
-                descendant.MouseEnter:Connect(function() on_enter(descendant) end);
-                descendant.MouseLeave:Connect(function() on_leave(descendant) end);
-            end);
-
-            if ok then
-                attached = attached + 1;
-                attached_count = attached_count + 1;
-            else
-                states[descendant] = nil;
-            end;
-        end;
-    end;
-
-    return attached;
-end;
-
--- The library builds tab contents and dropdown options lazily, so new elements
--- keep appearing after the first pass.
-function hover.start_watchdog()
-    if hover.watching then
-        return;
-    end;
-    hover.watching = true;
-
-    task.spawn(function()
-        for _ = 1, 8 do
-            task.wait(2);
-            pcall(hover.apply);
-        end;
-    end);
-end;
-
-function hover.count()
-    return attached_count;
-end;
-
-return hover;
-
-end;
-
-__modules["src/utility/console/migrate"] = function()
---[[
-    src/utility/console/migrate.lua
-
-    DECAY shipped previously as "Project Rain". Every install from before the
-    rename still has a `Project Rain/` folder holding the user's configs,
-    fflags, asset cache, logs and script state. A straight folder rename would
-    present everyone with a blank slate.
-
-    This copies the legacy tree forward once, and leaves the old folder in place
-    untouched so a rollback still works. Runs from luarmor_init_script before
-    src/init.lua creates any folder, because init.lua's `if not isfolder(...)
-    then makefolder(...) end` checks would otherwise create empty directories
-    first and the migration would skip.
-
-    Note: `ProjectRainRewrite` handled elsewhere in src/ui/config_converter.lua
-    is an even older layout and is deliberately not touched here.
-]]
-
-local migrate = {};
-
--- Newest-first. Both are real folder names that have shipped.
-local LEGACY  = { "Decay", "Project Rain" };
-local CURRENT = "Console";
-
-local function normalize(path)
-    return (path:gsub("\\", "/"));
-end;
-
-local function copy_tree(source, destination)
-    if not isfolder(destination) then
-        local ok = pcall(makefolder, destination);
-        if not ok then
-            return 0;
-        end;
-    end;
-
-    local ok, entries = pcall(listfiles, source);
-    if not ok or type(entries) ~= "table" then
-        return 0;
-    end;
-
-    local prefix = normalize(source) .. "/";
-    local copied = 0;
-
-    for _, entry in next, entries do
-        local normalized = normalize(entry);
-
-        -- listfiles may hand back an absolute path; fall back to the leaf.
-        local relative;
-        if normalized:sub(1, #prefix) == prefix then
-            relative = normalized:sub(#prefix + 1);
-        else
-            relative = normalized:match("([^/]+)$") or "";
-        end;
-
-        if relative ~= "" then
-            local target = destination .. "/" .. relative;
-
-            if isfolder(entry) then
-                copied = copied + copy_tree(entry, target);
-            elseif isfile(entry) then
-                local read_ok, contents = pcall(readfile, entry);
-                if read_ok and contents then
-                    local write_ok = pcall(writefile, target, contents);
-                    if write_ok then
-                        copied = copied + 1;
-                    end;
-                end;
-            end;
-        end;
-    end;
-
-    return copied;
-end;
-
-local MARKER = CURRENT .. "/migrated_from_legacy.txt";
-
-local function count_files(path)
-    local ok, entries = pcall(listfiles, path);
-    if not ok or type(entries) ~= "table" then
-        return 0;
-    end;
-
-    local n = 0;
-    for _, entry in next, entries do
-        if isfile(entry) then
-            n = n + 1;
-        end;
-    end;
-
-    return n;
-end;
-
--- Returns the number of files copied. Zero means "nothing to do", which is the
--- normal case on a fresh install and on every run after the first.
-function migrate.run()
-    local ok, result = pcall(function()
-        -- Two legacy names now. "Project Rain" is the original release; "Decay"
-        -- was the intermediate rename that shipped for a while. Both have to be
-        -- checked, in newest-first order, or an install that upgraded through
-        -- Decay strands its configs.
-        local source;
-        for _, candidate in ipairs(LEGACY) do
-            if isfolder(candidate) then
-                source = candidate;
-                break;
-            end;
-        end;
-
-        if not source then
-            return 0;                                  -- nothing to migrate from
-        end;
-        if isfile(MARKER) then
-            return 0;                                  -- already done, once and for all
-        end;
-
-        -- Was: `if isfolder(CURRENT) then return 0 end`. That latch was wrong.
-        -- A run that died partway leaves Console/ present but partial, and the
-        -- migration would then never fire again — stranding the user's configs
-        -- in the old folder permanently with no message. Only treat the
-        -- destination as done when it already holds at least as many files as
-        -- the source.
-        if isfolder(CURRENT) then
-            local legacy_count = count_files(source);
-            local current_count = count_files(CURRENT);
-            if legacy_count > 0 and current_count >= legacy_count then
-                return 0;
-            end;
-        end;
-
-        local copied = copy_tree(source, CURRENT);
-
-        -- Written on every attempt, so a partial destination is retried on the
-        -- next run rather than being treated as finished.
-        pcall(writefile, MARKER, string.format(
-            "copied %d file(s) from '%s'\n%s\n",
-            copied, source, os.date("%Y-%m-%d %H:%M:%S")
-        ));
-
-        migrate.last_source = source;
-        return copied;
-    end);
-
-    if not ok then
-        warn("[console] migration failed:", result);
-        return 0;
-    end;
-
-    if result and result > 0 then
-        print(string.format("[console] migrated %d file(s) from '%s' to '%s'",
-            result, migrate.last_source or "?", CURRENT));
-    end;
-
-    return result or 0;
-end;
-
-return migrate;
-
-end;
-
-__modules["src/utility/console/round"] = function()
---[[
-    src/utility/console/round.lua
-
-    Rounds the corners of every visible element in the UI.
-
-    Post-pass again, same as theme.lua and sidebar.lua: nothing in the library
-    is edited, elements are decorated after they exist.
-
-    Rules, in order of how much they matter:
-
-    1.  Never touch an element that already has a UICorner. Several controls in
-        this library build their own (toggle knobs are circular), and
-        overwriting those flattens them.
-
-    2.  Only round things where a corner is actually visible: an element with a
-        background you can see, or a UIStroke that needs to follow the shape.
-        Rounding a transparent layout container does nothing except clip its
-        children unexpectedly.
-
-    3.  Skip pure image elements (icons). Rounding a bitmap crops its artwork.
-
-    4.  The theme overlay gets the same radius as the window it sits in, and so
-        do its layers. ClipsDescendants on a rounded frame does not reliably
-        clip to the rounded shape, so without this the square grain and
-        scanlines would show through the window's rounded corners.
-]]
-
-local round = {};
-
-local RADIUS = 6.0;
-
-local function add_corner(object, radius)
-    if object:FindFirstChildOfClass("UICorner") then
-        return false;
-    end;
-
-    local ok = pcall(function()
-        local corner = Instance.new("UICorner");
-        corner.CornerRadius = UDim.new(0, radius);
-
-        -- UICorner is not affected by sibling order, but parenting last keeps
-        -- it out of the way of the library's own child lookups.
-        corner.Parent = object;
-    end);
-
-    return ok;
-end;
-
-local function should_round(object)
-    if not object:IsA("GuiObject") then
-        return false;
-    end;
-
-    -- already shaped by the library
-    if object:FindFirstChildOfClass("UICorner") then
-        return false;
-    end;
-
-    local stroke = object:FindFirstChildOfClass("UIStroke");
-
-    -- a pure image element: rounding would crop the artwork
-    if object:IsA("ImageLabel") and object.Image ~= "" and not stroke then
-        return object.BackgroundTransparency < 0.95;
-    end;
-
-    -- visible fill, or a border that has to follow the shape
-    if object.BackgroundTransparency < 0.95 then
-        return true;
-    end;
-
-    return stroke ~= nil;
-end;
-
-function round.apply()
-    if not Library or not Library.ScreenGui then
-        return 0;
-    end;
-
-    local applied = 0;
-
-    for _, descendant in ipairs(Library.ScreenGui:GetDescendants()) do
-        if should_round(descendant) then
-            local radius = RADIUS;
-
-            -- Clamp against the SHORTEST dimension, not the height. Clamping on
-            -- height alone turns thin elements into pills -- a 3px-wide slider
-            -- track was getting a 6px radius and rendering as a lens.
-            local size = descendant.AbsoluteSize;
-            local shortest = math.min(size.X, size.Y);
-            if shortest > 0 and shortest < RADIUS * 2 then
-                radius = math.max(1, math.floor(shortest / 2));
-            end;
-
-            if add_corner(descendant, radius) then
-                applied = applied + 1;
-            end;
-        end;
-    end;
-
-    -- the overlay has to match the window it lives in, layers included
-    pcall(function()
-        local window = Library.ConsoleWindow and Library.ConsoleWindow.Holder;
-        local holder = window and window:FindFirstChild("CONSOLE_OVERLAY");
-        if not holder then
-            return;
-        end;
-
-        add_corner(holder, RADIUS);
-        for _, child in ipairs(holder:GetChildren()) do
-            if child:IsA("GuiObject") then
-                add_corner(child, RADIUS);
-            end;
-        end;
-    end);
-
-    return applied;
-end;
-
--- The library builds some elements lazily -- dropdown options, tooltips, tab
--- contents on first visit -- so a one-shot pass misses them. Cheap to re-scan.
-function round.start_watchdog()
-    if round.watching then
-        return;
-    end;
-    round.watching = true;
-
-    task.spawn(function()
-        for _ = 1, 8 do
-            task.wait(2);
-            pcall(round.apply);
-        end;
-    end);
-end;
-
-return round;
-
-end;
-
-__modules["src/utility/console/sidebar"] = function()
---[[
-    src/utility/console/sidebar.lua
-
-    Turns the library's horizontal tab strip into a left sidebar, and moves the
-    window title into that sidebar as its header.
-
-    Same philosophy as console/theme.lua: this is a post-pass over the built UI,
-    not an edit to the 2500-line library. The library stays swappable.
-
-    The layout it operates on (measured from the live tree):
-
-        Outer (550x550)
-          Inner (548x548)
-            TextLabel  "CONSOLE // USER_xxx"   546x19   <- title, moves to sidebar
-            TextBox    search                136x21   top-right, shifts by W
-            container (546x525)
-              holder (546x525)
-                separator                     546x2
-                STRIP                         546x22   <- becomes the sidebar
-                  [ 110, 109, 109, 109, 109 ]          5 tab frames
-                content (546x525 at y+22)
-                  column A 266 wide
-                  column B 266 wide
-
-    The window is widened by SIDEBAR_WIDTH rather than squeezing the two 266px
-    content columns, so nothing inside a groupbox reflows or clips. Content
-    keeps its exact width and just moves right.
-]]
-
-local sidebar = {};
-
-local SIDEBAR_WIDTH = 132;
-local TAB_HEIGHT = 22;
-local TAB_PADDING = 3;
-
--- ── helpers ────────────────────────────────────────────────────────────────
-local function gui_children(parent)
-    local out = {};
-    for _, child in ipairs(parent:GetChildren()) do
-        if child:IsA("GuiObject") then
-            out[#out + 1] = child;
-        end;
-    end;
-    return out;
-end;
-
-local function add_width(object, delta)
-    object.Size = UDim2.new(
-        object.Size.X.Scale, object.Size.X.Offset + delta,
-        object.Size.Y.Scale, object.Size.Y.Offset
-    );
-end;
-
-local function shift_x(object, delta)
-    object.Position = UDim2.new(
-        object.Position.X.Scale, object.Position.X.Offset + delta,
-        object.Position.Y.Scale, object.Position.Y.Offset
-    );
-end;
-
-local function text_of(object)
-    local ok, text = pcall(function() return object.Text end);
-    if not ok or type(text) ~= "string" then
-        return "";
-    end;
-    return (text:gsub("<[^>]+>", ""));
-end;
-
--- ── locate ─────────────────────────────────────────────────────────────────
--- The tab strip is the only wide, short Frame carrying a horizontal
--- UIListLayout with a handful of children. Matching on shape rather than on a
--- name or child index survives the library renaming or reordering things.
-local function find_strip(root)
-    for _, descendant in ipairs(root:GetDescendants()) do
-        if descendant:IsA("Frame") then
-            local layout = descendant:FindFirstChildOfClass("UIListLayout");
-            if layout and layout.FillDirection == Enum.FillDirection.Horizontal then
-                local count = #gui_children(descendant);
-                if count >= 2 and count <= 12
-                    and descendant.AbsoluteSize.X > descendant.AbsoluteSize.Y * 4 then
-                    return descendant, layout;
-                end;
-            end;
-        end;
-    end;
-    return nil;
-end;
-
--- The window title. Matched structurally, not by brand string: this used to
--- search for "DECAY" and would have silently stopped finding the title when the
--- script was renamed to CONSOLE, leaving the header stuck in the old place.
--- The title is the window body's own TextLabel, so look at direct children and
--- take the topmost.
-local function find_title(inner)
-    local best;
-    for _, child in ipairs(gui_children(inner)) do
-        if child:IsA("TextLabel") then
-            if not best or child.AbsolutePosition.Y < best.AbsolutePosition.Y then
-                best = child;
-            end;
-        end;
-    end;
-    return best;
-end;
-
-local function find_search_box(root)
-    for _, descendant in ipairs(root:GetDescendants()) do
-        if descendant:IsA("TextBox") then
-            return descendant;
-        end;
-    end;
-    return nil;
-end;
-
--- ── apply ──────────────────────────────────────────────────────────────────
-local function build(outer)
-    local strip, layout = find_strip(outer);
-    if not strip or not layout then
-        return false, "no horizontal tab strip found";
-    end;
-
-    local holder = strip.Parent;
-    local container = holder and holder.Parent;
-
-    -- Inner is the first *direct* child Frame that isn't the theme overlay.
-    -- FindFirstChildWhichIsA would hand back CONSOLE_OVERLAY, which is also a
-    -- Frame, and we would widen the overlay instead of the window body.
-    local inner;
-    for _, child in ipairs(gui_children(outer)) do
-        if child.Name ~= "CONSOLE_OVERLAY" then
-            inner = child;
-            break;
-        end;
-    end;
-
-    if not holder or not container or not inner then
-        return false, "could not resolve the frame chain";
-    end;
-
-    local siblings = gui_children(holder);
-    local separator, content;
-    for _, sibling in ipairs(siblings) do
-        if sibling ~= strip then
-            if sibling.AbsoluteSize.Y <= 6 then
-                separator = separator or sibling;
-            elseif sibling.AbsoluteSize.Y > 100 then
-                content = content or sibling;
-            end;
-        end;
-    end;
-
-    local search = find_search_box(inner);
-    local title = find_title(inner);
-
-    -- Measure before touching anything. Once the window is resized these
-    -- values are gone.
-    local content_width = content and content.AbsoluteSize.X or nil;
-    local separator_height = separator and separator.AbsoluteSize.Y or nil;
-
-    -- ── widen ──────────────────────────────────────────────────────────────
-    -- Only the window itself is widened outright. Its descendants are mostly
-    -- scale-sized (Inner is 1,-2 of Outer, and so on), so they follow on their
-    -- own -- explicitly widening those double-counts. The earlier version did
-    -- exactly that and produced an 812px Inner inside a 682px window.
-    add_width(outer, SIDEBAR_WIDTH);
-
-    -- Only genuinely fixed-width frames along the chain need help. Threshold is
-    -- on Scale, not Offset: anything mostly scaled is already relative.
-    for _, object in ipairs({ inner, container, holder }) do
-        if object and object.Size.X.Scale <= 0.5 then
-            add_width(object, SIDEBAR_WIDTH);
-        end;
-    end;
-
-    -- The separator is a hairline that should span whatever the window is now.
-    if separator then
-        separator.Size = UDim2.new(1, 0, 0, separator_height or separator.Size.Y.Offset);
-    end;
-
-    -- Content is pinned to the width it had and pushed right by the sidebar.
-    -- Left to scale it would stretch across the new window and drag both 266px
-    -- columns out of position.
-    if content and content_width then
-        content.Size = UDim2.new(0, content_width, content.Size.Y.Scale, content.Size.Y.Offset);
-        content.Position = UDim2.new(0, SIDEBAR_WIDTH, content.Position.Y.Scale, content.Position.Y.Offset);
-    end;
-
-    -- Right-anchored widgets keep their gap to the edge by shifting by the same
-    -- amount -- but only when they are fixed-offset. One anchored with scale 1
-    -- is already following the widened parent, and shifting it again pushes it
-    -- clean off the window (measured: search box at x=1260 in a window that
-    -- ends at 1301).
-    if search and search.Position.X.Scale <= 0.5 then
-        shift_x(search, SIDEBAR_WIDTH);
-    end;
-
-    -- ── the strip becomes the sidebar ──────────────────────────────────────
-    strip.Position = UDim2.new(0, 6, 0, 24);
-    strip.Size = UDim2.new(0, SIDEBAR_WIDTH - 12, 1, -30);
-
-    layout.FillDirection = Enum.FillDirection.Vertical;
-    layout.HorizontalAlignment = Enum.HorizontalAlignment.Left;
-    layout.Padding = UDim.new(0, TAB_PADDING);
-
-    -- ── the title becomes the sidebar header ───────────────────────────────
-    if title then
-        title.Position = UDim2.new(0, 8, 0, 5);
-        title.Size = UDim2.new(0, SIDEBAR_WIDTH - 16, 0, 16);
-        title.TextXAlignment = Enum.TextXAlignment.Left;
-        pcall(function() title.TextSize = 13 end);
-        pcall(function()
-            local stroke = title:FindFirstChildOfClass("UIStroke");
-            if stroke then stroke.Transparency = 0.35 end;
-        end);
-    end;
-
-    sidebar.strip = strip;
-    sidebar.layout = layout;
-    sidebar.title = title;
-    sidebar.content = content;
-    sidebar.outer = outer;
-
-    return true;
-end;
-
--- The library re-sizes and re-shows tab buttons on switch, which can undo the
--- row sizing. Cheap to re-assert; called on tab click and by a short watchdog.
-function sidebar.reassert()
-    if not sidebar.strip or not sidebar.strip.Parent then
-        return false;
-    end;
-
-    local ok = pcall(function()
-        local children = gui_children(sidebar.strip);
-        local count = #children;
-        if count == 0 then
-            return;
-        end;
-
-        -- fill the column, sharing any leftover height across the tabs so a
-        -- short sidebar doesn't leave a ragged gap at the bottom
-        local available = sidebar.strip.AbsoluteSize.Y - (TAB_PADDING * (count - 1));
-        local height = math.floor(available / count);
-        if height < TAB_HEIGHT then
-            height = TAB_HEIGHT;
-        end;
-        if height > 34 then
-            height = 34;
-        end;
-
-        for _, tab in ipairs(children) do
-            tab.Size = UDim2.new(1, 0, 0, height);
-        end;
-    end);
-
-    return ok;
-end;
-
-function sidebar.apply()
-    if sidebar.applied then
-        return true;
-    end;
-
-    if not Library then
-        return false;
-    end;
-
-    local outer = Library.ConsoleWindow and Library.ConsoleWindow.Holder;
-    if not outer then
-        return false;
-    end;
-
-    local ok, result, reason = pcall(build, outer);
-    if not ok then
-        warn("[console] sidebar failed:", result);
-        return false;
-    end;
-    if not result then
-        warn("[console] sidebar skipped:", reason);
-        return false;
-    end;
-
-    sidebar.applied = true;
-    sidebar.reassert();
-
-    -- re-assert on tab clicks: the library touches sizes on switch
-    pcall(function()
-        for _, tab in ipairs(gui_children(sidebar.strip)) do
-            tab.InputBegan:Connect(function()
-                task.wait();
-                sidebar.reassert();
-            end);
-        end;
-    end);
-
-    -- and once more shortly after, covering the library's own post-build pass
-    task.spawn(function()
-        for _ = 1, 6 do
-            task.wait(0.25);
-            sidebar.reassert();
-        end;
-    end);
-
-    return true;
-end;
-
-return sidebar;
-
-end;
-
-__modules["src/utility/console/theme"] = function()
---[[
-    src/utility/console/theme.lua
-
-    The DECAY look. Palette, fonts, and a procedural overlay that sits inside
-    the menu window.
-
-    Scoping decisions:
-
-    1.  The overlay is parented INTO Library.ConsoleWindow, not screenspaced over
-        the game. It moves when you drag the window, resizes with it, and is
-        clipped to it — the game world stays clean. An earlier version was a
-        full-screen ScreenGui in gethui(); that was wrong.
-
-    2.  Layer ZIndex is derived at build time from the window's own highest
-        descendant ZIndex rather than hardcoded. The library uses 9999 for
-        window content and 999999 for drag/tooltip layers, so a fixed value
-        either gets buried or paints over tooltips. Deriving it means the grain
-        sits above content and below tooltips automatically.
-
-    3.  Nothing here is required to succeed. Every step is pcall'd and every
-        lookup degrades to nil. A missing texture costs grain, not the client.
-
-    Textures come from tools/gen-textures.js, are inlined into the bundle by
-    tools/bundle.js as base64(zstd(bytes)), written out on first run and loaded
-    with getcustomasset — the same path the fonts and sounds already use.
-]]
-
-local theme = {};
-
--- ── palette ────────────────────────────────────────────────────────────────
--- Near-absolute black, carbon grey, desaturated mould green, dirty beige,
--- rust. No saturated or clean values anywhere.
-
-theme.palette = {
-    FontColor       = "ffffff",   -- white text
-    MainColor       = "000000",   -- black panels
-    AccentColor     = "ffffff",   -- drives hover: ui.lua sets the hover fill
-                                  -- straight from AccentColor, and the selected
-                                  -- tab underline the same way
-    BackgroundColor = "000000",   -- black background
-    OutlineColor    = "ffffff",   -- drives BorderColor3, i.e. the corners
-};
-
-theme.extra = {
-    white = Color3.fromRGB(255, 255, 255),
-    grey  = Color3.fromRGB(150, 150, 150),
-    black = Color3.fromRGB(0, 0, 0),
-    ash   = Color3.fromRGB(38, 38, 38),
-};
-
--- Condensed industrial for headings, technical mono for everything else.
-theme.fonts = {
-    heading = Enum.Font.Oswald,
-    body    = Enum.Font.RobotoMono,
-};
-
--- ── textures ───────────────────────────────────────────────────────────────
-local TEXTURE_DIR = "Console/Textures";
-local TEXTURE_NAMES = { "grain", "scanline", "scratch", "vignette", "stain" };
-
-theme.textures = {};
-
-local function ensure_folder(dir)
-    if isfolder(dir) then
-        return true;
-    end;
-    return (pcall(makefolder, dir));
-end;
-
-local function ensure_texture(name)
-    local path = TEXTURE_DIR .. "/" .. name .. ".png";
-
-    if not isfile(path) then
-        if not ensure_folder(TEXTURE_DIR) then
-            return nil;
-        end;
-
-        -- inline_asset_b96 and decode_asset are globals published by
-        -- src/luarmor_init_script.lua and src/init.lua respectively.
-        local ok, contents = pcall(function()
-            return decode_asset(inline_asset_b96("@assets/Textures/" .. name .. ".png"));
-        end);
-
-        if not ok or type(contents) ~= "string" or #contents == 0 then
-            return nil;
-        end;
-
-        if not pcall(writefile, path, contents) then
-            return nil;
-        end;
-    end;
-
-    local ok, asset = pcall(getcustomasset, path);
-    return ok and asset or nil;
-end;
-
-function theme.load_textures()
-    for _, name in next, TEXTURE_NAMES do
-        theme.textures[name] = ensure_texture(name);
-    end;
-    return theme.textures;
-end;
-
--- ── overlay ────────────────────────────────────────────────────────────────
-
--- Library.ConsoleWindow is the linoria Window OBJECT, not the frame — it carries
--- .Tabs, .TabOrder and a .Holder field. The actual GUI is Window.Holder
--- (ui.lua:2388 `Window.Holder = Outer`). Handing the object straight to
--- :GetDescendants() throws, and build_overlay then swallowed that, so resolve
--- it here and never let a table through.
-local function as_instance(candidate)
-    if typeof(candidate) == "Instance" then
-        return candidate;
-    end;
-    if type(candidate) == "table" then
-        for _, key in ipairs({ "Holder", "Frame", "Container", "Root" }) do
-            local value = rawget(candidate, key);
-            if typeof(value) == "Instance" then
-                return value;
-            end;
-        end;
-    end;
-    return nil;
-end;
-
--- The frame everything hangs off. Returns nil if nothing resolves, so the
--- caller can skip cleanly instead of erroring.
-local function find_window()
-    if not Library then
-        return nil;
-    end;
-
-    for _, candidate in ipairs({ Library.ConsoleWindow, Library.Window, Library.ScreenGui }) do
-        local instance = as_instance(candidate);
-        if instance then
-            return instance;
-        end;
-    end;
-
-    return nil;
-end;
-
--- Highest ZIndex anywhere under the window. The overlay has to clear the
--- window's own content without hardcoding a number that goes stale.
-local function max_zindex(root)
-    local highest = 0;
-    for _, descendant in ipairs(root:GetDescendants()) do
-        if descendant:IsA("GuiObject") and descendant.ZIndex > highest then
-            highest = descendant.ZIndex;
-        end;
-    end;
-    return highest;
-end;
-
--- A previous build (or a previous injection) may have left a screenspaced
--- overlay behind. Clear it before building the scoped one.
-function theme.destroy_previous()
-    for _, container in ipairs({
-        (type(gethui) == "function" and pcall(gethui) and gethui()) or nil,
-        game:GetService("CoreGui"),
-    }) do
-        if container then
-            for _, child in ipairs(container:GetChildren()) do
-                if child.Name == "CONSOLE_OVERLAY" then
-                    pcall(function() child:Destroy() end);
-                end;
-            end;
-        end;
-    end;
-end;
-
-local function layer(parent, name, image, props)
-    if not image then
-        return nil;
-    end;
-
-    local frame = Instance.new("ImageLabel");
-    frame.Name = name;
-    frame.BackgroundTransparency = 1;
-    frame.BorderSizePixel = 0;
-    frame.Image = image;
-    frame.Size = UDim2.fromScale(1, 1);
-    frame.Position = UDim2.fromScale(0, 0);
-
-    for key, value in next, props do
-        frame[key] = value;
-    end;
-
-    frame.Parent = parent;
-    return frame;
-end;
-
-function theme.build_overlay()
-    if theme.overlay and theme.overlay.Parent then
-        return theme.overlay;
-    end;
-
-    local window = find_window();
-    if not window then
-        return nil;
-    end;
-
-    pcall(theme.destroy_previous);
-
-    local base = math.min(max_zindex(window) + 1, 999990);
-
-    -- The holder is what clips: the grain tiles and the vignette get cut to the
-    -- window's rectangle, so nothing bleeds over the game or over other windows.
-    local holder = Instance.new("Frame");
-    holder.Name = "CONSOLE_OVERLAY";
-    holder.BackgroundTransparency = 1;
-    holder.BorderSizePixel = 0;
-    holder.Size = UDim2.fromScale(1, 1);
-    holder.Position = UDim2.fromScale(0, 0);
-    holder.ClipsDescendants = true;
-    holder.Active = false;
-    holder.ZIndex = base;
-
-    local ok = pcall(function()
-        holder.Parent = window;
-    end);
-    if not ok then
-        holder:Destroy();
-        return nil;
-    end;
-
-    theme.overlay = holder;
-    theme.window = window;
-    theme.base_zindex = base;
-
-    theme.vignette = layer(holder, "vignette", theme.textures.vignette, {
-        ZIndex = base + 1,
-        ImageTransparency = 0.28,
-        ScaleType = Enum.ScaleType.Stretch,
-    });
-
-    theme.stains = {};
-    if theme.textures.stain then
-        local rnd = Random.new(0xDECA7);
-        for i = 1, 3 do
-            theme.stains[i] = layer(holder, "stain" .. i, theme.textures.stain, {
-                ZIndex = base + 2,
-                ImageTransparency = 0.70,
-                Size = UDim2.fromScale(0.26, 0.34),
-                Position = UDim2.fromScale(rnd:NextNumber(0.1, 0.7), rnd:NextNumber(0.1, 0.6)),
-            });
-        end;
-    end;
-
-    theme.grain = layer(holder, "grain", theme.textures.grain, {
-        ZIndex = base + 3,
-        ImageTransparency = 0.87,
-        TileSize = UDim2.fromOffset(128, 128),
-        ResampleMode = Enum.ResamplerMode.Pixelated,
-    });
-
-    theme.scratch = layer(holder, "scratch", theme.textures.scratch, {
-        ZIndex = base + 4,
-        ImageTransparency = 0.78,
-        TileSize = UDim2.fromOffset(256, 256),
-    });
-
-    theme.scanline = layer(holder, "scanline", theme.textures.scanline, {
-        ZIndex = base + 5,
-        ImageTransparency = 0.55,
-        TileSize = UDim2.fromOffset(4, 4),
-        ResampleMode = Enum.ResamplerMode.Pixelated,
-    });
-
-    local sweep = Instance.new("Frame");
-    sweep.Name = "sweep";
-    sweep.BackgroundColor3 = theme.extra.white;
-    sweep.BorderSizePixel = 0;
-    sweep.Size = UDim2.new(1, 0, 0, 2);
-    sweep.Position = UDim2.new(0, 0, -0.05, 0);
-    sweep.BackgroundTransparency = 0.82;
-    sweep.ZIndex = base + 6;
-    sweep.Active = false;
-    sweep.Parent = holder;
-    theme.sweep = sweep;
-
-    return holder;
-end;
-
--- ── motion ─────────────────────────────────────────────────────────────────
--- Slow and wrong rather than smooth and pleasant. Grain drifts a couple of
--- pixels, the pane occasionally jolts sideways for one frame, opacity never
--- quite settles.
-
-function theme.start_motion()
-    if theme.motion_started then
-        return;
-    end;
-    theme.motion_started = true;
-
-    local RunService = game:GetService("RunService");
-    local rnd = Random.new();
-
-    -- grain + scratch drift, ~12fps so it reads as film rather than noise
-    task.spawn(function()
-        while theme.overlay and theme.overlay.Parent do
-            local dx = rnd:NextInteger(-2, 2);
-            local dy = rnd:NextInteger(-2, 2);
-
-            if theme.grain then
-                theme.grain.Position = UDim2.fromOffset(dx, dy);
-                theme.grain.ImageTransparency = 0.87 + rnd:NextNumber(-0.03, 0.03);
-            end;
-            if theme.scratch then
-                theme.scratch.Position = UDim2.fromOffset(-dx, -dy * 2);
-            end;
-
-            -- 1-2 frame jolt
-            if rnd:NextNumber() > 0.93 then
-                local shift = rnd:NextInteger(-3, 3);
-                for _, child in ipairs(theme.overlay:GetChildren()) do
-                    if child:IsA("ImageLabel") and child.Name ~= "vignette" then
-                        child.Position = UDim2.fromOffset(shift, 0);
-                    end;
-                end;
-                task.wait(0.033);
-            end;
-
-            task.wait(0.08);
-        end;
-    end);
-
-    -- the sweep crosses the window in 7s, then waits 5-18s
-    task.spawn(function()
-        while theme.overlay and theme.overlay.Parent do
-            local height = theme.overlay.AbsoluteSize.Y;
-            if theme.sweep and height > 0 then
-                theme.sweep.Position = UDim2.fromOffset(0, -4);
-                local start = tick();
-                while tick() - start < 7 and theme.overlay.Parent do
-                    local t = (tick() - start) / 7;
-                    theme.sweep.Position = UDim2.fromOffset(0, t * height);
-                    theme.sweep.BackgroundTransparency = 0.72 + math.abs(t - 0.5) * 0.3;
-                    RunService.RenderStepped:Wait();
-                end;
-            end;
-            task.wait(rnd:NextNumber(5, 18));
-        end;
-    end);
-end;
-
--- ── library integration ────────────────────────────────────────────────────
-function theme.apply_colors()
-    if not Library then
-        return false;
-    end;
-
-    for key, hex in next, theme.palette do
-        local ok = pcall(function()
-            Library[key] = Color3.fromHex(hex);
-        end);
-        if not ok then
-            return false;
-        end;
-    end;
-
-    pcall(function()
-        Library.AccentColorDark = Library:GetDarkerColor(Library.AccentColor);
-    end);
-
-    return true;
-end;
-
--- ── recolour pass ──────────────────────────────────────────────────────────
--- Setting Library.MainColor and calling ApplyTheme is not enough. The library
--- only repaints elements it registered via AddToRegistry; the window chrome
--- (the outer Frame, the inner container, the hairline separator, UIStrokes)
--- bakes its colours at creation and is never revisited. Measured after a
--- palette change: Library.MainColor was #434343 while Inner still rendered
--- #1b2b34, the old PR blue.
---
--- So capture the palette that was live when the UI was built, then walk the
--- tree and swap any colour that still matches one of those values.
-
-local function colors_close(a, b)
-    return math.abs(a.R - b.R) < 0.02
-       and math.abs(a.G - b.G) < 0.02
-       and math.abs(a.B - b.B) < 0.02;
-end;
-
-function theme.recolor(previous)
-    if not Library or not Library.ScreenGui or type(previous) ~= "table" then
-        return 0;
-    end;
-
-    local mapping = {};
-    for key, old in next, previous do
-        local hex = theme.palette[key];
-        if hex and typeof(old) == "Color3" then
-            mapping[#mapping + 1] = { old = old, new = Color3.fromHex(hex) };
-        end;
-    end;
-    if #mapping == 0 then
-        return 0;
-    end;
-
-    local function remap(object, property)
-        local ok, current = pcall(function() return object[property] end);
-        if not ok or typeof(current) ~= "Color3" then
-            return false;
-        end;
-
-        for _, pair in ipairs(mapping) do
-            if colors_close(current, pair.old) then
-                pcall(function() object[property] = pair.new end);
-                return true;
-            end;
-        end;
-        return false;
-    end;
-
-    local changed = 0;
-
-    for _, descendant in ipairs(Library.ScreenGui:GetDescendants()) do
-        if descendant:IsA("GuiObject") then
-            for _, property in ipairs({
-                "BackgroundColor3", "TextColor3", "ImageColor3",
-                "PlaceholderColor3", "BorderColor3",
-            }) do
-                if remap(descendant, property) then
-                    changed = changed + 1;
-                end;
-            end;
-        end;
-
-        if descendant:IsA("UIStroke") then
-            if remap(descendant, "Color") then
-                changed = changed + 1;
-            end;
-        end;
-    end;
-
-    return changed;
-end;
-
--- ── contrast guard ─────────────────────────────────────────────────────────
--- With a white accent, the library's derived shades (AccentColorDark and its
--- relatives) come out light grey. Anything that ends up light-filled with white
--- text on top is unreadable.
---
--- Measured on the "enable Ping Compensation" notification: a stable #a3a2a5
--- fill at full opacity behind #ffffff text.
---
--- The guard darkens the TEXT, not the fill. It used to darken the fill, which
--- was wrong for the common case: the library paints AccentColor as a BACKGROUND
--- for hover fills, dropdown selections and toggles, and with a white accent that
--- is a white fill. Blacking those out would erase the accent entirely and you
--- could no longer see what is selected. Inverting the text instead keeps the
--- white fill and puts black on it, which is readable AND still shows selection.
---
--- Safe against the hover inversion, which produces the same pairing
--- deliberately: white fill, black text.
-
-local function luminance(color)
-    return 0.299 * color.R + 0.587 * color.G + 0.114 * color.B;
-end;
-
-local CONTRAST_DARK = Color3.fromRGB(12, 12, 12);
-
-function theme.fix_contrast()
-    if not Library or not Library.ScreenGui then
-        return 0;
-    end;
-
-    local fixed = 0;
-
-    for _, descendant in ipairs(Library.ScreenGui:GetDescendants()) do
-        if descendant:IsA("GuiObject")
-            and descendant.BackgroundTransparency < 0.5
-            and luminance(descendant.BackgroundColor3) > 0.5 then
-
-            for _, child in ipairs(descendant:GetDescendants()) do
-                if (child:IsA("TextLabel") or child:IsA("TextBox"))
-                    and luminance(child.TextColor3) > 0.7 then
-                    local ok = pcall(function() child.TextColor3 = CONTRAST_DARK end);
-                    if ok then
-                        fixed = fixed + 1;
-                    end;
-                end;
-            end;
-        end;
-    end;
-
-    return fixed;
-end;
-
--- ── reactive guard ─────────────────────────────────────────────────────────
--- The guard used to run on a fixed schedule -- a few passes over the first 30
--- seconds. Dropdown options, tooltips and dependency-box children are built
--- when they are first OPENED, which can be minutes later, so they were never
--- covered: their option labels stayed white on the white accent fill and were
--- unreadable until a hover inverted them.
---
--- Instead of guessing when, react to the tree changing. Debounced, because
--- building a dropdown adds a burst of instances and one pass at the end is
--- enough for all of them.
-
-function theme.watch()
-    if theme.watching or not Library or not Library.ScreenGui then
-        return false;
-    end;
-    theme.watching = true;
-
-    local queued = false;
-
-    local function schedule()
-        if queued then
-            return;
-        end;
-        queued = true;
-
-        task.delay(0.2, function()
-            queued = false;
-            pcall(function() theme.recolor(theme.previous_palette) end);
-            pcall(theme.fix_contrast);
-        end);
-    end;
-
-    pcall(function()
-        Library.ScreenGui.DescendantAdded:Connect(schedule);
-    end);
-
-    -- Backstop for repaints that do not add instances: the library re-applies
-    -- registry colours on theme changes and on show, which can put white text
-    -- back on a light fill without anything being added.
-    task.spawn(function()
-        for _ = 1, 60 do
-            task.wait(5);
-            pcall(function() theme.recolor(theme.previous_palette) end);
-            pcall(theme.fix_contrast);
-        end;
-    end);
-
-    return true;
-end;
-
--- Makes CONSOLE selectable in the theme dropdown, not just forced on.
-function theme.register()
-    local ok, ThemeManager = pcall(require, "@src/utility/librarys/managers/ThemeManager");
-    if not ok or type(ThemeManager) ~= "table" or type(ThemeManager.BuiltInThemes) ~= "table" then
-        return false;
-    end;
-
-    local HttpService = game:GetService("HttpService");
-    ThemeManager.BuiltInThemes["CONSOLE"] = { 22, HttpService:JSONDecode(HttpService:JSONEncode(theme.palette)) };
-    return true;
-end;
-
-function theme.apply()
-    if theme.applied then
-        return true;
-    end;
-
-    pcall(theme.load_textures);
-    pcall(theme.register);
-
-    -- Capture the palette that was live when the UI was built, before
-    -- apply_colors overwrites it. This is the "from" set for the recolour pass.
-    local previous = {};
-    if Library then
-        for key in next, theme.palette do
-            pcall(function() previous[key] = Library[key] end);
-        end;
-    end;
-
-    local colors = pcall(theme.apply_colors);
-
-    -- repaint the live UI if the manager is reachable
-    pcall(function()
-        local ThemeManager = require("@src/utility/librarys/managers/ThemeManager");
-        ThemeManager:ApplyTheme(theme.palette);
-        if aztup and aztup.tabs then
-            for _, tab in next, aztup.tabs do
-                if tab and tab.Tab then
-                    ThemeManager:ApplyToTab(tab.Tab);
-                end;
-            end;
-        end;
-    end);
-
-    -- apply_colors + ApplyTheme only cover registered elements. This catches
-    -- the window chrome, separators and strokes that the library bakes once and
-    -- never revisits.
-    local recoloured = pcall(function()
-        return theme.recolor(previous);
-    end);
-
-    -- Then re-run the registry itself. Some properties are produced by
-    -- registered FUNCTIONS, not stored values -- the window title builds its
-    -- string from Library.AccentColor at evaluation time and is only evaluated
-    -- when the registry updates. Nothing re-ran it after the palette change, so
-    -- the title kept rendering the old accent (#6699cc, the PR blue) behind a
-    -- white AccentColor.
-    pcall(function()
-        if type(Library.UpdateColorsUsingRegistry) == "function" then
-            Library:UpdateColorsUsingRegistry();
-        end;
-    end);
-
-    pcall(theme.fix_contrast);
-
-    pcall(theme.build_overlay);
-    pcall(theme.start_motion);
-
-    theme.applied = true;
-    theme.previous_palette = previous;
-
-    -- Everything the library builds AFTER this point -- dropdown options,
-    -- tooltips, dependency-box children, notifications -- is covered by the
-    -- reactive guard rather than a fixed schedule. The old schedule ran for 30s
-    -- and by definition missed anything opened later, which is how dropdown
-    -- options stayed white-on-white until a hover inverted them.
-    pcall(theme.watch);
-
-    return colors and recoloured;
-end;
-
-return theme;
-
-end;
-
 __modules["src/utility/custom_font"] = function()
 local custom_font = {}
 
@@ -49317,11 +47317,11 @@ local custom_font = {}
 
 
 function custom_font.make_lexend_font()
-    local font_custom_asset = getcustomasset("Console/fonts/Lexend.ttf")
-    local font_custom_asset_bold = getcustomasset("Console/fonts/Lexend-Bold.ttf")
-    local font_custom_asset_medium = getcustomasset("Console/fonts/Lexend-Medium.ttf")
+    local font_custom_asset = getcustomasset("Frutiger/fonts/Lexend.ttf")
+    local font_custom_asset_bold = getcustomasset("Frutiger/fonts/Lexend-Bold.ttf")
+    local font_custom_asset_medium = getcustomasset("Frutiger/fonts/Lexend-Medium.ttf")
 
-    writefile("Console/fonts/Lexend.json", game:GetService("HttpService"):JSONEncode({
+    writefile("Frutiger/fonts/Lexend.json", game:GetService("HttpService"):JSONEncode({
         name = "Lexend",
         faces = {
             {
@@ -49345,7 +47345,7 @@ function custom_font.make_lexend_font()
         }
     }))
 
-    local path_asset = getcustomasset("Console/fonts/Lexend.json");
+    local path_asset = getcustomasset("Frutiger/fonts/Lexend.json");
     local fonts = {
         regular = Font.new(
             path_asset,
@@ -50941,7 +48941,7 @@ function kick_window(message)
         end
     
         roblox_prompt_gui.promptOverlay.ErrorPrompt.TitleFrame.ErrorTitle.TextColor3 = Color3.fromRGB(125, 196, 228)
-        roblox_prompt_gui.promptOverlay.ErrorPrompt.TitleFrame.ErrorTitle.Text = "Console"
+        roblox_prompt_gui.promptOverlay.ErrorPrompt.TitleFrame.ErrorTitle.Text = "Frutiger"
         roblox_prompt_gui.promptOverlay.ErrorPrompt.MessageArea.ErrorFrame.ErrorMessage.Text = message
     end);
     while task.wait() do
@@ -50955,7 +48955,7 @@ return {
 
         if game.PlaceId ~= 4111023553 then 
             xpcall(function()
-                local blacklisted_servers = isfile("Console/hopper blacklisted servers.json") and game:GetService("HttpService"):JSONDecode(readfile("Console/hopper blacklisted servers.json")) or {};
+                local blacklisted_servers = isfile("Frutiger/hopper blacklisted servers.json") and game:GetService("HttpService"):JSONDecode(readfile("Frutiger/hopper blacklisted servers.json")) or {};
                 
                 for id, server in blacklisted_servers do
                     if server.expiry < tick() then
@@ -50968,7 +48968,7 @@ return {
                         expiry = tick() + (expiry or 900)
                     }
                 
-                    writefile("Console/hopper blacklisted servers.json", game:GetService("HttpService"):JSONEncode(blacklisted_servers));
+                    writefile("Frutiger/hopper blacklisted servers.json", game:GetService("HttpService"):JSONEncode(blacklisted_servers));
                 end;
 
                 blacklist(game.JobId, expiry or (10 * 60))
@@ -50991,7 +48991,7 @@ return {
         local server = '%s';
         local slot = "%s";
 
-        queueonteleport('if game.PlaceId == 4111023553 then return; end; xpcall(function() local sound = Instance.new("Sound", game:GetService("CoreGui")); game:GetService("Debris"):AddItem(sound, 6); sound.Volume = 1.3; sound.SoundId = getcustomasset("Console/assets/notification.mp3"); sound:Play(); end, warn);')
+        queueonteleport('if game.PlaceId == 4111023553 then return; end; xpcall(function() local sound = Instance.new("Sound", game:GetService("CoreGui")); game:GetService("Debris"):AddItem(sound, 6); sound.Volume = 1.3; sound.SoundId = getcustomasset("Frutiger/assets/notification.mp3"); sound:Play(); end, warn);')
 
         while task.wait() do
             game:GetService("ReplicatedStorage").Requests:WaitForChild("StartMenu"):WaitForChild("PickSlot"):FireServer(slot, {
@@ -51077,7 +49077,7 @@ end;
 
 __modules["src/utility/fflags"] = function()
 local fflags = {} do
-    fflags.current = isfile("Console/fflags.txt") and readfile("Console/fflags.txt") or "{}";
+    fflags.current = isfile("Frutiger/fflags.txt") and readfile("Frutiger/fflags.txt") or "{}";
 
     function fflags:get_main()
         if not self.cached then
@@ -51095,7 +49095,7 @@ end;
         decoded[flag] = value;
         self.current = services.HttpService:JSONEncode(decoded);
         self.cached = services.HttpService:JSONDecode(self.current or "{}");
-        writefile("Console/fflags.txt", self.current);
+        writefile("Frutiger/fflags.txt", self.current);
     end;
 end
 
@@ -51326,6 +49326,1999 @@ return {
 		NAV_KEYBOARD_SPEED = speed
 	end
 }
+
+end;
+
+__modules["src/utility/frutiger/chrome"] = function()
+--[[
+    src/utility/frutiger/chrome.lua
+
+    Native chrome, borrowed widgets.
+
+    The library keeps doing what it is good at -- toggles, sliders, dropdowns,
+    dependency boxes, keybinds, config round-tripping. Rewriting that would mean
+    reproducing 16 constructors, 16 Library methods and 103 option objects
+    across 60 files.
+
+    What it is bad at is being the frame around those widgets. Its chrome fights
+    decoration: it re-tweens properties, rebuilds pieces on tab switch, and
+    bakes a font per label, so fonts, torn borders and glitch effects can only
+    be bolted on from outside. So the chrome is replaced and the widget tree
+    transplanted into it.
+
+    The shell lives INSIDE Outer, the library's window frame, and that is the
+    whole trick:
+
+    *   Outer already carries the UIScale, so the transplanted widgets render at
+        the scale the user set without any of it being re-derived.
+
+    *   Outer already carries the drag binding -- MakeUIDraggable(Outer, 21) at
+        ui.lua:1297, a 21px grab zone at the top -- and this shell puts its title
+        bar in exactly that strip, so dragging keeps working untouched.
+
+    *   The theme overlay is also a child of Outer at scale 1,1, so it resizes
+        with the new window instead of drifting away from it. Parenting the
+        shell to the ScreenGui instead would have desynced all three.
+
+    *   Outer.Visible is the library's own show/hide state (Library:Toggle sets
+        it at ui.lua ~2369), so visibility needs no syncing at all --
+        everything is inside it.
+
+    How the pieces are moved:
+
+    *   Tab switching is Tab:ShowTab() (ui.lua ~1882), which sets
+        TabFrame.Visible. Those frames live inside the library's content frame,
+        so the whole content frame moves in one piece.
+
+    *   It is moved at its MEASURED size, never stretched. Every tab page inside
+        uses fixed offsets and two 266px columns; letting it resize drags them
+        out of position -- the trap the sidebar pass already fell into once.
+
+    *   The library's own chrome (title, strip, separator, search) is hidden by
+        hiding Inner, but LEFT ALIVE. Tab:ShowTab() still writes to
+        TabButtonLabel, the underline and the registry, and those have to keep
+        resolving.
+]]
+
+local chrome = {};
+
+local SIDEBAR_WIDTH = 150;
+local TITLE_HEIGHT = 26;
+local TAB_HEIGHT = 26;
+local TAB_PADDING = 2;
+
+-- ── helpers ────────────────────────────────────────────────────────────────
+local function gui_children(parent)
+    local out = {};
+    for _, child in ipairs(parent:GetChildren()) do
+        if child:IsA("GuiObject") then
+            out[#out + 1] = child;
+        end;
+    end;
+    return out;
+end;
+
+local function make(class, props)
+    local object = Instance.new(class);
+    for key, value in next, props do
+        object[key] = value;
+    end;
+    return object;
+end;
+
+-- ── locate the library's pieces ────────────────────────────────────────────
+local function find_window_body(outer)
+    for _, child in ipairs(gui_children(outer)) do
+        if child.Name ~= "FRUTIGER_OVERLAY" then
+            return child;
+        end;
+    end;
+    return nil;
+end;
+
+local function find_strip(root)
+    for _, descendant in ipairs(root:GetDescendants()) do
+        if descendant:IsA("Frame") then
+            local layout = descendant:FindFirstChildOfClass("UIListLayout");
+            if layout
+                and layout.FillDirection == Enum.FillDirection.Horizontal
+                and descendant.AbsoluteSize.X > descendant.AbsoluteSize.Y * 4 then
+                return descendant;
+            end;
+        end;
+    end;
+    return nil;
+end;
+
+-- ── build ──────────────────────────────────────────────────────────────────
+local function build(outer)
+    local inner = find_window_body(outer);
+    if not inner then
+        return false, "no window body";
+    end;
+
+    local strip = find_strip(inner);
+    if not strip then
+        return false, "no tab strip";
+    end;
+
+    local holder = strip.Parent;
+    local container = holder and holder.Parent;
+    if not holder or not container then
+        return false, "no frame chain";
+    end;
+
+    local content;
+    for _, sibling in ipairs(gui_children(holder)) do
+        if sibling ~= strip and sibling.AbsoluteSize.Y > 100 then
+            content = content or sibling;
+        end;
+    end;
+    if not content then
+        return false, "no content frame";
+    end;
+
+    -- measure BEFORE moving, and restore at exactly this size
+    local content_size = content.AbsoluteSize;
+
+    -- ── the shell ──────────────────────────────────────────────────────────
+    local window_width = SIDEBAR_WIDTH + content_size.X;
+    local window_height = TITLE_HEIGHT + content_size.Y;
+
+    local root = make("Frame", {
+        Name = "FRUTIGER_CHROME",
+        BackgroundColor3 = Color3.new(0, 0, 0),
+        BorderSizePixel = 0,
+        Size = UDim2.fromScale(1, 1),
+        Position = UDim2.fromScale(0, 0),
+        ZIndex = 1,
+        Parent = outer,
+    });
+
+    make("UICorner", { CornerRadius = UDim.new(0, 6), Parent = root });
+
+    local stroke = make("UIStroke", {
+        Color = Color3.fromRGB(255, 255, 255),
+        Thickness = 1,
+        Parent = root,
+    });
+    make("UICorner", { CornerRadius = UDim.new(0, 6), Parent = stroke });
+
+    -- title bar. sits inside Outer's existing 21px drag zone.
+    local title_bar = make("Frame", {
+        Name = "title",
+        BackgroundTransparency = 1,
+        Size = UDim2.new(1, 0, 0, TITLE_HEIGHT),
+        ZIndex = 2,
+        Parent = root,
+    });
+
+    local title_label = make("TextLabel", {
+        Name = "title_text",
+        BackgroundTransparency = 1,
+        Font = Enum.Font.RobotoMono,
+        Text = string.format("FRUTIGER // USER_%03d", math.random(1, 999)),
+        TextColor3 = Color3.new(1, 1, 1),
+        TextSize = 13,
+        TextXAlignment = Enum.TextXAlignment.Left,
+        Size = UDim2.new(1, -12, 1, 0),
+        Position = UDim2.fromOffset(8, 0),
+        ZIndex = 2,
+        Parent = title_bar,
+    });
+
+    make("Frame", {
+        Name = "title_rule",
+        BackgroundColor3 = Color3.fromRGB(255, 255, 255),
+        BorderSizePixel = 0,
+        Size = UDim2.new(1, 0, 0, 1),
+        Position = UDim2.new(0, 0, 0, TITLE_HEIGHT - 1),
+        ZIndex = 2,
+        Parent = root,
+    });
+
+    -- sidebar
+    local sidebar = make("Frame", {
+        Name = "sidebar",
+        BackgroundTransparency = 1,
+        Size = UDim2.new(0, SIDEBAR_WIDTH, 1, -TITLE_HEIGHT),
+        Position = UDim2.fromOffset(0, TITLE_HEIGHT),
+        ZIndex = 2,
+        Parent = root,
+    });
+
+    make("UIListLayout", {
+        FillDirection = Enum.FillDirection.Vertical,
+        SortOrder = Enum.SortOrder.LayoutOrder,
+        Padding = UDim.new(0, TAB_PADDING),
+        Parent = sidebar,
+    });
+    make("UIPadding", {
+        PaddingLeft = UDim.new(0, 6),
+        PaddingRight = UDim.new(0, 6),
+        PaddingTop = UDim.new(0, 6),
+        Parent = sidebar,
+    });
+
+    make("Frame", {
+        Name = "sidebar_rule",
+        BackgroundColor3 = Color3.fromRGB(255, 255, 255),
+        BorderSizePixel = 0,
+        Size = UDim2.new(0, 1, 1, -TITLE_HEIGHT),
+        Position = UDim2.new(0, SIDEBAR_WIDTH, 0, TITLE_HEIGHT),
+        ZIndex = 2,
+        Parent = root,
+    });
+
+    -- content host
+    local host = make("Frame", {
+        Name = "content_host",
+        BackgroundTransparency = 1,
+        ClipsDescendants = true,
+        Size = UDim2.fromOffset(content_size.X, content_size.Y),
+        Position = UDim2.fromOffset(SIDEBAR_WIDTH + 1, TITLE_HEIGHT),
+        ZIndex = 1,
+        Parent = root,
+    });
+
+    -- ── transplant ─────────────────────────────────────────────────────────
+    content.Parent = host;
+    content.Position = UDim2.fromOffset(0, 0);
+    content.Size = UDim2.fromOffset(content_size.X, content_size.Y);
+
+    -- ── hide the library chrome, keep it alive ─────────────────────────────
+    pcall(function() inner.Visible = false end);
+    pcall(function() outer.BackgroundTransparency = 1 end);
+
+    -- ── resize the library window around the new chrome ────────────────────
+    -- Outer keeps its UIScale, its drag binding and the theme overlay child,
+    -- all of which follow this size.
+    pcall(function()
+        outer.Size = UDim2.fromOffset(window_width, window_height);
+    end);
+
+    -- ── tabs ───────────────────────────────────────────────────────────────
+    local window = Library.FrutigerWindow;
+    local entries = {};
+
+    local function sorted_tabs()
+        -- Window.TabOrder is the library's authoritative order, and it is an
+        -- array of Tab OBJECTS in creation order (ui.lua:2290).
+        --
+        -- The first version sorted by tab.LayoutOrder, which does not exist:
+        -- Tab:SetLayoutOrder writes to TabButton.LayoutOrder, not to the Tab.
+        -- So the comparator compared nil with nil and returned false every
+        -- time, and table.sort produced arbitrary order.
+        local order = window.TabOrder;
+        if type(order) == "table" and #order > 0 then
+            local ordered = {};
+            for _, tab in ipairs(order) do
+                if tab then
+                    ordered[#ordered + 1] = tab;
+                end;
+            end;
+            return ordered;
+        end;
+
+        -- fallback for a window built without TabOrder
+        local tabs = window.Tabs or {};
+        local names = {};
+        for name in next, tabs do
+            names[#names + 1] = name;
+        end;
+        table.sort(names);
+
+        local out = {};
+        for _, name in ipairs(names) do
+            if tabs[name] then
+                out[#out + 1] = tabs[name];
+            end;
+        end;
+        return out;
+    end;
+
+    local function paint_active(active)
+        for tab, entry in next, entries do
+            local is_active = (tab == active);
+            pcall(function()
+                entry.frame.BackgroundColor3 = is_active and Color3.new(1, 1, 1) or Color3.new(0, 0, 0);
+                entry.label.TextColor3 = is_active and Color3.new(0, 0, 0) or Color3.new(1, 1, 1);
+            end);
+        end;
+    end;
+
+    local function build_entries()
+        local ordered = sorted_tabs();
+
+        for index, tab in ipairs(ordered) do
+            if not entries[tab] then
+                local row = make("Frame", {
+                    Name = "tab_" .. index,
+                    BackgroundColor3 = Color3.new(0, 0, 0),
+                    BorderSizePixel = 0,
+                    Size = UDim2.new(1, 0, 0, TAB_HEIGHT),
+                    LayoutOrder = index,
+                    ZIndex = 3,
+                    Parent = sidebar,
+                });
+                make("UICorner", { CornerRadius = UDim.new(0, 4), Parent = row });
+                make("UIStroke", {
+                    Color = Color3.fromRGB(255, 255, 255),
+                    Thickness = 1,
+                    Parent = row,
+                });
+
+                local label = make("TextLabel", {
+                    Name = "label",
+                    BackgroundTransparency = 1,
+                    Font = Enum.Font.RobotoMono,
+                    Text = tostring(tab.Name or ("TAB_" .. index)):upper(),
+                    TextColor3 = Color3.new(1, 1, 1),
+                    TextSize = 12,
+                    TextXAlignment = Enum.TextXAlignment.Left,
+                    Size = UDim2.new(1, -12, 1, 0),
+                    Position = UDim2.fromOffset(8, 0),
+                    ZIndex = 4,
+                    Parent = row,
+                });
+
+                entries[tab] = { frame = row, label = label };
+
+                -- clicking drives the library's own tab switch, so its internal
+                -- state (ActiveTab, search refresh, registry) stays correct
+                row.InputBegan:Connect(function(input)
+                    if input.UserInputType == Enum.UserInputType.MouseButton1 then
+                        pcall(function() tab:ShowTab() end);
+                        paint_active(tab);
+                    end
+                end);
+            end
+        end;
+
+        if window.ActiveTab then
+            paint_active(window.ActiveTab);
+        elseif ordered[1] then
+            pcall(function() ordered[1]:ShowTab() end);
+            paint_active(ordered[1]);
+        end;
+    end;
+
+    build_entries();
+
+    -- The library can add or rebuild tabs (search, config load), so re-sync for
+    -- a while rather than assuming the set is fixed.
+    task.spawn(function()
+        for _ = 1, 10 do
+            task.wait(1);
+            pcall(build_entries);
+            pcall(function() paint_active(Library.FrutigerWindow.ActiveTab) end);
+        end;
+    end);
+
+    chrome.root = root;
+    chrome.sidebar = sidebar;
+    chrome.host = host;
+    chrome.title = title_label;
+    chrome.entries = entries;
+    chrome.transplanted = content;
+    chrome.outer = outer;
+
+    return true;
+end;
+
+function chrome.apply()
+    if chrome.applied then
+        return true;
+    end;
+
+    if not Library or not Library.ScreenGui or not Library.FrutigerWindow then
+        return false;
+    end;
+
+    local outer = Library.FrutigerWindow.Holder;
+    if not outer then
+        return false;
+    end;
+
+    local ok, result, reason = pcall(build, outer);
+    if not ok then
+        warn("[frutiger] chrome failed:", result);
+        return false;
+    end;
+    if not result then
+        warn("[frutiger] chrome skipped:", reason);
+        return false;
+    end;
+
+    chrome.applied = true;
+    return true;
+end;
+
+-- ── keybind list ───────────────────────────────────────────────────────────
+-- Library.KeybindFrame (ui.lua:1246) is a PanelComponent panel: four nested
+-- fills with the text buried inside them.
+--
+--     Outer    accent-coloured, BorderSizePixel 1   <- the border you see
+--       Inner  main fill
+--         Header   background fill, 22px
+--           HeaderLabel  "Keybinds", centred
+--         Divider  outline-coloured 1px
+--         Content  (transparent) <- the entries live here
+--
+-- So stripping the background is a walk: every Frame in the panel loses its
+-- fill and its classic border. The labels are untouched, which is the point --
+-- text only, no box.
+--
+-- The header is centred because it used to sit inside a filled bar. With the
+-- bar gone it reads as a stray float in the middle of nothing, so it is aligned
+-- left to line up with the entries under it.
+
+-- Which corner the bind list sits in. Bottom-left: the anchor is the bottom
+-- edge, so the list grows upward as binds are added and the bottom stays put.
+--
+-- Flip these two to move it -- Vector2.new(0, 0) is top-left, Vector2.new(1, 1)
+-- is bottom-right. Note the bottom-anchored Y value (1) is also what tells
+-- toggle.lua to skip its vertical-centre compensation; a centre anchor (0.5)
+-- would drag the list down as it grows.
+local KEYBIND_ANCHOR = Vector2.new(0, 1);
+local KEYBIND_MARGIN = 10;
+
+-- Corner position, computed from the camera viewport in OFFSETS rather than
+-- from scale.
+--
+-- Scale-1 Y does not mean "the bottom of the screen" here: the library's
+-- ScreenGui has IgnoreGuiInset = false and GuiService reports a 58px inset, so
+-- ScreenGui.AbsoluteSize is 1920x1022 against a 1920x1080 viewport. Anchoring
+-- at scale 1 left the panel 68px above the physical bottom -- measured. Offsets
+-- are absolute screen pixels, so they land where you actually want.
+--
+-- Offsets also suit the library: toggle.lua's resize code reads
+-- Position.Y.Offset, and SaveManager stores the position as a UDim2 anyway.
+local function corner_position()
+    local camera = workspace.CurrentCamera;
+    local viewport = (camera and camera.ViewportSize) or Vector2.new(1920, 1080);
+
+    local x = (KEYBIND_ANCHOR.X == 1)
+        and (viewport.X - KEYBIND_MARGIN)
+        or KEYBIND_MARGIN;
+
+    local y = (KEYBIND_ANCHOR.Y == 1)
+        and (viewport.Y - KEYBIND_MARGIN)
+        or KEYBIND_MARGIN;
+
+    return UDim2.fromOffset(x, y);
+end;
+
+function chrome.restyle_keybinds()
+    if not Library or not Library.KeybindFrame then
+        return false;
+    end;
+
+    local frame = Library.KeybindFrame;
+
+    -- bottom-left. The list reads as an overlay on the game rather than a
+    -- panel, and the left edge is otherwise clear once the quest tracker is
+    -- dismissed.
+    pcall(function()
+        frame.AnchorPoint = KEYBIND_ANCHOR;
+        frame.Position = corner_position();
+    end);
+
+    local stripped = 0;
+
+    for _, descendant in ipairs(frame:GetDescendants()) do
+        if descendant:IsA("Frame") then
+            local ok = pcall(function()
+                descendant.BackgroundTransparency = 1;
+                descendant.BorderSizePixel = 0;
+            end);
+            if ok then
+                stripped = stripped + 1;
+            end;
+        elseif descendant:IsA("TextLabel") then
+            -- the panel title, once centred in its bar
+            if descendant.Text and descendant.Text:lower():find("keybind") then
+                pcall(function()
+                    descendant.TextXAlignment = Enum.TextXAlignment.Left;
+                end);
+            end;
+        end;
+    end;
+
+    pcall(function()
+        frame.BackgroundTransparency = 1;
+        frame.BorderSizePixel = 0;
+    end);
+
+    chrome.keybind_frame = frame;
+    chrome.keybinds_stripped = stripped;
+
+    -- SaveManager persists and restores a keybindPosition (SaveManager.lua:149
+    -- saves, :266 restores), and that restore can land after this runs. An older
+    -- saved position is offset-based, which under this anchor puts the panel off
+    -- screen. So re-assert for a few seconds; once the position has been saved
+    -- back as ours, later launches restore correctly on their own.
+    task.spawn(function()
+        for _, delay in ipairs({ 0.5, 1.5, 3, 5, 8 }) do
+            task.wait(delay);
+            local current = chrome.keybind_frame;
+            if current and current.Parent then
+                pcall(function()
+                    current.AnchorPoint = KEYBIND_ANCHOR;
+                    current.Position = corner_position();
+                end);
+            end;
+        end;
+    end);
+
+    return true;
+end;
+
+return chrome;
+
+end;
+
+__modules["src/utility/frutiger/hover"] = function()
+--[[
+    src/utility/frutiger/hover.lua
+
+    Hover effect for the CONSOLE theme: the element inverts.
+
+    The library already has a hover, but it is only a faint tint -- it spawns a
+    child Frame inside the hovered element with BackgroundColor3 =
+    Library.AccentColor and tweens its transparency (ui.lua ~2156). On a black
+    surface that is almost invisible, and it never touches the label.
+
+    This inverts instead: a black row goes solid white with black text, a light
+    element goes the other way, with a two-frame flicker on the way in. Same
+    spirit as the "inversione dei colori" in the art brief.
+
+    Finding targets: the library ships ZERO TextButtons -- everything clickable
+    is a Frame with an input connection, which cannot be queried. So elements
+    are matched on shape instead: a fill you can see, a label inside, 14-44px
+    tall, at least 80px wide. That measured 463 elements on a live client.
+]]
+
+local hover = {};
+
+local states = setmetatable({}, { __mode = "k" });
+local attached_count = 0;
+
+-- The palette, for the accent used on hover. pcall'd because a missing theme
+-- should cost the hover tint, not the hover.
+local theme_module = nil;
+pcall(function() theme_module = require("@src/utility/frutiger/theme") end);
+
+-- One step now -- no flicker. The Frutiger version lights the row up rather
+-- than blinking it, so the multi-frame toggle that read as a failing monitor is
+-- gone. Three steps was the previous grunge behaviour.
+local FLICKER_STEPS = 1;
+local FLICKER_DELAY = 0.028;
+
+-- ── target selection ───────────────────────────────────────────────────────
+local function has_label(object)
+    for _, child in ipairs(object:GetDescendants()) do
+        if child:IsA("TextLabel") then
+            return true;
+        end;
+    end;
+    return false;
+end;
+
+local function is_candidate(object)
+    if states[object] then
+        return false;
+    end;
+
+    local ok, result = pcall(function()
+        if object:IsA("TextButton") or object:IsA("ImageButton") then
+            return true;
+        end;
+
+        if not (object:IsA("Frame") or object:IsA("TextBox")) then
+            return false;
+        end;
+
+        local height = object.AbsoluteSize.Y;
+        if height < 14 or height > 44 then
+            return false;
+        end;
+        if object.AbsoluteSize.X < 80 then
+            return false;
+        end;
+
+        -- needs some fill to invert; a fully transparent layout row has nothing
+        -- to turn white
+        if object.BackgroundTransparency >= 0.9 then
+            return false;
+        end;
+
+        return has_label(object);
+    end);
+
+    return ok and result == true;
+end;
+
+-- ── the effect ─────────────────────────────────────────────────────────────
+local function collect_text(object)
+    local list = {};
+    for _, child in ipairs(object:GetDescendants()) do
+        if child:IsA("TextLabel") or child:IsA("TextBox") then
+            list[#list + 1] = child;
+        end;
+    end;
+    return list;
+end;
+
+-- Frutiger hover: the element lights up in the accent, it does not invert.
+--
+-- The previous pass flipped black to white and back, which read as a terminal
+-- blink and is the opposite of this theme. Here the fill goes to the sky accent
+-- and the label goes dark.
+--
+-- Dark text rather than white on purpose: the contrast guard (theme.fix_contrast)
+-- darkens light text sitting on a light fill, and the accent is light enough to
+-- trip it. Dark text on the accent satisfies the guard instead of fighting it.
+local function hover_targets()
+    local theme = theme_module;
+    local accent = (theme and theme.extra and theme.extra.aqua) or Color3.fromRGB(41, 168, 224);
+    local ink = (theme and theme.extra and theme.extra.ink) or Color3.fromRGB(14, 61, 92);
+    return accent, ink;
+end;
+
+local function paint(state, inverted)
+    local object = state.object;
+
+    if inverted then
+        pcall(function()
+            object.BackgroundColor3 = state.target_bg;
+            object.BackgroundTransparency = state.target_transparency;
+        end);
+        for _, label in ipairs(state.targets) do
+            pcall(function() label.TextColor3 = state.target_text end);
+        end;
+    else
+        pcall(function()
+            if state.original_bg then
+                object.BackgroundColor3 = state.original_bg;
+            end;
+            object.BackgroundTransparency = state.original_transparency;
+        end);
+        for index, label in ipairs(state.targets) do
+            local original = state.original_text[index];
+            if original then
+                pcall(function() label.TextColor3 = original end);
+            end;
+        end;
+    end;
+end;
+
+-- Snapshot at enter, not at attach. The library repaints text colours on theme
+-- changes, so a snapshot taken when the connection was made goes stale and
+-- leaving the element would restore a colour from an earlier theme.
+local function snapshot(state)
+    local object = state.object;
+
+    state.targets = collect_text(object);
+    state.original_text = {};
+    for index, label in ipairs(state.targets) do
+        state.original_text[index] = label.TextColor3;
+    end;
+
+    state.original_bg = object.BackgroundColor3;
+    state.original_transparency = object.BackgroundTransparency;
+
+    local background, text = hover_targets();
+    state.target_bg = background;
+    state.target_text = text;
+    -- keep the fill visible, but only as opaque as the original was: a row that
+    -- is already a solid panel should not become translucent on hover
+    state.target_transparency = math.min(object.BackgroundTransparency, 0.10);
+end;
+
+local function on_enter(object)
+    local state = states[object];
+    if not state then
+        return;
+    end;
+
+    snapshot(state);
+    state.hovered = true;
+    state.token = (state.token or 0) + 1;
+    local token = state.token;
+
+    -- flicker in rather than fade. 1-2 hard toggles over ~60ms.
+    task.spawn(function()
+        for step = 1, FLICKER_STEPS do
+            if not state.hovered or state.token ~= token then
+                return;
+            end;
+            paint(state, step % 2 == 1);
+            task.wait(FLICKER_DELAY);
+        end;
+        if state.hovered and state.token == token then
+            paint(state, true);
+        end;
+    end);
+end;
+
+local function on_leave(object)
+    local state = states[object];
+    if not state then
+        return;
+    end;
+
+    state.hovered = false;
+    state.token = (state.token or 0) + 1;   -- invalidate any in-flight flicker
+    paint(state, false);
+end;
+
+-- ── attach ─────────────────────────────────────────────────────────────────
+function hover.apply()
+    if not Library or not Library.ScreenGui then
+        return 0;
+    end;
+
+    local attached = 0;
+
+    for _, descendant in ipairs(Library.ScreenGui:GetDescendants()) do
+        if is_candidate(descendant) then
+            local state = { object = descendant };
+            states[descendant] = state;
+
+            local ok = pcall(function()
+                descendant.MouseEnter:Connect(function() on_enter(descendant) end);
+                descendant.MouseLeave:Connect(function() on_leave(descendant) end);
+            end);
+
+            if ok then
+                attached = attached + 1;
+                attached_count = attached_count + 1;
+            else
+                states[descendant] = nil;
+            end;
+        end;
+    end;
+
+    return attached;
+end;
+
+-- The library builds tab contents and dropdown options lazily, so new elements
+-- keep appearing after the first pass.
+function hover.start_watchdog()
+    if hover.watching then
+        return;
+    end;
+    hover.watching = true;
+
+    task.spawn(function()
+        for _ = 1, 8 do
+            task.wait(2);
+            pcall(hover.apply);
+        end;
+    end);
+end;
+
+function hover.count()
+    return attached_count;
+end;
+
+return hover;
+
+end;
+
+__modules["src/utility/frutiger/migrate"] = function()
+--[[
+    src/utility/frutiger/migrate.lua
+
+    DECAY shipped previously as "Project Rain". Every install from before the
+    rename still has a `Project Rain/` folder holding the user's configs,
+    fflags, asset cache, logs and script state. A straight folder rename would
+    present everyone with a blank slate.
+
+    This copies the legacy tree forward once, and leaves the old folder in place
+    untouched so a rollback still works. Runs from luarmor_init_script before
+    src/init.lua creates any folder, because init.lua's `if not isfolder(...)
+    then makefolder(...) end` checks would otherwise create empty directories
+    first and the migration would skip.
+
+    Note: `ProjectRainRewrite` handled elsewhere in src/ui/config_converter.lua
+    is an even older layout and is deliberately not touched here.
+]]
+
+local migrate = {};
+
+-- Newest-first. Both are real folder names that have shipped.
+local LEGACY  = { "Console", "Decay", "Project Rain" };
+local CURRENT = "Frutiger";
+
+local function normalize(path)
+    return (path:gsub("\\", "/"));
+end;
+
+local function copy_tree(source, destination)
+    if not isfolder(destination) then
+        local ok = pcall(makefolder, destination);
+        if not ok then
+            return 0;
+        end;
+    end;
+
+    local ok, entries = pcall(listfiles, source);
+    if not ok or type(entries) ~= "table" then
+        return 0;
+    end;
+
+    local prefix = normalize(source) .. "/";
+    local copied = 0;
+
+    for _, entry in next, entries do
+        local normalized = normalize(entry);
+
+        -- listfiles may hand back an absolute path; fall back to the leaf.
+        local relative;
+        if normalized:sub(1, #prefix) == prefix then
+            relative = normalized:sub(#prefix + 1);
+        else
+            relative = normalized:match("([^/]+)$") or "";
+        end;
+
+        if relative ~= "" then
+            local target = destination .. "/" .. relative;
+
+            if isfolder(entry) then
+                copied = copied + copy_tree(entry, target);
+            elseif isfile(entry) then
+                local read_ok, contents = pcall(readfile, entry);
+                if read_ok and contents then
+                    local write_ok = pcall(writefile, target, contents);
+                    if write_ok then
+                        copied = copied + 1;
+                    end;
+                end;
+            end;
+        end;
+    end;
+
+    return copied;
+end;
+
+local MARKER = CURRENT .. "/migrated_from_legacy.txt";
+
+local function count_files(path)
+    local ok, entries = pcall(listfiles, path);
+    if not ok or type(entries) ~= "table" then
+        return 0;
+    end;
+
+    local n = 0;
+    for _, entry in next, entries do
+        if isfile(entry) then
+            n = n + 1;
+        end;
+    end;
+
+    return n;
+end;
+
+-- Returns the number of files copied. Zero means "nothing to do", which is the
+-- normal case on a fresh install and on every run after the first.
+function migrate.run()
+    local ok, result = pcall(function()
+        -- Two legacy names now. "Project Rain" is the original release; "Decay"
+        -- was the intermediate rename that shipped for a while. Both have to be
+        -- checked, in newest-first order, or an install that upgraded through
+        -- Decay strands its configs.
+        local source;
+        for _, candidate in ipairs(LEGACY) do
+            if isfolder(candidate) then
+                source = candidate;
+                break;
+            end;
+        end;
+
+        if not source then
+            return 0;                                  -- nothing to migrate from
+        end;
+        if isfile(MARKER) then
+            return 0;                                  -- already done, once and for all
+        end;
+
+        -- Was: `if isfolder(CURRENT) then return 0 end`. That latch was wrong.
+        -- A run that died partway leaves Frutiger/ present but partial, and the
+        -- migration would then never fire again — stranding the user's configs
+        -- in the old folder permanently with no message. Only treat the
+        -- destination as done when it already holds at least as many files as
+        -- the source.
+        if isfolder(CURRENT) then
+            local legacy_count = count_files(source);
+            local current_count = count_files(CURRENT);
+            if legacy_count > 0 and current_count >= legacy_count then
+                return 0;
+            end;
+        end;
+
+        local copied = copy_tree(source, CURRENT);
+
+        -- Written on every attempt, so a partial destination is retried on the
+        -- next run rather than being treated as finished.
+        pcall(writefile, MARKER, string.format(
+            "copied %d file(s) from '%s'\n%s\n",
+            copied, source, os.date("%Y-%m-%d %H:%M:%S")
+        ));
+
+        migrate.last_source = source;
+        return copied;
+    end);
+
+    if not ok then
+        warn("[frutiger] migration failed:", result);
+        return 0;
+    end;
+
+    if result and result > 0 then
+        print(string.format("[frutiger] migrated %d file(s) from '%s' to '%s'",
+            result, migrate.last_source or "?", CURRENT));
+    end;
+
+    return result or 0;
+end;
+
+return migrate;
+
+end;
+
+__modules["src/utility/frutiger/round"] = function()
+--[[
+    src/utility/frutiger/round.lua
+
+    Rounds the corners of every visible element in the UI.
+
+    Post-pass again, same as theme.lua and sidebar.lua: nothing in the library
+    is edited, elements are decorated after they exist.
+
+    Rules, in order of how much they matter:
+
+    1.  Never touch an element that already has a UICorner. Several controls in
+        this library build their own (toggle knobs are circular), and
+        overwriting those flattens them.
+
+    2.  Only round things where a corner is actually visible: an element with a
+        background you can see, or a UIStroke that needs to follow the shape.
+        Rounding a transparent layout container does nothing except clip its
+        children unexpectedly.
+
+    3.  Skip pure image elements (icons). Rounding a bitmap crops its artwork.
+
+    4.  The theme overlay gets the same radius as the window it sits in, and so
+        do its layers. ClipsDescendants on a rounded frame does not reliably
+        clip to the rounded shape, so without this the square grain and
+        scanlines would show through the window's rounded corners.
+]]
+
+local round = {};
+
+local RADIUS = 12.0;
+
+local function add_corner(object, radius)
+    if object:FindFirstChildOfClass("UICorner") then
+        return false;
+    end;
+
+    local ok = pcall(function()
+        local corner = Instance.new("UICorner");
+        corner.CornerRadius = UDim.new(0, radius);
+
+        -- UICorner is not affected by sibling order, but parenting last keeps
+        -- it out of the way of the library's own child lookups.
+        corner.Parent = object;
+    end);
+
+    return ok;
+end;
+
+local function should_round(object)
+    if not object:IsA("GuiObject") then
+        return false;
+    end;
+
+    -- already shaped by the library
+    if object:FindFirstChildOfClass("UICorner") then
+        return false;
+    end;
+
+    local stroke = object:FindFirstChildOfClass("UIStroke");
+
+    -- a pure image element: rounding would crop the artwork
+    if object:IsA("ImageLabel") and object.Image ~= "" and not stroke then
+        return object.BackgroundTransparency < 0.95;
+    end;
+
+    -- visible fill, or a border that has to follow the shape
+    if object.BackgroundTransparency < 0.95 then
+        return true;
+    end;
+
+    return stroke ~= nil;
+end;
+
+function round.apply()
+    if not Library or not Library.ScreenGui then
+        return 0;
+    end;
+
+    local applied = 0;
+
+    for _, descendant in ipairs(Library.ScreenGui:GetDescendants()) do
+        if should_round(descendant) then
+            local radius = RADIUS;
+
+            -- Clamp against the SHORTEST dimension, not the height. Clamping on
+            -- height alone turns thin elements into pills -- a 3px-wide slider
+            -- track was getting a 6px radius and rendering as a lens.
+            local size = descendant.AbsoluteSize;
+            local shortest = math.min(size.X, size.Y);
+            if shortest > 0 and shortest < RADIUS * 2 then
+                radius = math.max(1, math.floor(shortest / 2));
+            end;
+
+            if add_corner(descendant, radius) then
+                applied = applied + 1;
+            end;
+        end;
+    end;
+
+    -- the overlay has to match the window it lives in, layers included
+    pcall(function()
+        local window = Library.FrutigerWindow and Library.FrutigerWindow.Holder;
+        local holder = window and window:FindFirstChild("FRUTIGER_OVERLAY");
+        if not holder then
+            return;
+        end;
+
+        add_corner(holder, RADIUS);
+        for _, child in ipairs(holder:GetChildren()) do
+            if child:IsA("GuiObject") then
+                add_corner(child, RADIUS);
+            end;
+        end;
+    end);
+
+    return applied;
+end;
+
+-- The library builds some elements lazily -- dropdown options, tooltips, tab
+-- contents on first visit -- so a one-shot pass misses them. Cheap to re-scan.
+function round.start_watchdog()
+    if round.watching then
+        return;
+    end;
+    round.watching = true;
+
+    task.spawn(function()
+        for _ = 1, 8 do
+            task.wait(2);
+            pcall(round.apply);
+        end;
+    end);
+end;
+
+return round;
+
+end;
+
+__modules["src/utility/frutiger/sidebar"] = function()
+--[[
+    src/utility/frutiger/sidebar.lua
+
+    Turns the library's horizontal tab strip into a left sidebar, and moves the
+    window title into that sidebar as its header.
+
+    Same philosophy as frutiger/theme.lua: this is a post-pass over the built UI,
+    not an edit to the 2500-line library. The library stays swappable.
+
+    The layout it operates on (measured from the live tree):
+
+        Outer (550x550)
+          Inner (548x548)
+            TextLabel  "FRUTIGER // USER_xxx"   546x19   <- title, moves to sidebar
+            TextBox    search                136x21   top-right, shifts by W
+            container (546x525)
+              holder (546x525)
+                separator                     546x2
+                STRIP                         546x22   <- becomes the sidebar
+                  [ 110, 109, 109, 109, 109 ]          5 tab frames
+                content (546x525 at y+22)
+                  column A 266 wide
+                  column B 266 wide
+
+    The window is widened by SIDEBAR_WIDTH rather than squeezing the two 266px
+    content columns, so nothing inside a groupbox reflows or clips. Content
+    keeps its exact width and just moves right.
+]]
+
+local sidebar = {};
+
+local SIDEBAR_WIDTH = 132;
+local TAB_HEIGHT = 22;
+local TAB_PADDING = 3;
+
+-- ── helpers ────────────────────────────────────────────────────────────────
+local function gui_children(parent)
+    local out = {};
+    for _, child in ipairs(parent:GetChildren()) do
+        if child:IsA("GuiObject") then
+            out[#out + 1] = child;
+        end;
+    end;
+    return out;
+end;
+
+local function add_width(object, delta)
+    object.Size = UDim2.new(
+        object.Size.X.Scale, object.Size.X.Offset + delta,
+        object.Size.Y.Scale, object.Size.Y.Offset
+    );
+end;
+
+local function shift_x(object, delta)
+    object.Position = UDim2.new(
+        object.Position.X.Scale, object.Position.X.Offset + delta,
+        object.Position.Y.Scale, object.Position.Y.Offset
+    );
+end;
+
+local function text_of(object)
+    local ok, text = pcall(function() return object.Text end);
+    if not ok or type(text) ~= "string" then
+        return "";
+    end;
+    return (text:gsub("<[^>]+>", ""));
+end;
+
+-- ── locate ─────────────────────────────────────────────────────────────────
+-- The tab strip is the only wide, short Frame carrying a horizontal
+-- UIListLayout with a handful of children. Matching on shape rather than on a
+-- name or child index survives the library renaming or reordering things.
+local function find_strip(root)
+    for _, descendant in ipairs(root:GetDescendants()) do
+        if descendant:IsA("Frame") then
+            local layout = descendant:FindFirstChildOfClass("UIListLayout");
+            if layout and layout.FillDirection == Enum.FillDirection.Horizontal then
+                local count = #gui_children(descendant);
+                if count >= 2 and count <= 12
+                    and descendant.AbsoluteSize.X > descendant.AbsoluteSize.Y * 4 then
+                    return descendant, layout;
+                end;
+            end;
+        end;
+    end;
+    return nil;
+end;
+
+-- The window title. Matched structurally, not by brand string: this used to
+-- search for "DECAY" and would have silently stopped finding the title when the
+-- script was renamed to CONSOLE, leaving the header stuck in the old place.
+-- The title is the window body's own TextLabel, so look at direct children and
+-- take the topmost.
+local function find_title(inner)
+    local best;
+    for _, child in ipairs(gui_children(inner)) do
+        if child:IsA("TextLabel") then
+            if not best or child.AbsolutePosition.Y < best.AbsolutePosition.Y then
+                best = child;
+            end;
+        end;
+    end;
+    return best;
+end;
+
+local function find_search_box(root)
+    for _, descendant in ipairs(root:GetDescendants()) do
+        if descendant:IsA("TextBox") then
+            return descendant;
+        end;
+    end;
+    return nil;
+end;
+
+-- ── apply ──────────────────────────────────────────────────────────────────
+local function build(outer)
+    local strip, layout = find_strip(outer);
+    if not strip or not layout then
+        return false, "no horizontal tab strip found";
+    end;
+
+    local holder = strip.Parent;
+    local container = holder and holder.Parent;
+
+    -- Inner is the first *direct* child Frame that isn't the theme overlay.
+    -- FindFirstChildWhichIsA would hand back FRUTIGER_OVERLAY, which is also a
+    -- Frame, and we would widen the overlay instead of the window body.
+    local inner;
+    for _, child in ipairs(gui_children(outer)) do
+        if child.Name ~= "FRUTIGER_OVERLAY" then
+            inner = child;
+            break;
+        end;
+    end;
+
+    if not holder or not container or not inner then
+        return false, "could not resolve the frame chain";
+    end;
+
+    local siblings = gui_children(holder);
+    local separator, content;
+    for _, sibling in ipairs(siblings) do
+        if sibling ~= strip then
+            if sibling.AbsoluteSize.Y <= 6 then
+                separator = separator or sibling;
+            elseif sibling.AbsoluteSize.Y > 100 then
+                content = content or sibling;
+            end;
+        end;
+    end;
+
+    local search = find_search_box(inner);
+    local title = find_title(inner);
+
+    -- Measure before touching anything. Once the window is resized these
+    -- values are gone.
+    local content_width = content and content.AbsoluteSize.X or nil;
+    local separator_height = separator and separator.AbsoluteSize.Y or nil;
+
+    -- ── widen ──────────────────────────────────────────────────────────────
+    -- Only the window itself is widened outright. Its descendants are mostly
+    -- scale-sized (Inner is 1,-2 of Outer, and so on), so they follow on their
+    -- own -- explicitly widening those double-counts. The earlier version did
+    -- exactly that and produced an 812px Inner inside a 682px window.
+    add_width(outer, SIDEBAR_WIDTH);
+
+    -- Only genuinely fixed-width frames along the chain need help. Threshold is
+    -- on Scale, not Offset: anything mostly scaled is already relative.
+    for _, object in ipairs({ inner, container, holder }) do
+        if object and object.Size.X.Scale <= 0.5 then
+            add_width(object, SIDEBAR_WIDTH);
+        end;
+    end;
+
+    -- The separator is a hairline that should span whatever the window is now.
+    if separator then
+        separator.Size = UDim2.new(1, 0, 0, separator_height or separator.Size.Y.Offset);
+    end;
+
+    -- Content is pinned to the width it had and pushed right by the sidebar.
+    -- Left to scale it would stretch across the new window and drag both 266px
+    -- columns out of position.
+    if content and content_width then
+        content.Size = UDim2.new(0, content_width, content.Size.Y.Scale, content.Size.Y.Offset);
+        content.Position = UDim2.new(0, SIDEBAR_WIDTH, content.Position.Y.Scale, content.Position.Y.Offset);
+    end;
+
+    -- Right-anchored widgets keep their gap to the edge by shifting by the same
+    -- amount -- but only when they are fixed-offset. One anchored with scale 1
+    -- is already following the widened parent, and shifting it again pushes it
+    -- clean off the window (measured: search box at x=1260 in a window that
+    -- ends at 1301).
+    if search and search.Position.X.Scale <= 0.5 then
+        shift_x(search, SIDEBAR_WIDTH);
+    end;
+
+    -- ── the strip becomes the sidebar ──────────────────────────────────────
+    strip.Position = UDim2.new(0, 6, 0, 24);
+    strip.Size = UDim2.new(0, SIDEBAR_WIDTH - 12, 1, -30);
+
+    layout.FillDirection = Enum.FillDirection.Vertical;
+    layout.HorizontalAlignment = Enum.HorizontalAlignment.Left;
+    layout.Padding = UDim.new(0, TAB_PADDING);
+
+    -- ── the title becomes the sidebar header ───────────────────────────────
+    if title then
+        title.Position = UDim2.new(0, 8, 0, 5);
+        title.Size = UDim2.new(0, SIDEBAR_WIDTH - 16, 0, 16);
+        title.TextXAlignment = Enum.TextXAlignment.Left;
+        pcall(function() title.TextSize = 13 end);
+        pcall(function()
+            local stroke = title:FindFirstChildOfClass("UIStroke");
+            if stroke then stroke.Transparency = 0.35 end;
+        end);
+    end;
+
+    sidebar.strip = strip;
+    sidebar.layout = layout;
+    sidebar.title = title;
+    sidebar.content = content;
+    sidebar.outer = outer;
+
+    return true;
+end;
+
+-- The library re-sizes and re-shows tab buttons on switch, which can undo the
+-- row sizing. Cheap to re-assert; called on tab click and by a short watchdog.
+function sidebar.reassert()
+    if not sidebar.strip or not sidebar.strip.Parent then
+        return false;
+    end;
+
+    local ok = pcall(function()
+        local children = gui_children(sidebar.strip);
+        local count = #children;
+        if count == 0 then
+            return;
+        end;
+
+        -- fill the column, sharing any leftover height across the tabs so a
+        -- short sidebar doesn't leave a ragged gap at the bottom
+        local available = sidebar.strip.AbsoluteSize.Y - (TAB_PADDING * (count - 1));
+        local height = math.floor(available / count);
+        if height < TAB_HEIGHT then
+            height = TAB_HEIGHT;
+        end;
+        if height > 34 then
+            height = 34;
+        end;
+
+        for _, tab in ipairs(children) do
+            tab.Size = UDim2.new(1, 0, 0, height);
+        end;
+    end);
+
+    return ok;
+end;
+
+function sidebar.apply()
+    if sidebar.applied then
+        return true;
+    end;
+
+    if not Library then
+        return false;
+    end;
+
+    local outer = Library.FrutigerWindow and Library.FrutigerWindow.Holder;
+    if not outer then
+        return false;
+    end;
+
+    local ok, result, reason = pcall(build, outer);
+    if not ok then
+        warn("[frutiger] sidebar failed:", result);
+        return false;
+    end;
+    if not result then
+        warn("[frutiger] sidebar skipped:", reason);
+        return false;
+    end;
+
+    sidebar.applied = true;
+    sidebar.reassert();
+
+    -- re-assert on tab clicks: the library touches sizes on switch
+    pcall(function()
+        for _, tab in ipairs(gui_children(sidebar.strip)) do
+            tab.InputBegan:Connect(function()
+                task.wait();
+                sidebar.reassert();
+            end);
+        end;
+    end);
+
+    -- and once more shortly after, covering the library's own post-build pass
+    task.spawn(function()
+        for _ = 1, 6 do
+            task.wait(0.25);
+            sidebar.reassert();
+        end;
+    end);
+
+    return true;
+end;
+
+return sidebar;
+
+end;
+
+__modules["src/utility/frutiger/theme"] = function()
+--[[
+    src/utility/frutiger/theme.lua
+
+    The DECAY look. Palette, fonts, and a procedural overlay that sits inside
+    the menu window.
+
+    Scoping decisions:
+
+    1.  The overlay is parented INTO Library.FrutigerWindow, not screenspaced over
+        the game. It moves when you drag the window, resizes with it, and is
+        clipped to it — the game world stays clean. An earlier version was a
+        full-screen ScreenGui in gethui(); that was wrong.
+
+    2.  Layer ZIndex is derived at build time from the window's own highest
+        descendant ZIndex rather than hardcoded. The library uses 9999 for
+        window content and 999999 for drag/tooltip layers, so a fixed value
+        either gets buried or paints over tooltips. Deriving it means the grain
+        sits above content and below tooltips automatically.
+
+    3.  Nothing here is required to succeed. Every step is pcall'd and every
+        lookup degrades to nil. A missing texture costs grain, not the client.
+
+    Textures come from tools/gen-textures.js, are inlined into the bundle by
+    tools/bundle.js as base64(zstd(bytes)), written out on first run and loaded
+    with getcustomasset — the same path the fonts and sounds already use.
+]]
+
+local theme = {};
+
+-- ── palette ────────────────────────────────────────────────────────────────
+-- Near-absolute black, carbon grey, desaturated mould green, dirty beige,
+-- rust. No saturated or clean values anywhere.
+
+-- Frutiger Aero: light, glossy, glass. The exact inverse of the black/white
+-- brutalist pass that preceded it.
+--
+-- FontColor is dark on purpose. Every other slot is light now, so the text has
+-- to carry the contrast -- and it also leaves the contrast guard (which darkens
+-- light text on light fills) with nothing to do, instead of fighting the theme.
+theme.palette = {
+    FontColor       = "0e3d5c",   -- deep sky navy, for contrast on light fills
+    MainColor       = "f4fbff",   -- glass white panels
+    AccentColor     = "29a8e0",   -- sky blue: hover fills, selections, toggles
+    BackgroundColor = "dbf0fb",   -- pale sky
+    OutlineColor    = "9fd4ef",   -- soft blue edge, i.e. the corners
+};
+
+theme.extra = {
+    aqua  = Color3.fromRGB(41, 168, 224),
+    sky   = Color3.fromRGB(159, 212, 239),
+    glass = Color3.fromRGB(244, 251, 255),
+    lime  = Color3.fromRGB(126, 200, 80),
+    white = Color3.fromRGB(255, 255, 255),
+    ink   = Color3.fromRGB(14, 61, 92),
+};
+
+-- Condensed industrial for headings, technical mono for everything else.
+theme.fonts = {
+    heading = Enum.Font.Oswald,
+    body    = Enum.Font.RobotoMono,
+};
+
+-- ── textures ───────────────────────────────────────────────────────────────
+local TEXTURE_DIR = "Frutiger/Textures";
+local TEXTURE_NAMES = { "gloss", "bubbles", "sheen" };
+
+theme.textures = {};
+
+local function ensure_folder(dir)
+    if isfolder(dir) then
+        return true;
+    end;
+    return (pcall(makefolder, dir));
+end;
+
+local function ensure_texture(name)
+    local path = TEXTURE_DIR .. "/" .. name .. ".png";
+
+    if not isfile(path) then
+        if not ensure_folder(TEXTURE_DIR) then
+            return nil;
+        end;
+
+        -- inline_asset_b96 and decode_asset are globals published by
+        -- src/luarmor_init_script.lua and src/init.lua respectively.
+        local ok, contents = pcall(function()
+            return decode_asset(inline_asset_b96("@assets/Textures/" .. name .. ".png"));
+        end);
+
+        if not ok or type(contents) ~= "string" or #contents == 0 then
+            return nil;
+        end;
+
+        if not pcall(writefile, path, contents) then
+            return nil;
+        end;
+    end;
+
+    local ok, asset = pcall(getcustomasset, path);
+    return ok and asset or nil;
+end;
+
+function theme.load_textures()
+    for _, name in next, TEXTURE_NAMES do
+        theme.textures[name] = ensure_texture(name);
+    end;
+    return theme.textures;
+end;
+
+-- ── overlay ────────────────────────────────────────────────────────────────
+
+-- Library.FrutigerWindow is the linoria Window OBJECT, not the frame — it carries
+-- .Tabs, .TabOrder and a .Holder field. The actual GUI is Window.Holder
+-- (ui.lua:2388 `Window.Holder = Outer`). Handing the object straight to
+-- :GetDescendants() throws, and build_overlay then swallowed that, so resolve
+-- it here and never let a table through.
+local function as_instance(candidate)
+    if typeof(candidate) == "Instance" then
+        return candidate;
+    end;
+    if type(candidate) == "table" then
+        for _, key in ipairs({ "Holder", "Frame", "Container", "Root" }) do
+            local value = rawget(candidate, key);
+            if typeof(value) == "Instance" then
+                return value;
+            end;
+        end;
+    end;
+    return nil;
+end;
+
+-- The frame everything hangs off. Returns nil if nothing resolves, so the
+-- caller can skip cleanly instead of erroring.
+local function find_window()
+    if not Library then
+        return nil;
+    end;
+
+    for _, candidate in ipairs({ Library.FrutigerWindow, Library.Window, Library.ScreenGui }) do
+        local instance = as_instance(candidate);
+        if instance then
+            return instance;
+        end;
+    end;
+
+    return nil;
+end;
+
+-- Highest ZIndex anywhere under the window. The overlay has to clear the
+-- window's own content without hardcoding a number that goes stale.
+local function max_zindex(root)
+    local highest = 0;
+    for _, descendant in ipairs(root:GetDescendants()) do
+        if descendant:IsA("GuiObject") and descendant.ZIndex > highest then
+            highest = descendant.ZIndex;
+        end;
+    end;
+    return highest;
+end;
+
+-- A previous build (or a previous injection) may have left a screenspaced
+-- overlay behind. Clear it before building the scoped one.
+function theme.destroy_previous()
+    for _, container in ipairs({
+        (type(gethui) == "function" and pcall(gethui) and gethui()) or nil,
+        game:GetService("CoreGui"),
+    }) do
+        if container then
+            for _, child in ipairs(container:GetChildren()) do
+                if child.Name == "FRUTIGER_OVERLAY" then
+                    pcall(function() child:Destroy() end);
+                end;
+            end;
+        end;
+    end;
+end;
+
+local function layer(parent, name, image, props)
+    if not image then
+        return nil;
+    end;
+
+    local frame = Instance.new("ImageLabel");
+    frame.Name = name;
+    frame.BackgroundTransparency = 1;
+    frame.BorderSizePixel = 0;
+    frame.Image = image;
+    frame.Size = UDim2.fromScale(1, 1);
+    frame.Position = UDim2.fromScale(0, 0);
+
+    for key, value in next, props do
+        frame[key] = value;
+    end;
+
+    frame.Parent = parent;
+    return frame;
+end;
+
+function theme.build_overlay()
+    if theme.overlay and theme.overlay.Parent then
+        return theme.overlay;
+    end;
+
+    local window = find_window();
+    if not window then
+        return nil;
+    end;
+
+    pcall(theme.destroy_previous);
+
+    local base = math.min(max_zindex(window) + 1, 999990);
+
+    -- The holder is what clips: the grain tiles and the vignette get cut to the
+    -- window's rectangle, so nothing bleeds over the game or over other windows.
+    local holder = Instance.new("Frame");
+    holder.Name = "FRUTIGER_OVERLAY";
+    holder.BackgroundTransparency = 1;
+    holder.BorderSizePixel = 0;
+    holder.Size = UDim2.fromScale(1, 1);
+    holder.Position = UDim2.fromScale(0, 0);
+    holder.ClipsDescendants = true;
+    holder.Active = false;
+    holder.ZIndex = base;
+
+    local ok = pcall(function()
+        holder.Parent = window;
+    end);
+    if not ok then
+        holder:Destroy();
+        return nil;
+    end;
+
+    theme.overlay = holder;
+    theme.window = window;
+    theme.base_zindex = base;
+
+    -- Frutiger Aero stacks four things, in this order:
+    --
+    --   gloss    the curved-glass highlight across the top. Static, stretched.
+    --   bubbles  translucent spheres, tiled, drifting slowly upward.
+    --   sheen    a soft highlight band that sweeps down the panel occasionally.
+    --
+    -- No grain, no scanlines, no vignette. All three read as damage or CRT on a
+    -- light glossy surface, which is the opposite of what this theme is.
+
+    theme.gloss = layer(holder, "gloss", theme.textures.gloss, {
+        ZIndex = base + 1,
+        ImageTransparency = 0.42,
+        ScaleType = Enum.ScaleType.Stretch,
+    });
+
+    theme.bubbles = layer(holder, "bubbles", theme.textures.bubbles, {
+        ZIndex = base + 2,
+        ImageTransparency = 0.52,
+        TileSize = UDim2.fromOffset(256, 256),
+    });
+
+    theme.sheen = layer(holder, "sheen", theme.textures.sheen, {
+        ZIndex = base + 3,
+        ImageTransparency = 0.35,
+        ScaleType = Enum.ScaleType.Stretch,
+        Size = UDim2.new(1, 0, 0, 96),
+        Position = UDim2.new(0, 0, -1, 0),
+        Visible = false,
+    });
+
+    return holder;
+end;
+
+-- ── motion ─────────────────────────────────────────────────────────────────
+-- Slow and calm, which is the opposite of what was here before. The previous
+-- pass deliberately jittered grain at 12fps and jolted the pane sideways to
+-- read as a failing monitor. On Frutiger that is just a broken UI.
+
+function theme.start_motion()
+    if theme.motion_started then
+        return;
+    end;
+    theme.motion_started = true;
+
+    local RunService = game:GetService("RunService");
+    local rnd = Random.new();
+
+    -- Bubbles rise. Each step nudges the tile offset upward so the whole field
+    -- drifts, then wraps -- cheaper than animating instances and seamless
+    -- because the texture tiles.
+    task.spawn(function()
+        local offset = 0;
+        while theme.overlay and theme.overlay.Parent do
+            if theme.bubbles then
+                offset = (offset - 0.35) % 256;
+                theme.bubbles.Position = UDim2.fromOffset(0, offset);
+            end;
+            RunService.RenderStepped:Wait();
+        end;
+    end);
+
+    -- The sheen sweeps down over ~2.4s, then waits 9-22s. It is hidden between
+    -- passes rather than parked off-screen, so it cannot flash at the edges.
+    task.spawn(function()
+        while theme.overlay and theme.overlay.Parent do
+            task.wait(rnd:NextNumber(9, 22));
+
+            local height = theme.overlay.AbsoluteSize.Y;
+            if theme.sheen and height > 0 then
+                theme.sheen.Visible = true;
+                local start = tick();
+                local duration = 2.4;
+
+                while tick() - start < duration and theme.overlay.Parent do
+                    local t = (tick() - start) / duration;
+                    theme.sheen.Position = UDim2.fromOffset(0, t * (height + 96) - 96);
+                    -- fade in and out so it never pops
+                    theme.sheen.ImageTransparency = 0.35 + math.abs(t - 0.5) * 0.5;
+                    RunService.RenderStepped:Wait();
+                end;
+
+                theme.sheen.Visible = false;
+            end;
+        end;
+    end);
+end;
+
+-- ── library integration ────────────────────────────────────────────────────
+function theme.apply_colors()
+    if not Library then
+        return false;
+    end;
+
+    for key, hex in next, theme.palette do
+        local ok = pcall(function()
+            Library[key] = Color3.fromHex(hex);
+        end);
+        if not ok then
+            return false;
+        end;
+    end;
+
+    pcall(function()
+        Library.AccentColorDark = Library:GetDarkerColor(Library.AccentColor);
+    end);
+
+    return true;
+end;
+
+-- ── recolour pass ──────────────────────────────────────────────────────────
+-- Setting Library.MainColor and calling ApplyTheme is not enough. The library
+-- only repaints elements it registered via AddToRegistry; the window chrome
+-- (the outer Frame, the inner container, the hairline separator, UIStrokes)
+-- bakes its colours at creation and is never revisited. Measured after a
+-- palette change: Library.MainColor was #434343 while Inner still rendered
+-- #1b2b34, the old PR blue.
+--
+-- So capture the palette that was live when the UI was built, then walk the
+-- tree and swap any colour that still matches one of those values.
+
+local function colors_close(a, b)
+    return math.abs(a.R - b.R) < 0.02
+       and math.abs(a.G - b.G) < 0.02
+       and math.abs(a.B - b.B) < 0.02;
+end;
+
+function theme.recolor(previous)
+    if not Library or not Library.ScreenGui or type(previous) ~= "table" then
+        return 0;
+    end;
+
+    local mapping = {};
+    for key, old in next, previous do
+        local hex = theme.palette[key];
+        if hex and typeof(old) == "Color3" then
+            mapping[#mapping + 1] = { old = old, new = Color3.fromHex(hex) };
+        end;
+    end;
+    if #mapping == 0 then
+        return 0;
+    end;
+
+    local function remap(object, property)
+        local ok, current = pcall(function() return object[property] end);
+        if not ok or typeof(current) ~= "Color3" then
+            return false;
+        end;
+
+        for _, pair in ipairs(mapping) do
+            if colors_close(current, pair.old) then
+                pcall(function() object[property] = pair.new end);
+                return true;
+            end;
+        end;
+        return false;
+    end;
+
+    local changed = 0;
+
+    for _, descendant in ipairs(Library.ScreenGui:GetDescendants()) do
+        if descendant:IsA("GuiObject") then
+            for _, property in ipairs({
+                "BackgroundColor3", "TextColor3", "ImageColor3",
+                "PlaceholderColor3", "BorderColor3",
+            }) do
+                if remap(descendant, property) then
+                    changed = changed + 1;
+                end;
+            end;
+        end;
+
+        if descendant:IsA("UIStroke") then
+            if remap(descendant, "Color") then
+                changed = changed + 1;
+            end;
+        end;
+    end;
+
+    return changed;
+end;
+
+-- ── contrast guard ─────────────────────────────────────────────────────────
+-- With a white accent, the library's derived shades (AccentColorDark and its
+-- relatives) come out light grey. Anything that ends up light-filled with white
+-- text on top is unreadable.
+--
+-- Measured on the "enable Ping Compensation" notification: a stable #a3a2a5
+-- fill at full opacity behind #ffffff text.
+--
+-- The guard darkens the TEXT, not the fill. It used to darken the fill, which
+-- was wrong for the common case: the library paints AccentColor as a BACKGROUND
+-- for hover fills, dropdown selections and toggles, and with a white accent that
+-- is a white fill. Blacking those out would erase the accent entirely and you
+-- could no longer see what is selected. Inverting the text instead keeps the
+-- white fill and puts black on it, which is readable AND still shows selection.
+--
+-- Safe against the hover inversion, which produces the same pairing
+-- deliberately: white fill, black text.
+
+local function luminance(color)
+    return 0.299 * color.R + 0.587 * color.G + 0.114 * color.B;
+end;
+
+local CONTRAST_DARK = Color3.fromRGB(12, 12, 12);
+
+function theme.fix_contrast()
+    if not Library or not Library.ScreenGui then
+        return 0;
+    end;
+
+    local fixed = 0;
+
+    for _, descendant in ipairs(Library.ScreenGui:GetDescendants()) do
+        if descendant:IsA("GuiObject")
+            and descendant.BackgroundTransparency < 0.5
+            and luminance(descendant.BackgroundColor3) > 0.5 then
+
+            for _, child in ipairs(descendant:GetDescendants()) do
+                if (child:IsA("TextLabel") or child:IsA("TextBox"))
+                    and luminance(child.TextColor3) > 0.7 then
+                    local ok = pcall(function() child.TextColor3 = CONTRAST_DARK end);
+                    if ok then
+                        fixed = fixed + 1;
+                    end;
+                end;
+            end;
+        end;
+    end;
+
+    return fixed;
+end;
+
+-- ── reactive guard ─────────────────────────────────────────────────────────
+-- The guard used to run on a fixed schedule -- a few passes over the first 30
+-- seconds. Dropdown options, tooltips and dependency-box children are built
+-- when they are first OPENED, which can be minutes later, so they were never
+-- covered: their option labels stayed white on the white accent fill and were
+-- unreadable until a hover inverted them.
+--
+-- Instead of guessing when, react to the tree changing. Debounced, because
+-- building a dropdown adds a burst of instances and one pass at the end is
+-- enough for all of them.
+
+function theme.watch()
+    if theme.watching or not Library or not Library.ScreenGui then
+        return false;
+    end;
+    theme.watching = true;
+
+    local queued = false;
+
+    local function schedule()
+        if queued then
+            return;
+        end;
+        queued = true;
+
+        task.delay(0.2, function()
+            queued = false;
+            pcall(function() theme.recolor(theme.previous_palette) end);
+            pcall(theme.fix_contrast);
+        end);
+    end;
+
+    pcall(function()
+        Library.ScreenGui.DescendantAdded:Connect(schedule);
+    end);
+
+    -- Backstop for repaints that do not add instances: the library re-applies
+    -- registry colours on theme changes and on show, which can put white text
+    -- back on a light fill without anything being added.
+    task.spawn(function()
+        for _ = 1, 60 do
+            task.wait(5);
+            pcall(function() theme.recolor(theme.previous_palette) end);
+            pcall(theme.fix_contrast);
+        end;
+    end);
+
+    return true;
+end;
+
+-- Makes CONSOLE selectable in the theme dropdown, not just forced on.
+function theme.register()
+    local ok, ThemeManager = pcall(require, "@src/utility/librarys/managers/ThemeManager");
+    if not ok or type(ThemeManager) ~= "table" or type(ThemeManager.BuiltInThemes) ~= "table" then
+        return false;
+    end;
+
+    local HttpService = game:GetService("HttpService");
+    ThemeManager.BuiltInThemes["FRUTIGER"] = { 22, HttpService:JSONDecode(HttpService:JSONEncode(theme.palette)) };
+    return true;
+end;
+
+function theme.apply()
+    if theme.applied then
+        return true;
+    end;
+
+    pcall(theme.load_textures);
+    pcall(theme.register);
+
+    -- Capture the palette that was live when the UI was built, before
+    -- apply_colors overwrites it. This is the "from" set for the recolour pass.
+    local previous = {};
+    if Library then
+        for key in next, theme.palette do
+            pcall(function() previous[key] = Library[key] end);
+        end;
+    end;
+
+    local colors = pcall(theme.apply_colors);
+
+    -- repaint the live UI if the manager is reachable
+    pcall(function()
+        local ThemeManager = require("@src/utility/librarys/managers/ThemeManager");
+        ThemeManager:ApplyTheme(theme.palette);
+        if aztup and aztup.tabs then
+            for _, tab in next, aztup.tabs do
+                if tab and tab.Tab then
+                    ThemeManager:ApplyToTab(tab.Tab);
+                end;
+            end;
+        end;
+    end);
+
+    -- apply_colors + ApplyTheme only cover registered elements. This catches
+    -- the window chrome, separators and strokes that the library bakes once and
+    -- never revisits.
+    local recoloured = pcall(function()
+        return theme.recolor(previous);
+    end);
+
+    -- Then re-run the registry itself. Some properties are produced by
+    -- registered FUNCTIONS, not stored values -- the window title builds its
+    -- string from Library.AccentColor at evaluation time and is only evaluated
+    -- when the registry updates. Nothing re-ran it after the palette change, so
+    -- the title kept rendering the old accent (#6699cc, the PR blue) behind a
+    -- white AccentColor.
+    pcall(function()
+        if type(Library.UpdateColorsUsingRegistry) == "function" then
+            Library:UpdateColorsUsingRegistry();
+        end;
+    end);
+
+    pcall(theme.fix_contrast);
+
+    pcall(theme.build_overlay);
+    pcall(theme.start_motion);
+
+    theme.applied = true;
+    theme.previous_palette = previous;
+
+    -- Everything the library builds AFTER this point -- dropdown options,
+    -- tooltips, dependency-box children, notifications -- is covered by the
+    -- reactive guard rather than a fixed schedule. The old schedule ran for 30s
+    -- and by definition missed anything opened later, which is how dropdown
+    -- options stayed white-on-white until a hover inverted them.
+    pcall(theme.watch);
+
+    return colors and recoloured;
+end;
+
+return theme;
 
 end;
 
@@ -53229,7 +53222,7 @@ return function(Library, context)
 				local sound = Instance.new('Sound', game:GetService('CoreGui'))
 				game:GetService('Debris'):AddItem(sound, 6)
 				sound.Volume = aztup_options.NotificationVolume.Value
-				sound.SoundId = getcustomasset('Console/assets/notification.mp3')
+				sound.SoundId = getcustomasset('Frutiger/assets/notification.mp3')
 				sound:Play()
 			end, warn)
 		end
@@ -55492,7 +55485,7 @@ local SaveManager = {} do
 			auto_loading = true;
 			local success, err = self:Load(name)
 			auto_loading = false;
-			if isfile("Console/silent_mode_toggle") then return end
+			if isfile("Frutiger/silent_mode_toggle") then return end
 
 			if not success then
 				return self.Library:NotifyWithSound('Failed to load autoload config: ' .. err, 50)
@@ -55507,7 +55500,7 @@ local SaveManager = {} do
 			auto_loading = true;
 			local success, err = self:Load(name)
 			auto_loading = false;
-			if isfile("Console/silent_mode_toggle") then return end
+			if isfile("Frutiger/silent_mode_toggle") then return end
 
 			if not success then
 				return self.Library:NotifyWithSound('Failed to load autoload config: ' .. err, 50)
@@ -55525,7 +55518,7 @@ local SaveManager = {} do
 		section:AddButton({
 			Text = "Switch to Nightly Branch (reexec needed)",
 			Func = function()
-				writefile("Console/nightliy-branch", "true");
+				writefile("Frutiger/nightliy-branch", "true");
 			end,
 			DoubleClick = true
 		})
@@ -55670,21 +55663,21 @@ local SaveManager = {} do
 		})
 
 		   
-		local silent_val = isfile("Console/silent_mode_toggle"); 
+		local silent_val = isfile("Frutiger/silent_mode_toggle"); 
 		section:AddButton({
 			Text = 'Toggle Silent Mode', 
 			Func = function()
 				silent_val = not silent_val;
 				if not silent_val then
-					pcall(delfile, "Console/silent_mode_toggle")
+					pcall(delfile, "Frutiger/silent_mode_toggle")
 				else
-					pcall(writefile, "Console/silent_mode_toggle", "lmao")
+					pcall(writefile, "Frutiger/silent_mode_toggle", "lmao")
 				end;
 
 				if silent_val then
-					Logger:long_notify("Delete 'workspace/Console/silent_mode_toggle' to turn this off.");
-				    messagebox("You have 'Silent Mode' enabled, Which means you wont see the UI until you open it with the keybind & have extra anti PC check features, If you would like to disable this, Go to UI settings and disable it, This notification is disablable in the fast flags area of UI", "Console", 0)
-					messagebox("'Silent Mode' will invalidate any bug reports or support, It will disable notifications (including mod detector) which are a core part of the script as a extra side effect.", "Console", 0)
+					Logger:long_notify("Delete 'workspace/Frutiger/silent_mode_toggle' to turn this off.");
+				    messagebox("You have 'Silent Mode' enabled, Which means you wont see the UI until you open it with the keybind & have extra anti PC check features, If you would like to disable this, Go to UI settings and disable it, This notification is disablable in the fast flags area of UI", "Frutiger", 0)
+					messagebox("'Silent Mode' will invalidate any bug reports or support, It will disable notifications (including mod detector) which are a core part of the script as a extra side effect.", "Frutiger", 0)
 				else
 					aztup.silent_mode = false;
 					Logger:long_notify("Disabled silent mode. I now have a voice outside of popups.");
@@ -55700,7 +55693,7 @@ local SaveManager = {} do
 		
 		local section = tab:AddRightGroupbox('Configuration')
 		SaveManager:BuildOtherSection(tab);
-		local silent_val = isfile("Console/silent_mode_toggle");
+		local silent_val = isfile("Frutiger/silent_mode_toggle");
 		
         section:AddLabel('Menu bind'):AddKeyPicker('MenuKeybind', { Default = 'RightAlt', NoUI = true, Text = 'Menu keybind' })
 
@@ -58650,11 +58643,11 @@ __modules["src/utility/logger"] = function()
 
 
 
-local dev_file = getgenv().dev_file or string.format("Console/logs/client-%s", tostring(tick()))
+local dev_file = getgenv().dev_file or string.format("Frutiger/logs/client-%s", tostring(tick()))
 
 if not LPH_OBFUSCATED then
-    if not isfolder("Console/logs") then
-        makefolder("Console/logs");
+    if not isfolder("Frutiger/logs") then
+        makefolder("Frutiger/logs");
     end;
 
     if not getgenv().dev_file then
@@ -59907,14 +59900,14 @@ local Window = Library:CreateWindow({
 	MenuFadeTime = 0,
 	TabPadding = 0
 })
-Library.ConsoleWindow = Window;
+Library.FrutigerWindow = Window;
 
 Library:AddToRegistry(Library.WindowLabel, {
 	Text = function()
 		if custom_name then
 			return string.format(LPH_ENCSTR("%s"), custom_name:gsub("|ACCENT", "<font color=\"#" .. Library.AccentColor:ToHex() .. "\">"))		
 end
-		return string.format(LPH_ENCSTR("CONSOLE <font color=\"#%s\">// USER_%03d</font>"), Library.AccentColor:ToHex(), math.random(1, 999))
+		return string.format(LPH_ENCSTR("FRUTIGER <font color=\"#%s\">// USER_%03d</font>"), Library.AccentColor:ToHex(), math.random(1, 999))
 	end
 })
 
@@ -60603,12 +60596,12 @@ return {
                                 description = message,
                                 color = 6724044,
                                 author = {
-                                    name = ".gg/console",
+                                    name = ".gg/frutiger",
                                     icon_url = "https://cdn.discordapp.com/attachments/1211502078200127529/1464075011550613588/PRLOGO.png"
                                 }
                             }
                         },
-                        username = "Console",
+                        username = "Frutiger",
                         avatar_url = "https://cdn.discordapp.com/attachments/1211502078200127529/1464075011550613588/PRLOGO.png",
                         attachments = {},
                         flags = 4096

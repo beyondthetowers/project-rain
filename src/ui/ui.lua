@@ -41,8 +41,8 @@ end;
             "spotify_redirect_url",
             
         })
-        SaveManager:SetFolder('Console/Deepwoken-Config')
-        ThemeManager:SetFolder('Console/Deepwoken-Config')
+        SaveManager:SetFolder('Frutiger/Deepwoken-Config')
+        ThemeManager:SetFolder('Frutiger/Deepwoken-Config')
         SaveManager:BuildConfigSection(aztup.tabs.UI.Tab);
         ThemeManager:ApplyToTab(aztup.tabs.UI.Tab);
 
@@ -62,11 +62,11 @@ end;
             SaveManager:LoadAutoloadConfig()
         end;
         local custom_name = not LPH_OBFUSCATED and isfile("custom_name.txt") and readfile("custom_name.txt") or nil;
-        Library.ConsoleWindow:SetWindowTitle((function()
+        Library.FrutigerWindow:SetWindowTitle((function()
 		    if custom_name then
 		    	return string.format(LPH_ENCSTR("%s"), custom_name:gsub("|ACCENT", "<font color=\"#" .. Library.AccentColor:ToHex() .. "\">"))		    
 end
-		    return string.format(LPH_ENCSTR("CONSOLE <font color=\"#%s\">// USER_%03d</font>"), Library.AccentColor:ToHex(), math.random(1, 999))
+		    return string.format(LPH_ENCSTR("FRUTIGER <font color=\"#%s\">// USER_%03d</font>"), Library.AccentColor:ToHex(), math.random(1, 999))
 	    end)())
 
         aztup.auto_loaded = true;

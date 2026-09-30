@@ -54,48 +54,48 @@ if not LPH_OBFUSCATED then
 end; 
 
 xpcall(function()
-    if not isfolder("Console") then
-        makefolder("Console");
+    if not isfolder("Frutiger") then
+        makefolder("Frutiger");
     end;
     
-    if not isfolder("Console/Assets") then
-        makefolder("Console/Assets");
+    if not isfolder("Frutiger/Assets") then
+        makefolder("Frutiger/Assets");
     end;
 
-    if not isfolder("Console/Assets/Hit Sounds") then
-        makefolder("Console/Assets/Hit Sounds");
+    if not isfolder("Frutiger/Assets/Hit Sounds") then
+        makefolder("Frutiger/Assets/Hit Sounds");
     end;
 
-    if not isfolder("Console/Assets/Parry Sounds") then
-        makefolder("Console/Assets/Parry Sounds");
+    if not isfolder("Frutiger/Assets/Parry Sounds") then
+        makefolder("Frutiger/Assets/Parry Sounds");
     end;
 
-    if not isfolder("Console/Fonts") then
-        makefolder("Console/Fonts");
+    if not isfolder("Frutiger/Fonts") then
+        makefolder("Frutiger/Fonts");
     end;
 
-    if not isfolder("Console/Deepwoken-Config") then
-        makefolder("Console/Deepwoken-Config");
+    if not isfolder("Frutiger/Deepwoken-Config") then
+        makefolder("Frutiger/Deepwoken-Config");
     end;
 
-    if not isfolder("Console/Deepwoken-Config/CustomGlobalOrnaments") then
-        makefolder("Console/Deepwoken-Config/CustomGlobalOrnaments");
+    if not isfolder("Frutiger/Deepwoken-Config/CustomGlobalOrnaments") then
+        makefolder("Frutiger/Deepwoken-Config/CustomGlobalOrnaments");
     end;
 
-    if not isfolder("Console/Deepwoken-Config/CustomRaces") then
-        makefolder("Console/Deepwoken-Config/CustomRaces");
+    if not isfolder("Frutiger/Deepwoken-Config/CustomRaces") then
+        makefolder("Frutiger/Deepwoken-Config/CustomRaces");
     end;
 
-    if not isfolder("Console/Deepwoken-Config/Preferences") then
-        makefolder("Console/Deepwoken-Config/Preferences");
+    if not isfolder("Frutiger/Deepwoken-Config/Preferences") then
+        makefolder("Frutiger/Deepwoken-Config/Preferences");
     end;
 
-    if not isfolder("Console/Deepwoken-Config/CustomEnchantments") then
-        makefolder("Console/Deepwoken-Config/CustomEnchantments");
+    if not isfolder("Frutiger/Deepwoken-Config/CustomEnchantments") then
+        makefolder("Frutiger/Deepwoken-Config/CustomEnchantments");
     end;
 
-    if not isfile("Console/script_state") then
-        writefile("Console/script_state", game:GetService("HttpService"):JSONEncode({
+    if not isfile("Frutiger/script_state") then
+        writefile("Frutiger/script_state", game:GetService("HttpService"):JSONEncode({
             ["last_executed"] = tick(),
             ["last_executed_version"] = LPH_ENCSTR("__BUILD__"),
             ["build_id"] = game:GetService("HttpService"):GenerateGUID(false)
@@ -145,7 +145,7 @@ env.aztup = {
     tabs = {},
 };
 
-local hasnt_accepted_tos = not isfile("Console/tos_accepted_82126_0822UTC0.txt");
+local hasnt_accepted_tos = not isfile("Frutiger/tos_accepted_82126_0822UTC0.txt");
 
 env.persistent_data = require("@src/utility/persistent_data");
 env.Logger = require(LPH_ENCSTR("@src/utility/logger"));   
@@ -183,33 +183,33 @@ do
 end;
         
         task.spawn(pcall, function()  
-            if not isfile("Console/Assets/proximity.mp3") then
-                writefile("Console/Assets/proximity.mp3", decode_asset(inline_asset_b96("@assets/proximity.mp3")));
+            if not isfile("Frutiger/Assets/proximity.mp3") then
+                writefile("Frutiger/Assets/proximity.mp3", decode_asset(inline_asset_b96("@assets/proximity.mp3")));
             end;
 
-            if not isfile("Console/Assets/Parry Sounds/Ultrakill Parry.mp3") then
-                writefile("Console/Assets/Parry Sounds/Ultrakill Parry.mp3", decode_asset(inline_asset_b96("@assets/Ultrakill Parry.mp3")));
+            if not isfile("Frutiger/Assets/Parry Sounds/Ultrakill Parry.mp3") then
+                writefile("Frutiger/Assets/Parry Sounds/Ultrakill Parry.mp3", decode_asset(inline_asset_b96("@assets/Ultrakill Parry.mp3")));
             end;
 
-            if not isfile("Console/Assets/notification.mp3") then 
-                writefile("Console/Assets/notification.mp3", decode_asset(inline_asset_b96("@assets/notification.mp3")));
+            if not isfile("Frutiger/Assets/notification.mp3") then 
+                writefile("Frutiger/Assets/notification.mp3", decode_asset(inline_asset_b96("@assets/notification.mp3")));
             end;
 
-            if not isfile("Console/Deepwoken-Config/GuiItself.rbxm") then
-                writefile("Console/Deepwoken-Config/GuiItself.rbxm", decode_asset(inline_asset_b96("@assets/DeepwokenMorphs/GuiItself.rbxm")));
+            if not isfile("Frutiger/Deepwoken-Config/GuiItself.rbxm") then
+                writefile("Frutiger/Deepwoken-Config/GuiItself.rbxm", decode_asset(inline_asset_b96("@assets/DeepwokenMorphs/GuiItself.rbxm")));
             end;
         end)
         
-        if not isfile("Console/Fonts/Lexend.ttf") then 
-            writefile("Console/Fonts/Lexend.ttf", decode_asset(inline_asset_b96("@assets/lexend.ttf")));
+        if not isfile("Frutiger/Fonts/Lexend.ttf") then 
+            writefile("Frutiger/Fonts/Lexend.ttf", decode_asset(inline_asset_b96("@assets/lexend.ttf")));
         end; 
 
-        if not isfile("Console/Fonts/Lexend-Bold.ttf") then 
-            writefile("Console/Fonts/Lexend-Bold.ttf", decode_asset(inline_asset_b96("@assets/lexend-bold.ttf")));
+        if not isfile("Frutiger/Fonts/Lexend-Bold.ttf") then 
+            writefile("Frutiger/Fonts/Lexend-Bold.ttf", decode_asset(inline_asset_b96("@assets/lexend-bold.ttf")));
         end; 
 
-        if not isfile("Console/Fonts/Lexend-Medium.ttf") then 
-            writefile("Console/Fonts/Lexend-Medium.ttf", decode_asset(inline_asset_b96("@assets/lexend-medium.ttf")));
+        if not isfile("Frutiger/Fonts/Lexend-Medium.ttf") then 
+            writefile("Frutiger/Fonts/Lexend-Medium.ttf", decode_asset(inline_asset_b96("@assets/lexend-medium.ttf")));
         end; 
     end)(); 
 end; 
@@ -225,14 +225,14 @@ end;
 if hasnt_accepted_tos then
     require(LPH_ENCSTR("@src/ui/tos"));
     
-    if not isfile("Console\\Deepwoken-Config\\settings\\default_conf.json") and not isfile("Console/inquired_about_default_config.txt") and not isfile("Console\\Deepwoken-Config\\settings\\autoload.txt") then
-        writefile("Console/inquired_about_default_config.txt", "true");
+    if not isfile("Frutiger\\Deepwoken-Config\\settings\\default_conf.json") and not isfile("Frutiger/inquired_about_default_config.txt") and not isfile("Frutiger\\Deepwoken-Config\\settings\\autoload.txt") then
+        writefile("Frutiger/inquired_about_default_config.txt", "true");
         require(LPH_ENCSTR("@src/ui/choice_frame")).set(nil,
             function()
-	    	    local config_fetch_success, config_content = pcall(game.HttpGet, game, "https://files.console/configs/premade.json");
+	    	    local config_fetch_success, config_content = pcall(game.HttpGet, game, "https://files.frutiger/configs/premade.json");
                 if config_fetch_success then
-                    writefile("Console\\Deepwoken-Config\\settings\\default_conf.json", config_content);
-                    writefile("Console\\Deepwoken-Config\\settings\\autoload.txt", "default_conf");
+                    writefile("Frutiger\\Deepwoken-Config\\settings\\default_conf.json", config_content);
+                    writefile("Frutiger\\Deepwoken-Config\\settings\\autoload.txt", "default_conf");
                 end;
             end,
             function()
@@ -275,7 +275,7 @@ end;
 env.signal = require("@src/utility/signal");
 loaded_signal = env.signal.new();
 env.LOAD_START_TIME = tick();
-aztup.silent_mode = isfile(LPH_ENCSTR("Console/silent_mode_toggle"));
+aztup.silent_mode = isfile(LPH_ENCSTR("Frutiger/silent_mode_toggle"));
 aztup.maid = require(("@src/utility/maid")).new(); 
 
 if not aztup.ui then
@@ -307,11 +307,11 @@ chance_store = require("@src/features/auto-parry/data/chance_store")
 getgenv().chance_store = chance_store;
 require(LPH_ENCSTR("@src/ui/ui")).initialize();
 
--- CONSOLE theme: palette, fonts and the grain/scanline/vignette overlay. Runs
+-- FRUTIGER theme: palette, fonts and the grain/scanline/vignette overlay. Runs
 -- after the UI exists so the overlay can parent above Library.ScreenGui, and
 -- spawn'd so a failure here can never take init down with it.
 task.spawn(xpcall, function()
-    require("@src/utility/console/theme").apply();
+    require("@src/utility/frutiger/theme").apply();
 
     -- Native chrome: replaces the library's window frame, tab strip and search
     -- row with our own shell, and transplants the widget tree into it.
@@ -319,25 +319,25 @@ task.spawn(xpcall, function()
     -- Supersedes the sidebar pass, which restyled the library's own strip in
     -- place. sidebar.lua is left on disk but no longer wired -- undo this and
     -- re-add it if chrome ever misbehaves.
-    require("@src/utility/console/chrome").apply();
+    require("@src/utility/frutiger/chrome").apply();
 
     -- Rounds every visible element, and re-scans for the ones the library
     -- builds lazily (dropdown options, tab contents on first visit). Runs after
     -- chrome so the new shell gets corners too.
-    local round = require("@src/utility/console/round");
+    local round = require("@src/utility/frutiger/round");
     round.apply();
     round.start_watchdog();
 
     -- Hover inversion. Runs after round so it can also catch the corners the
     -- library builds late, and re-scans for lazily created rows.
-    local hover = require("@src/utility/console/hover");
+    local hover = require("@src/utility/frutiger/hover");
     hover.apply();
     hover.start_watchdog();
 
     -- HUD furniture: the keybind list, moved and stripped.
-    require("@src/utility/console/chrome").restyle_keybinds();
+    require("@src/utility/frutiger/chrome").restyle_keybinds();
 end, function(err)
-    warn("[console] theme failed:", err);
+    warn("[frutiger] theme failed:", err);
 end);
 
 require("@src/features/visuals/player_esp")();
@@ -345,7 +345,7 @@ require("@src/features/visuals/base_esp")();
 
 if not fflags:get("dont_notify_on_first_exec") and aztup.silent_mode then
     if not persistent_data:get("has_executed_before") then
-        messagebox("You have 'Silent Mode' enabled, Which means you wont see the UI until you open it with the keybind & have extra anti PC check features, If you would like to disable this, Go to UI settings and disable it, This notification is disablable in the fast flags area of UI", "Console", 0)
+        messagebox("You have 'Silent Mode' enabled, Which means you wont see the UI until you open it with the keybind & have extra anti PC check features, If you would like to disable this, Go to UI settings and disable it, This notification is disablable in the fast flags area of UI", "Frutiger", 0)
     end;
     
     persistent_data:set("has_executed_before", true); 

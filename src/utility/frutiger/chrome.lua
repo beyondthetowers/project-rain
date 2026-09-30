@@ -1,5 +1,5 @@
 --[[
-    src/utility/console/chrome.lua
+    src/utility/frutiger/chrome.lua
 
     Native chrome, borrowed widgets.
 
@@ -77,7 +77,7 @@ end;
 -- ── locate the library's pieces ────────────────────────────────────────────
 local function find_window_body(outer)
     for _, child in ipairs(gui_children(outer)) do
-        if child.Name ~= "CONSOLE_OVERLAY" then
+        if child.Name ~= "FRUTIGER_OVERLAY" then
             return child;
         end;
     end;
@@ -134,7 +134,7 @@ local function build(outer)
     local window_height = TITLE_HEIGHT + content_size.Y;
 
     local root = make("Frame", {
-        Name = "CONSOLE_CHROME",
+        Name = "FRUTIGER_CHROME",
         BackgroundColor3 = Color3.new(0, 0, 0),
         BorderSizePixel = 0,
         Size = UDim2.fromScale(1, 1),
@@ -165,7 +165,7 @@ local function build(outer)
         Name = "title_text",
         BackgroundTransparency = 1,
         Font = Enum.Font.RobotoMono,
-        Text = string.format("CONSOLE // USER_%03d", math.random(1, 999)),
+        Text = string.format("FRUTIGER // USER_%03d", math.random(1, 999)),
         TextColor3 = Color3.new(1, 1, 1),
         TextSize = 13,
         TextXAlignment = Enum.TextXAlignment.Left,
@@ -246,7 +246,7 @@ local function build(outer)
     end);
 
     -- ── tabs ───────────────────────────────────────────────────────────────
-    local window = Library.ConsoleWindow;
+    local window = Library.FrutigerWindow;
     local entries = {};
 
     local function sorted_tabs()
@@ -359,7 +359,7 @@ local function build(outer)
         for _ = 1, 10 do
             task.wait(1);
             pcall(build_entries);
-            pcall(function() paint_active(Library.ConsoleWindow.ActiveTab) end);
+            pcall(function() paint_active(Library.FrutigerWindow.ActiveTab) end);
         end;
     end);
 
@@ -379,22 +379,22 @@ function chrome.apply()
         return true;
     end;
 
-    if not Library or not Library.ScreenGui or not Library.ConsoleWindow then
+    if not Library or not Library.ScreenGui or not Library.FrutigerWindow then
         return false;
     end;
 
-    local outer = Library.ConsoleWindow.Holder;
+    local outer = Library.FrutigerWindow.Holder;
     if not outer then
         return false;
     end;
 
     local ok, result, reason = pcall(build, outer);
     if not ok then
-        warn("[console] chrome failed:", result);
+        warn("[frutiger] chrome failed:", result);
         return false;
     end;
     if not result then
-        warn("[console] chrome skipped:", reason);
+        warn("[frutiger] chrome skipped:", reason);
         return false;
     end;
 

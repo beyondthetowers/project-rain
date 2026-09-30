@@ -1,5 +1,5 @@
 --[[
-    src/utility/console/round.lua
+    src/utility/frutiger/round.lua
 
     Rounds the corners of every visible element in the UI.
 
@@ -27,7 +27,7 @@
 
 local round = {};
 
-local RADIUS = 6.0;
+local RADIUS = 12.0;
 
 local function add_corner(object, radius)
     if object:FindFirstChildOfClass("UICorner") then
@@ -99,8 +99,8 @@ function round.apply()
 
     -- the overlay has to match the window it lives in, layers included
     pcall(function()
-        local window = Library.ConsoleWindow and Library.ConsoleWindow.Holder;
-        local holder = window and window:FindFirstChild("CONSOLE_OVERLAY");
+        local window = Library.FrutigerWindow and Library.FrutigerWindow.Holder;
+        local holder = window and window:FindFirstChild("FRUTIGER_OVERLAY");
         if not holder then
             return;
         end;

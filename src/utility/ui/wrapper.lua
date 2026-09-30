@@ -6,14 +6,14 @@ local Window = Library:CreateWindow({
 	MenuFadeTime = 0,
 	TabPadding = 0
 })
-Library.ConsoleWindow = Window;
+Library.FrutigerWindow = Window;
 
 Library:AddToRegistry(Library.WindowLabel, {
 	Text = function()
 		if custom_name then
 			return string.format(LPH_ENCSTR("%s"), custom_name:gsub("|ACCENT", "<font color=\"#" .. Library.AccentColor:ToHex() .. "\">"))		
 end
-		return string.format(LPH_ENCSTR("CONSOLE <font color=\"#%s\">// USER_%03d</font>"), Library.AccentColor:ToHex(), math.random(1, 999))
+		return string.format(LPH_ENCSTR("FRUTIGER <font color=\"#%s\">// USER_%03d</font>"), Library.AccentColor:ToHex(), math.random(1, 999))
 	end
 })
 

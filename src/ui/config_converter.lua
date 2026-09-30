@@ -1,8 +1,8 @@
 return function()
-    if isfile("Console/converted.txt") then
+    if isfile("Frutiger/converted.txt") then
         return    
 else
-        writefile("Console/converted.txt", "true");
+        writefile("Frutiger/converted.txt", "true");
     end;
 
     if isfolder("ProjectRainRewrite") and isfolder("ProjectRainRewrite/settings") then
@@ -69,9 +69,9 @@ end;
             end;
 
             local name = file:gsub("/", "\\"):split("ProjectRainRewrite\\settings\\")[2]:gsub(".json", "");
-            if isfile("Console\\Deepwoken-Config\\settings\\DecayLegacyConvert-" .. name .. ".json") then continue end
+            if isfile("Frutiger\\Deepwoken-Config\\settings\\DecayLegacyConvert-" .. name .. ".json") then continue end
             Logger:long_notify("Converted config: " .. name);
-            writefile("Console\\Deepwoken-Config\\settings\\DecayLegacyConvert-" .. name .. ".json", game:GetService("HttpService"):JSONEncode(converted_config));
+            writefile("Frutiger\\Deepwoken-Config\\settings\\DecayLegacyConvert-" .. name .. ".json", game:GetService("HttpService"):JSONEncode(converted_config));
         end;
     end;
 end
