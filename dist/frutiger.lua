@@ -1,6 +1,6 @@
 --[[
     Frutiger — bundled build
-    generated 2026-09-30T01:37:45.857Z
+    generated 2026-09-30T01:39:25.726Z
     modules: 280
     assets:  18
 ]]
@@ -51131,6 +51131,13 @@ function theme.recolor(previous)
         end;
     end;
 
+    local function luminance_of(color)
+        return 0.299 * color.R + 0.587 * color.G + 0.114 * color.B;
+    end;
+
+    -- which way round the palette being applied is, for the polarity fallback
+    local theme_luminance = luminance_of(Color3.fromHex(theme.palette.MainColor));
+
     local function remap(object, property)
         local sources = PROPERTY_SOURCE[property];
         if not sources then
@@ -51149,6 +51156,29 @@ function theme.recolor(previous)
                 return true;
             end;
         end;
+
+        -- Polarity fallback, for elements the library paints with a LITERAL
+        -- black or white instead of a palette colour.
+        --
+        -- Measured: with a light palette applied, 688 elements stayed pure
+        -- #000000 -- toggle knobs and slider thumbs among them. They match no
+        -- palette entry, so the loop above cannot see them, and they are not
+        -- created late either, so the tree watcher cannot either. They are
+        -- simply hardcoded, and they only look wrong when the theme's polarity
+        -- is the opposite of theirs.
+        if property == "BackgroundColor3" and theme_luminance > 0.5 then
+            if luminance_of(current) < 0.15 then
+                pcall(function() object[property] = Color3.fromHex(theme.palette.MainColor) end);
+                return true;
+            end;
+        end;
+        if property == "TextColor3" and theme_luminance < 0.5 then
+            if luminance_of(current) > 0.85 then
+                pcall(function() object[property] = Color3.fromHex(theme.palette.FontColor) end);
+                return true;
+            end;
+        end;
+
         return false;
     end;
 
