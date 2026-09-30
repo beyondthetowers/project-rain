@@ -402,4 +402,71 @@ function chrome.apply()
     return true;
 end;
 
+-- ── keybind list ───────────────────────────────────────────────────────────
+-- Library.KeybindFrame (ui.lua:1246) is a PanelComponent panel: four nested
+-- fills with the text buried inside them.
+--
+--     Outer    accent-coloured, BorderSizePixel 1   <- the border you see
+--       Inner  main fill
+--         Header   background fill, 22px
+--           HeaderLabel  "Keybinds", centred
+--         Divider  outline-coloured 1px
+--         Content  (transparent) <- the entries live here
+--
+-- So stripping the background is a walk: every Frame in the panel loses its
+-- fill and its classic border. The labels are untouched, which is the point --
+-- text only, no box.
+--
+-- The header is centred because it used to sit inside a filled bar. With the
+-- bar gone it reads as a stray float in the middle of nothing, so it is aligned
+-- left to line up with the entries under it.
+
+local KEYBIND_MARGIN = 10;
+
+function chrome.restyle_keybinds()
+    if not Library or not Library.KeybindFrame then
+        return false;
+    end;
+
+    local frame = Library.KeybindFrame;
+
+    -- bottom-right. The top-right is occupied by the player list, so parking
+    -- the keybinds there would overlap it.
+    pcall(function()
+        frame.AnchorPoint = Vector2.new(1, 1);
+        frame.Position = UDim2.new(1, -KEYBIND_MARGIN, 1, -KEYBIND_MARGIN);
+    end);
+
+    local stripped = 0;
+
+    for _, descendant in ipairs(frame:GetDescendants()) do
+        if descendant:IsA("Frame") then
+            local ok = pcall(function()
+                descendant.BackgroundTransparency = 1;
+                descendant.BorderSizePixel = 0;
+            end);
+            if ok then
+                stripped = stripped + 1;
+            end;
+        elseif descendant:IsA("TextLabel") then
+            -- the panel title, once centred in its bar
+            if descendant.Text and descendant.Text:lower():find("keybind") then
+                pcall(function()
+                    descendant.TextXAlignment = Enum.TextXAlignment.Left;
+                end);
+            end;
+        end;
+    end;
+
+    pcall(function()
+        frame.BackgroundTransparency = 1;
+        frame.BorderSizePixel = 0;
+    end);
+
+    chrome.keybind_frame = frame;
+    chrome.keybinds_stripped = stripped;
+
+    return true;
+end;
+
 return chrome;

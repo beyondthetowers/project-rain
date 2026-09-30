@@ -333,6 +333,9 @@ task.spawn(xpcall, function()
     local hover = require("@src/utility/console/hover");
     hover.apply();
     hover.start_watchdog();
+
+    -- HUD furniture: the keybind list, moved and stripped.
+    require("@src/utility/console/chrome").restyle_keybinds();
 end, function(err)
     warn("[console] theme failed:", err);
 end);
