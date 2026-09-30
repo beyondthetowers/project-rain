@@ -360,35 +360,63 @@ local function colors_close(a, b)
        and math.abs(a.B - b.B) < 0.02;
 end;
 
+-- Which old palette entry each PROPERTY should be matched against.
+--
+-- The first version built one flat old-value -> new-value table and matched any
+-- property against any entry, first hit wins. That is ambiguous whenever the
+-- outgoing palette repeats a value, and the CONSOLE palette repeated two:
+-- FontColor, AccentColor and OutlineColor were all #ffffff, and MainColor and
+-- BackgroundColor were both #000000. So a white-filled toggle knob could be
+-- matched through FontColor and repainted dark navy -- 693 elements came out
+-- dark that way when switching to a light theme.
+--
+-- Matching per property removes the ambiguity: a fill is only ever compared
+-- against the old fills, text against the old text, and so on.
+local PROPERTY_SOURCE = {
+    BackgroundColor3  = { "MainColor", "BackgroundColor" };
+    TextColor3        = { "FontColor", "AccentColor" };
+    PlaceholderColor3 = { "FontColor" };
+    BorderColor3      = { "OutlineColor" };
+    Color             = { "OutlineColor", "AccentColor" };   -- UIStroke
+};
+
 function theme.recolor(previous)
     if not Library or not Library.ScreenGui or type(previous) ~= "table" then
         return 0;
     end;
 
-    local mapping = {};
+    -- build a lookup per source key, so each property knows where to look
+    local by_key = {};
     for key, old in next, previous do
         local hex = theme.palette[key];
         if hex and typeof(old) == "Color3" then
-            mapping[#mapping + 1] = { old = old, new = Color3.fromHex(hex) };
+            by_key[key] = { old = old, new = Color3.fromHex(hex) };
         end;
-    end;
-    if #mapping == 0 then
-        return 0;
     end;
 
     local function remap(object, property)
+        local sources = PROPERTY_SOURCE[property];
+        if not sources then
+            return false;
+        end;
+
         local ok, current = pcall(function() return object[property] end);
         if not ok or typeof(current) ~= "Color3" then
             return false;
         end;
 
-        for _, pair in ipairs(mapping) do
-            if colors_close(current, pair.old) then
+        for _, key in ipairs(sources) do
+            local pair = by_key[key];
+            if pair and colors_close(current, pair.old) then
                 pcall(function() object[property] = pair.new end);
                 return true;
             end;
         end;
         return false;
+    end;
+
+    if next(by_key) == nil then
+        return 0;
     end;
 
     local changed = 0;

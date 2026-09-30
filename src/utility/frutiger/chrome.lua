@@ -55,6 +55,11 @@ local TITLE_HEIGHT = 26;
 local TAB_HEIGHT = 26;
 local TAB_PADDING = 2;
 
+-- Palette source, so the shell is themed rather than hardcoded. pcall'd because
+-- a missing theme should cost the colours, not the chrome.
+local theme_module = nil;
+pcall(function() theme_module = require("@src/utility/frutiger/theme") end);
+
 -- ── helpers ────────────────────────────────────────────────────────────────
 local function gui_children(parent)
     local out = {};
@@ -133,9 +138,20 @@ local function build(outer)
     local window_width = SIDEBAR_WIDTH + content_size.X;
     local window_height = TITLE_HEIGHT + content_size.Y;
 
+    -- Colours come from the palette rather than literals. These were hardcoded
+    -- black/white during the CONSOLE pass and were never updated, so the shell
+    -- root stayed #000000 behind a light theme -- the whole UI sat on black.
+    local theme = theme_module;
+    local palette = (theme and theme.extra) or {};
+    local GLASS = palette.glass or Color3.fromRGB(244, 251, 255);
+    local EDGE  = Color3.fromRGB(159, 212, 239);
+    local SKY   = palette.sky   or Color3.fromRGB(159, 212, 239);
+    local AQUA  = palette.aqua  or Color3.fromRGB(41, 168, 224);
+    local INK   = palette.ink   or Color3.fromRGB(14, 61, 92);
+
     local root = make("Frame", {
         Name = "FRUTIGER_CHROME",
-        BackgroundColor3 = Color3.new(0, 0, 0),
+        BackgroundColor3 = GLASS,
         BorderSizePixel = 0,
         Size = UDim2.fromScale(1, 1),
         Position = UDim2.fromScale(0, 0),
@@ -146,7 +162,7 @@ local function build(outer)
     make("UICorner", { CornerRadius = UDim.new(0, 6), Parent = root });
 
     local stroke = make("UIStroke", {
-        Color = Color3.fromRGB(255, 255, 255),
+        Color = EDGE,
         Thickness = 1,
         Parent = root,
     });
@@ -166,7 +182,7 @@ local function build(outer)
         BackgroundTransparency = 1,
         Font = Enum.Font.RobotoMono,
         Text = string.format("FRUTIGER // USER_%03d", math.random(1, 999)),
-        TextColor3 = Color3.new(1, 1, 1),
+        TextColor3 = INK,
         TextSize = 13,
         TextXAlignment = Enum.TextXAlignment.Left,
         Size = UDim2.new(1, -12, 1, 0),
@@ -177,7 +193,7 @@ local function build(outer)
 
     make("Frame", {
         Name = "title_rule",
-        BackgroundColor3 = Color3.fromRGB(255, 255, 255),
+        BackgroundColor3 = EDGE,
         BorderSizePixel = 0,
         Size = UDim2.new(1, 0, 0, 1),
         Position = UDim2.new(0, 0, 0, TITLE_HEIGHT - 1),
@@ -210,7 +226,7 @@ local function build(outer)
 
     make("Frame", {
         Name = "sidebar_rule",
-        BackgroundColor3 = Color3.fromRGB(255, 255, 255),
+        BackgroundColor3 = EDGE,
         BorderSizePixel = 0,
         Size = UDim2.new(0, 1, 1, -TITLE_HEIGHT),
         Position = UDim2.new(0, SIDEBAR_WIDTH, 0, TITLE_HEIGHT),
@@ -289,8 +305,8 @@ local function build(outer)
         for tab, entry in next, entries do
             local is_active = (tab == active);
             pcall(function()
-                entry.frame.BackgroundColor3 = is_active and Color3.new(1, 1, 1) or Color3.new(0, 0, 0);
-                entry.label.TextColor3 = is_active and Color3.new(0, 0, 0) or Color3.new(1, 1, 1);
+                entry.frame.BackgroundColor3 = is_active and AQUA or GLASS;
+                entry.label.TextColor3 = INK;
             end);
         end;
     end;
@@ -302,7 +318,7 @@ local function build(outer)
             if not entries[tab] then
                 local row = make("Frame", {
                     Name = "tab_" .. index,
-                    BackgroundColor3 = Color3.new(0, 0, 0),
+                    BackgroundColor3 = GLASS,
                     BorderSizePixel = 0,
                     Size = UDim2.new(1, 0, 0, TAB_HEIGHT),
                     LayoutOrder = index,
@@ -311,7 +327,7 @@ local function build(outer)
                 });
                 make("UICorner", { CornerRadius = UDim.new(0, 4), Parent = row });
                 make("UIStroke", {
-                    Color = Color3.fromRGB(255, 255, 255),
+                    Color = EDGE,
                     Thickness = 1,
                     Parent = row,
                 });
@@ -321,7 +337,7 @@ local function build(outer)
                     BackgroundTransparency = 1,
                     Font = Enum.Font.RobotoMono,
                     Text = tostring(tab.Name or ("TAB_" .. index)):upper(),
-                    TextColor3 = Color3.new(1, 1, 1),
+                    TextColor3 = INK,
                     TextSize = 12,
                     TextXAlignment = Enum.TextXAlignment.Left,
                     Size = UDim2.new(1, -12, 1, 0),
