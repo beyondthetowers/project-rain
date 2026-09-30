@@ -1,6 +1,6 @@
 --[[
     Console — bundled build
-    generated 2026-09-30T01:26:36.978Z
+    generated 2026-09-30T01:29:46.692Z
     modules: 280
     assets:  0
 ]]
@@ -49130,15 +49130,23 @@ end;
 -- text on top is unreadable.
 --
 -- Measured on the "enable Ping Compensation" notification: a stable #a3a2a5
--- fill at full opacity behind #ffffff text. Rather than work out which derived
--- field each element reads, darken the fill wherever that pairing occurs.
+-- fill at full opacity behind #ffffff text.
 --
--- Safe against the hover inversion: that produces white-on-black or
--- black-on-white, neither of which is a light fill with light text.
+-- The guard darkens the TEXT, not the fill. It used to darken the fill, which
+-- was wrong for the common case: the library paints AccentColor as a BACKGROUND
+-- for hover fills, dropdown selections and toggles, and with a white accent that
+-- is a white fill. Blacking those out would erase the accent entirely and you
+-- could no longer see what is selected. Inverting the text instead keeps the
+-- white fill and puts black on it, which is readable AND still shows selection.
+--
+-- Safe against the hover inversion, which produces the same pairing
+-- deliberately: white fill, black text.
 
 local function luminance(color)
     return 0.299 * color.R + 0.587 * color.G + 0.114 * color.B;
 end;
+
+local CONTRAST_DARK = Color3.fromRGB(12, 12, 12);
 
 function theme.fix_contrast()
     if not Library or not Library.ScreenGui then
@@ -49152,23 +49160,69 @@ function theme.fix_contrast()
             and descendant.BackgroundTransparency < 0.5
             and luminance(descendant.BackgroundColor3) > 0.5 then
 
-            local light_text = false;
             for _, child in ipairs(descendant:GetDescendants()) do
                 if (child:IsA("TextLabel") or child:IsA("TextBox"))
                     and luminance(child.TextColor3) > 0.7 then
-                    light_text = true;
-                    break;
+                    local ok = pcall(function() child.TextColor3 = CONTRAST_DARK end);
+                    if ok then
+                        fixed = fixed + 1;
+                    end;
                 end;
-            end;
-
-            if light_text then
-                pcall(function() descendant.BackgroundColor3 = theme.extra.black end);
-                fixed = fixed + 1;
             end;
         end;
     end;
 
     return fixed;
+end;
+
+-- ── reactive guard ─────────────────────────────────────────────────────────
+-- The guard used to run on a fixed schedule -- a few passes over the first 30
+-- seconds. Dropdown options, tooltips and dependency-box children are built
+-- when they are first OPENED, which can be minutes later, so they were never
+-- covered: their option labels stayed white on the white accent fill and were
+-- unreadable until a hover inverted them.
+--
+-- Instead of guessing when, react to the tree changing. Debounced, because
+-- building a dropdown adds a burst of instances and one pass at the end is
+-- enough for all of them.
+
+function theme.watch()
+    if theme.watching or not Library or not Library.ScreenGui then
+        return false;
+    end;
+    theme.watching = true;
+
+    local queued = false;
+
+    local function schedule()
+        if queued then
+            return;
+        end;
+        queued = true;
+
+        task.delay(0.2, function()
+            queued = false;
+            pcall(function() theme.recolor(theme.previous_palette) end);
+            pcall(theme.fix_contrast);
+        end);
+    end;
+
+    pcall(function()
+        Library.ScreenGui.DescendantAdded:Connect(schedule);
+    end);
+
+    -- Backstop for repaints that do not add instances: the library re-applies
+    -- registry colours on theme changes and on show, which can put white text
+    -- back on a light fill without anything being added.
+    task.spawn(function()
+        for _ = 1, 60 do
+            task.wait(5);
+            pcall(function() theme.recolor(theme.previous_palette) end);
+            pcall(theme.fix_contrast);
+        end;
+    end);
+
+    return true;
 end;
 
 -- Makes CONSOLE selectable in the theme dropdown, not just forced on.
@@ -49242,17 +49296,12 @@ function theme.apply()
     theme.applied = true;
     theme.previous_palette = previous;
 
-    -- The library repaints from its own state when the UI is shown, and creates
-    -- some elements long after init -- notifications, toasts, dropdown options.
-    -- So keep re-running the remap and the contrast guard rather than doing it
-    -- once and hoping. Cheap: a single descendant walk every 2s.
-    task.spawn(function()
-        for _ = 1, 15 do
-            task.wait(2);
-            pcall(function() theme.recolor(previous) end);
-            pcall(theme.fix_contrast);
-        end;
-    end);
+    -- Everything the library builds AFTER this point -- dropdown options,
+    -- tooltips, dependency-box children, notifications -- is covered by the
+    -- reactive guard rather than a fixed schedule. The old schedule ran for 30s
+    -- and by definition missed anything opened later, which is how dropdown
+    -- options stayed white-on-white until a hover inverted them.
+    pcall(theme.watch);
 
     return colors and recoloured;
 end;
