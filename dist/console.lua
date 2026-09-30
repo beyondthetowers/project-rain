@@ -1,6 +1,6 @@
 --[[
     Console — bundled build
-    generated 2026-09-30T01:21:48.073Z
+    generated 2026-09-30T01:22:48.841Z
     modules: 280
     assets:  20
 ]]
@@ -47736,6 +47736,23 @@ end;
 
 local KEYBIND_MARGIN = 10;
 
+-- Corner position, computed from the camera viewport in OFFSETS rather than
+-- from scale.
+--
+-- Scale-1 Y does not mean "the bottom of the screen" here: the library's
+-- ScreenGui has IgnoreGuiInset = false and GuiService reports a 58px inset, so
+-- ScreenGui.AbsoluteSize is 1920x1022 against a 1920x1080 viewport. Anchoring
+-- at scale 1 left the panel 68px above the physical bottom -- measured. Offsets
+-- are absolute screen pixels, so they land where you actually want.
+--
+-- Offsets also suit the library: toggle.lua's resize code reads
+-- Position.Y.Offset, and SaveManager stores the position as a UDim2 anyway.
+local function corner_position()
+    local camera = workspace.CurrentCamera;
+    local viewport = (camera and camera.ViewportSize) or Vector2.new(1920, 1080);
+    return UDim2.fromOffset(viewport.X - KEYBIND_MARGIN, viewport.Y - KEYBIND_MARGIN);
+end;
+
 function chrome.restyle_keybinds()
     if not Library or not Library.KeybindFrame then
         return false;
@@ -47747,7 +47764,7 @@ function chrome.restyle_keybinds()
     -- the keybinds there would overlap it.
     pcall(function()
         frame.AnchorPoint = Vector2.new(1, 1);
-        frame.Position = UDim2.new(1, -KEYBIND_MARGIN, 1, -KEYBIND_MARGIN);
+        frame.Position = corner_position();
     end);
 
     local stripped = 0;
