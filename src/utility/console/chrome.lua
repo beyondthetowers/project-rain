@@ -421,6 +421,14 @@ end;
 -- bar gone it reads as a stray float in the middle of nothing, so it is aligned
 -- left to line up with the entries under it.
 
+-- Which corner the bind list sits in. Bottom-left: the anchor is the bottom
+-- edge, so the list grows upward as binds are added and the bottom stays put.
+--
+-- Flip these two to move it -- Vector2.new(0, 0) is top-left, Vector2.new(1, 1)
+-- is bottom-right. Note the bottom-anchored Y value (1) is also what tells
+-- toggle.lua to skip its vertical-centre compensation; a centre anchor (0.5)
+-- would drag the list down as it grows.
+local KEYBIND_ANCHOR = Vector2.new(0, 1);
 local KEYBIND_MARGIN = 10;
 
 -- Corner position, computed from the camera viewport in OFFSETS rather than
@@ -437,7 +445,16 @@ local KEYBIND_MARGIN = 10;
 local function corner_position()
     local camera = workspace.CurrentCamera;
     local viewport = (camera and camera.ViewportSize) or Vector2.new(1920, 1080);
-    return UDim2.fromOffset(viewport.X - KEYBIND_MARGIN, viewport.Y - KEYBIND_MARGIN);
+
+    local x = (KEYBIND_ANCHOR.X == 1)
+        and (viewport.X - KEYBIND_MARGIN)
+        or KEYBIND_MARGIN;
+
+    local y = (KEYBIND_ANCHOR.Y == 1)
+        and (viewport.Y - KEYBIND_MARGIN)
+        or KEYBIND_MARGIN;
+
+    return UDim2.fromOffset(x, y);
 end;
 
 function chrome.restyle_keybinds()
@@ -447,10 +464,11 @@ function chrome.restyle_keybinds()
 
     local frame = Library.KeybindFrame;
 
-    -- bottom-right. The top-right is occupied by the player list, so parking
-    -- the keybinds there would overlap it.
+    -- bottom-left. The list reads as an overlay on the game rather than a
+    -- panel, and the left edge is otherwise clear once the quest tracker is
+    -- dismissed.
     pcall(function()
-        frame.AnchorPoint = Vector2.new(1, 1);
+        frame.AnchorPoint = KEYBIND_ANCHOR;
         frame.Position = corner_position();
     end);
 
@@ -485,16 +503,16 @@ function chrome.restyle_keybinds()
 
     -- SaveManager persists and restores a keybindPosition (SaveManager.lua:149
     -- saves, :266 restores), and that restore can land after this runs. An older
-    -- saved position is offset-based, which under a (1,1) anchor puts the panel
-    -- entirely off screen. So re-assert for a few seconds; once the position has
-    -- been saved back as ours, later launches restore correctly on their own.
+    -- saved position is offset-based, which under this anchor puts the panel off
+    -- screen. So re-assert for a few seconds; once the position has been saved
+    -- back as ours, later launches restore correctly on their own.
     task.spawn(function()
         for _, delay in ipairs({ 0.5, 1.5, 3, 5, 8 }) do
             task.wait(delay);
             local current = chrome.keybind_frame;
             if current and current.Parent then
                 pcall(function()
-                    current.AnchorPoint = Vector2.new(1, 1);
+                    current.AnchorPoint = KEYBIND_ANCHOR;
                     current.Position = corner_position();
                 end);
             end;
