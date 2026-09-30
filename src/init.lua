@@ -313,13 +313,17 @@ require(LPH_ENCSTR("@src/ui/ui")).initialize();
 task.spawn(xpcall, function()
     require("@src/utility/console/theme").apply();
 
-    -- Sidebar runs after the theme so the overlay already exists and can be
-    -- excluded by name when the window body is located. The overlay is scale
-    -- 1,1, so it follows the window widening on its own.
-    require("@src/utility/console/sidebar").apply();
+    -- Native chrome: replaces the library's window frame, tab strip and search
+    -- row with our own shell, and transplants the widget tree into it.
+    --
+    -- Supersedes the sidebar pass, which restyled the library's own strip in
+    -- place. sidebar.lua is left on disk but no longer wired -- undo this and
+    -- re-add it if chrome ever misbehaves.
+    require("@src/utility/console/chrome").apply();
 
     -- Rounds every visible element, and re-scans for the ones the library
-    -- builds lazily (dropdown options, tab contents on first visit).
+    -- builds lazily (dropdown options, tab contents on first visit). Runs after
+    -- chrome so the new shell gets corners too.
     local round = require("@src/utility/console/round");
     round.apply();
     round.start_watchdog();
