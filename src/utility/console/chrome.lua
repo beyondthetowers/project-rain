@@ -466,6 +466,24 @@ function chrome.restyle_keybinds()
     chrome.keybind_frame = frame;
     chrome.keybinds_stripped = stripped;
 
+    -- SaveManager persists and restores a keybindPosition (SaveManager.lua:149
+    -- saves, :266 restores), and that restore can land after this runs. An older
+    -- saved position is offset-based, which under a (1,1) anchor puts the panel
+    -- entirely off screen. So re-assert for a few seconds; once the position has
+    -- been saved back as ours, later launches restore correctly on their own.
+    task.spawn(function()
+        for _, delay in ipairs({ 0.5, 1.5, 3, 5, 8 }) do
+            task.wait(delay);
+            local current = chrome.keybind_frame;
+            if current and current.Parent then
+                pcall(function()
+                    current.AnchorPoint = Vector2.new(1, 1);
+                    current.Position = UDim2.new(1, -KEYBIND_MARGIN, 1, -KEYBIND_MARGIN);
+                end);
+            end;
+        end;
+    end);
+
     return true;
 end;
 

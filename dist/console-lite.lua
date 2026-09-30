@@ -1,6 +1,6 @@
 --[[
     Console — bundled build
-    generated 2026-09-30T01:19:35.997Z
+    generated 2026-09-30T01:21:48.182Z
     modules: 280
     assets:  0
 ]]
@@ -47779,6 +47779,24 @@ function chrome.restyle_keybinds()
     chrome.keybind_frame = frame;
     chrome.keybinds_stripped = stripped;
 
+    -- SaveManager persists and restores a keybindPosition (SaveManager.lua:149
+    -- saves, :266 restores), and that restore can land after this runs. An older
+    -- saved position is offset-based, which under a (1,1) anchor puts the panel
+    -- entirely off screen. So re-assert for a few seconds; once the position has
+    -- been saved back as ours, later launches restore correctly on their own.
+    task.spawn(function()
+        for _, delay in ipairs({ 0.5, 1.5, 3, 5, 8 }) do
+            task.wait(delay);
+            local current = chrome.keybind_frame;
+            if current and current.Parent then
+                pcall(function()
+                    current.AnchorPoint = Vector2.new(1, 1);
+                    current.Position = UDim2.new(1, -KEYBIND_MARGIN, 1, -KEYBIND_MARGIN);
+                end);
+            end;
+        end;
+    end);
+
     return true;
 end;
 
@@ -54623,9 +54641,26 @@ end
 
 			local properties = {
 				Size = UDim2.new(0, NewWidth, 0, NewHeight);
-				Position = UDim2.fromOffset(Library.KeybindFrame.Position.X.Offset, TargetPositionY);
+				-- Preserve X verbatim, including its Scale. This used to be
+				-- UDim2.fromOffset(Position.X.Offset, ...), which dropped the
+				-- scale: a right-anchored panel (scale 1, offset -10) collapsed
+				-- to (scale 0, offset -10) and jumped to the far left, off
+				-- screen. Only Y is meant to move here -- the code below keeps
+				-- the panel's vertical centre steady as it grows.
+				Position = UDim2.new(
+					Library.KeybindFrame.Position.X.Scale,
+					Library.KeybindFrame.Position.X.Offset,
+					0,
+					TargetPositionY
+				);
 			}
-			if NewHeight ~= OldHeight then 
+			-- Y compensation only makes sense for a top/centre anchored panel,
+			-- where growth expands in both directions and the centre has to be
+			-- held. It was written for the original (0, 0.5) anchor. On a
+			-- bottom-anchored panel (AnchorPoint.Y == 1) growth already goes
+			-- upward and the bottom edge stays put, so compensating would drag
+			-- the panel down and push it off screen.
+			if NewHeight ~= OldHeight and Library.KeybindFrame.AnchorPoint.Y ~= 1 then 
 				local Camera = workspace.CurrentCamera
 				local ViewportY = (Camera and Camera.ViewportSize.Y) or 1080
 				local CenterY = ViewportY * 0.5
@@ -54637,7 +54672,12 @@ end
 					local Direction = (BaselineCenterY < CenterY) and 1 or -1
 					TargetPositionY = BaselinePositionY + (HeightDelta * 0.5 * Direction)
 					TargetCenterY = BaselineCenterY + (HeightDelta * 0.5 * Direction)
-					properties.Position = UDim2.fromOffset(Library.KeybindFrame.Position.X.Offset, TargetPositionY)
+					properties.Position = UDim2.new(
+						Library.KeybindFrame.Position.X.Scale,
+						Library.KeybindFrame.Position.X.Offset,
+						0,
+						TargetPositionY
+					)
 				end
 			end
 
