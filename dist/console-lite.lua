@@ -1,6 +1,6 @@
 --[[
     Console — bundled build
-    generated 2026-09-30T01:12:49.922Z
+    generated 2026-09-30T01:13:36.055Z
     modules: 280
     assets:  0
 ]]
@@ -47560,16 +47560,31 @@ local function build(outer)
     local entries = {};
 
     local function sorted_tabs()
+        -- Window.TabOrder is the library's authoritative order, and it is an
+        -- array of Tab OBJECTS in creation order (ui.lua:2290).
+        --
+        -- The first version sorted by tab.LayoutOrder, which does not exist:
+        -- Tab:SetLayoutOrder writes to TabButton.LayoutOrder, not to the Tab.
+        -- So the comparator compared nil with nil and returned false every
+        -- time, and table.sort produced arbitrary order.
+        local order = window.TabOrder;
+        if type(order) == "table" and #order > 0 then
+            local ordered = {};
+            for _, tab in ipairs(order) do
+                if tab then
+                    ordered[#ordered + 1] = tab;
+                end;
+            end;
+            return ordered;
+        end;
+
+        -- fallback for a window built without TabOrder
         local tabs = window.Tabs or {};
         local names = {};
         for name in next, tabs do
             names[#names + 1] = name;
         end;
-        table.sort(names, function(a, b)
-            local ta = tabs[a];
-            local tb = tabs[b];
-            return (ta and ta.LayoutOrder or 0) < (tb and tb.LayoutOrder or 0);
-        end);
+        table.sort(names);
 
         local out = {};
         for _, name in ipairs(names) do
