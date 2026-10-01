@@ -1,6 +1,6 @@
 --[[
     Frutiger — bundled build
-    generated 2026-10-01T11:49:05.910Z
+    generated 2026-10-01T11:51:23.426Z
     modules: 281
     assets:  0
 ]]
@@ -51412,6 +51412,55 @@ end;
 
 local CONTRAST_DARK = Color3.fromRGB(12, 12, 12);
 
+-- The nearest ancestor that actually paints something, walking up until a fill
+-- is found. This is the whole point: text is very rarely a direct child of the
+-- thing it sits on. A toggle label lives inside a row with
+-- BackgroundTransparency = 1, inside a groupbox, inside the panel. Checking only
+-- the label's own parent finds nothing and the guard does nothing -- which is
+-- exactly what happened, and why the toggle labels stayed white on a light
+-- panel while the slider labels (which sit on a filled track) came out dark.
+local function nearest_fill(object)
+    local node = object.Parent;
+
+    while node and node ~= Library.ScreenGui do
+        local ok, fill, transparency = pcall(function()
+            return node.BackgroundColor3, node.BackgroundTransparency;
+        end);
+
+        if ok and fill and transparency and transparency < 0.6 then
+            return fill;
+        end;
+
+        node = node.Parent;
+    end;
+
+    return nil;
+end;
+
+-- Pick whichever of the palette's text colour and a hard dark reads better on
+-- the fill behind it. Using FontColor keeps the result on-theme; the hard
+-- constant is the fallback for a palette whose own text colour is light.
+local function readable_text_on(background)
+    local candidates = { CONTRAST_DARK };
+
+    local ok, hex = pcall(function() return theme.palette.FontColor end);
+    if ok and hex then
+        candidates[#candidates + 1] = Color3.fromHex(hex);
+    end;
+
+    local background_luminance = luminance(background);
+    local best;
+
+    for _, candidate in ipairs(candidates) do
+        local distance = math.abs(luminance(candidate) - background_luminance);
+        if not best or distance > best.distance then
+            best = { color = candidate, distance = distance };
+        end;
+    end;
+
+    return best and best.color or CONTRAST_DARK;
+end;
+
 function theme.fix_contrast()
     if not Library or not Library.ScreenGui then
         return 0;
@@ -51420,14 +51469,17 @@ function theme.fix_contrast()
     local fixed = 0;
 
     for _, descendant in ipairs(Library.ScreenGui:GetDescendants()) do
-        if descendant:IsA("GuiObject")
-            and descendant.BackgroundTransparency < 0.5
-            and luminance(descendant.BackgroundColor3) > 0.5 then
+        if descendant:IsA("TextLabel") or descendant:IsA("TextBox") then
+            local text_luminance = luminance(descendant.TextColor3);
 
-            for _, child in ipairs(descendant:GetDescendants()) do
-                if (child:IsA("TextLabel") or child:IsA("TextBox"))
-                    and luminance(child.TextColor3) > 0.7 then
-                    local ok = pcall(function() child.TextColor3 = CONTRAST_DARK end);
+            -- only text that is currently light is at risk
+            if text_luminance > 0.7 then
+                local fill = nearest_fill(descendant);
+
+                -- ...and only when what is behind it is also light
+                if fill and luminance(fill) > 0.5 then
+                    local replacement = readable_text_on(fill);
+                    local ok = pcall(function() descendant.TextColor3 = replacement end);
                     if ok then
                         fixed = fixed + 1;
                     end;
