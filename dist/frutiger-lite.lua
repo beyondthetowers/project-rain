@@ -1,6 +1,6 @@
 --[[
     Frutiger — bundled build
-    generated 2026-10-01T18:01:58.287Z
+    generated 2026-10-01T18:05:46.987Z
     modules: 284
     assets:  0
 ]]
@@ -13350,7 +13350,28 @@ end;
                     if not mob_root then continue end
                 
                     local distance = (local_player.root_part.Position - mob_root.Position).Magnitude;
-                    if task.range and distance > task.range or task.in_hitbox and not task.in_hitbox() then continue end
+
+                    -- Split from one compound condition, and guarded.
+                    --
+                    -- This loop is a dispatcher: it runs every task's hitbox check.
+                    -- It is also called from the INPUT HOOK (hooking.lua), so an
+                    -- error escaping here does not just fail one parry -- it takes
+                    -- the hook with it and the cheat stops processing input
+                    -- altogether. That is the reported symptom: mid-fight,
+                    -- suddenly cannot draw a weapon, cannot dodge, cannot do
+                    -- anything.
+                    --
+                    -- One task failing to answer must not be able to do that. A
+                    -- task whose check throws is treated as "not in hitbox" and
+                    -- skipped, and everything else keeps working.
+                    if task.range and distance > task.range then continue end;
+
+                    if task.in_hitbox then
+                        local ok, in_hitbox = pcall(task.in_hitbox);
+                        if not ok or not in_hitbox then
+                            continue;
+                        end;
+                    end;
                 
                     if not should_block then
                         local block_input = aztup.flags.block_input;
@@ -27398,7 +27419,18 @@ elseif method == "FireServer" then
 
         if flags.block_input and self then
 
-            if BlockInputManager:should_block_input() then
+            -- Guarded. This hook owns OffhandAttack (dodge), LeftClick and
+            -- CriticalClick, so an error escaping here does not merely fail one
+            -- check -- it fails the hook. And a hook that keeps throwing can be
+            -- dropped by the executor, which is permanent loss of input handling.
+            -- That is what "mid-fight I suddenly cannot draw a weapon, cannot
+            -- dodge, cannot do anything" looks like from the inside.
+            local block_ok, block_input_now = pcall(function()
+                return BlockInputManager:should_block_input();
+            end);
+            block_input_now = block_ok and block_input_now or false;
+
+            if block_input_now then
                 if self == KeyHandler:get_cache(STR_TBL_SF_INVOKE("OffhandAttack")) and aztup_options.blocked_safe_input_user_moves.Value.M2s then
                     return
                 end
@@ -27408,7 +27440,7 @@ elseif method == "FireServer" then
             end
 
             local critical_click = KeyHandler:get_cache("CriticalClick");
-            if critical_click and self == critical_click and BlockInputManager:should_block_input() and aztup_options.blocked_safe_input_user_moves.Value.Criticals then
+            if critical_click and self == critical_click and block_input_now and aztup_options.blocked_safe_input_user_moves.Value.Criticals then
                 return            
 end;
         end
