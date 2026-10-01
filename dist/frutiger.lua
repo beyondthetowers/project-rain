@@ -1,7 +1,7 @@
 --[[
     Frutiger — bundled build
-    generated 2026-10-01T12:06:56.767Z
-    modules: 283
+    generated 2026-10-01T17:34:38.041Z
+    modules: 284
     assets:  20
 ]]
 
@@ -21552,7 +21552,17 @@ end
         end
 
         local magnitude = (root.Position - local_player.root_part.Position).Magnitude;
-        if self.is_player and magnitude > aztup.flags.dont_process_players_over_studs or not self.is_player and magnitude > aztup.flags.dont_process_mobs_over_studs then
+        -- Both limits defaulted. dont_process_mobs_over_studs is nil until the
+        -- auto-parry dependency box has been opened (its slider is created
+        -- lazily), and `magnitude > nil` throws -- which aborts the rest of this
+        -- handler. That handler is attached to the animator, so the failure is
+        -- not cosmetic: it is a candidate for the weapon not appearing in hand
+        -- after a respawn.
+        local player_limit = aztup.flags.dont_process_players_over_studs or 500;
+        local mob_limit = aztup.flags.dont_process_mobs_over_studs or 2000;
+
+        if (self.is_player and magnitude > player_limit)
+            or (not self.is_player and magnitude > mob_limit) then
             return        
 end;
 
@@ -49917,6 +49927,13 @@ pcall(function() theme_module = require("@src/utility/frutiger/theme") end);
 local kit = nil;
 pcall(function() kit = require("@src/utility/frutiger/material") end);
 
+local visible = nil;
+pcall(function() visible = require("@src/utility/frutiger/visible") end);
+
+if not visible then
+    visible = { menu = function() return true end, on_open = function() end };
+end;
+
 local COLORS = (kit and kit.colors) or {};
 
 local DIVIDER_MAX_HEIGHT = 3;
@@ -50095,14 +50112,27 @@ function dress.apply()
 
     -- Lazy content (tab pages, dropdown options, dependency boxes) is built on
     -- first visit, so keep re-dressing for a while as it appears.
+    -- Gated on visibility for the same reason as the theme guard: four
+    -- full-tree walks every 2 seconds is real cost, and all of it is invisible
+    -- while the menu is shut.
     task.spawn(function()
         for _ = 1, 20 do
             task.wait(2);
-            pcall(dress.dividers);
-            pcall(dress.cards);
-            pcall(dress.spacing);
-            pcall(dress.recheck);
+            if visible.menu() then
+                pcall(dress.dividers);
+                pcall(dress.cards);
+                pcall(dress.spacing);
+                pcall(dress.recheck);
+            end;
         end;
+    end);
+
+    -- Lazy content is built on first visit, so re-dress on each open rather
+    -- than hoping a timer happened to catch it.
+    visible.on_open(function()
+        pcall(dress.dividers);
+        pcall(dress.cards);
+        pcall(dress.recheck);
     end);
 
     return true;
@@ -50300,6 +50330,12 @@ __modules["src/utility/frutiger/hover"] = function()
 ]]
 
 local hover = {};
+
+local visible = nil;
+pcall(function() visible = require("@src/utility/frutiger/visible") end);
+if not visible then
+    visible = { menu = function() return true end, on_open = function() end };
+end;
 
 local states = setmetatable({}, { __mode = "k" });
 local attached_count = 0;
@@ -50511,10 +50547,14 @@ function hover.start_watchdog()
     end;
     hover.watching = true;
 
+    -- Gated: this is a full-tree walk, and it was running whether or not the
+    -- menu was on screen.
     task.spawn(function()
         for _ = 1, 8 do
             task.wait(2);
-            pcall(hover.apply);
+            if visible.menu() then
+                pcall(hover.apply);
+            end;
         end;
     end);
 end;
@@ -51068,6 +51108,12 @@ __modules["src/utility/frutiger/round"] = function()
 
 local round = {};
 
+local visible = nil;
+pcall(function() visible = require("@src/utility/frutiger/visible") end);
+if not visible then
+    visible = { menu = function() return true end, on_open = function() end };
+end;
+
 local RADIUS = 12.0;
 
 local function add_corner(object, radius)
@@ -51165,10 +51211,14 @@ function round.start_watchdog()
     end;
     round.watching = true;
 
+    -- Gated: this is a full-tree walk, and it was running whether or not the
+    -- menu was on screen.
     task.spawn(function()
         for _ = 1, 8 do
             task.wait(2);
-            pcall(round.apply);
+            if visible.menu() then
+                pcall(round.apply);
+            end;
         end;
     end);
 end;
@@ -51567,6 +51617,15 @@ theme.fonts = {
 };
 
 -- ── textures ───────────────────────────────────────────────────────────────
+local visible = nil;
+pcall(function() visible = require("@src/utility/frutiger/visible") end);
+
+-- Guard against the module failing to load: without it nothing would ever run,
+-- which is worse than running too often.
+if not visible then
+    visible = { menu = function() return true end, on_open = function() end };
+end;
+
 local TEXTURE_DIR = "Frutiger/Textures";
 local TEXTURE_NAMES = { "gloss", "frost", "bubbles", "sheen", "orb" };
 
@@ -51801,11 +51860,17 @@ function theme.start_motion()
     task.spawn(function()
         local offset = 0;
         while theme.overlay and theme.overlay.Parent do
-            if theme.bubbles then
-                offset = (offset - 0.35) % 256;
-                theme.bubbles.Position = UDim2.fromOffset(0, offset);
+            if not visible.menu() then
+                -- Nothing to animate while hidden, and RenderStepped:Wait()
+                -- wakes every single frame. Sleep instead.
+                task.wait(0.25);
+            else
+                if theme.bubbles then
+                    offset = (offset - 0.35) % 256;
+                    theme.bubbles.Position = UDim2.fromOffset(0, offset);
+                end;
+                RunService.RenderStepped:Wait();
             end;
-            RunService.RenderStepped:Wait();
         end;
     end);
 
@@ -51814,6 +51879,11 @@ function theme.start_motion()
     task.spawn(function()
         while theme.overlay and theme.overlay.Parent do
             task.wait(rnd:NextNumber(9, 22));
+
+            if not visible.menu() then
+                task.wait(1);
+                continue;
+            end;
 
             local height = theme.overlay.AbsoluteSize.Y;
             if theme.sheen and height > 0 then
@@ -52118,8 +52188,18 @@ function theme.watch()
         end;
         queued = true;
 
-        task.delay(0.2, function()
+        task.delay(0.35, function()
             queued = false;
+
+            -- THE GATE. Everything below exists to style the window, and while
+            -- it is shut none of it is visible. In a live game instances are
+            -- added constantly -- ESP, nametags, notifications -- so this was
+            -- running several times a second across ~2000 elements for nothing.
+            -- That is the framerate complaint.
+            if not visible.menu() then
+                return;
+            end;
+
             pcall(function() theme.recolor(theme.previous_palette) end);
             pcall(theme.fix_contrast);
         end);
@@ -52132,13 +52212,21 @@ function theme.watch()
     -- Backstop for repaints that do not add instances: the library re-applies
     -- registry colours on theme changes and on show, which can put white text
     -- back on a light fill without anything being added.
+    -- Backstop only. While the menu is shut this costs one comparison every
+    -- 5s. It used to do two full-tree passes on that schedule regardless.
     task.spawn(function()
         for _ = 1, 60 do
             task.wait(5);
-            pcall(function() theme.recolor(theme.previous_palette) end);
-            pcall(theme.fix_contrast);
+            if visible.menu() then
+                pcall(function() theme.recolor(theme.previous_palette) end);
+                pcall(theme.fix_contrast);
+            end;
         end;
     end);
+
+    -- The useful half: do the work when it actually becomes visible, instead of
+    -- guessing on a timer.
+    visible.on_open(schedule);
 
     return true;
 end;
@@ -52225,6 +52313,73 @@ function theme.apply()
 end;
 
 return theme;
+
+end;
+
+__modules["src/utility/frutiger/visible"] = function()
+--[[
+    src/utility/frutiger/visible.lua
+
+    Whether the menu is actually open.
+
+    Every expensive thing the theme does -- recolouring the tree, checking
+    contrast, dressing dividers and cards, attaching hover handlers, rounding
+    corners -- exists purely to style a window that is, most of the time, not on
+    screen. Running any of it while the menu is closed costs framerate and buys
+    nothing, because nobody can see the result.
+
+    That was the reported problem: framerate tanking during play, with the menu
+    shut. The theme had a DescendantAdded hook that reran a full-tree recolour
+    and contrast pass whenever anything was added, debounced by 0.2s. In a live
+    game instances are added constantly, so it was firing several times a second
+    across ~2000 elements, forever, while hidden.
+
+    The gate is also how the work gets scheduled properly: instead of guessing
+    when to re-run, run once whenever the window becomes visible.
+]]
+
+local visible = {};
+
+local function holder()
+    local library = Library or (getgenv and getgenv().Library);
+    if not library then
+        return nil;
+    end;
+
+    local window = library.FrutigerWindow or library.DecayWindow or library.Window;
+    return window and window.Holder or nil;
+end;
+
+function visible.menu()
+    local object = holder();
+    if not object then
+        return false;
+    end;
+
+    local ok, value = pcall(function() return object.Visible end);
+    return ok and value == true;
+end;
+
+-- Calls `callback` each time the menu transitions to visible. Returns the
+-- connection, or nil if there is nothing to watch yet.
+function visible.on_open(callback)
+    local object = holder();
+    if not object then
+        return nil;
+    end;
+
+    local ok, connection = pcall(function()
+        return object:GetPropertyChangedSignal("Visible"):Connect(function()
+            if object.Visible then
+                pcall(callback);
+            end;
+        end);
+    end);
+
+    return ok and connection or nil;
+end;
+
+return visible;
 
 end;
 

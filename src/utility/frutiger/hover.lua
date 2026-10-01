@@ -20,6 +20,12 @@
 
 local hover = {};
 
+local visible = nil;
+pcall(function() visible = require("@src/utility/frutiger/visible") end);
+if not visible then
+    visible = { menu = function() return true end, on_open = function() end };
+end;
+
 local states = setmetatable({}, { __mode = "k" });
 local attached_count = 0;
 
@@ -230,10 +236,14 @@ function hover.start_watchdog()
     end;
     hover.watching = true;
 
+    -- Gated: this is a full-tree walk, and it was running whether or not the
+    -- menu was on screen.
     task.spawn(function()
         for _ = 1, 8 do
             task.wait(2);
-            pcall(hover.apply);
+            if visible.menu() then
+                pcall(hover.apply);
+            end;
         end;
     end);
 end;

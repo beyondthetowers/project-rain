@@ -27,6 +27,12 @@
 
 local round = {};
 
+local visible = nil;
+pcall(function() visible = require("@src/utility/frutiger/visible") end);
+if not visible then
+    visible = { menu = function() return true end, on_open = function() end };
+end;
+
 local RADIUS = 12.0;
 
 local function add_corner(object, radius)
@@ -124,10 +130,14 @@ function round.start_watchdog()
     end;
     round.watching = true;
 
+    -- Gated: this is a full-tree walk, and it was running whether or not the
+    -- menu was on screen.
     task.spawn(function()
         for _ = 1, 8 do
             task.wait(2);
-            pcall(round.apply);
+            if visible.menu() then
+                pcall(round.apply);
+            end;
         end;
     end);
 end;

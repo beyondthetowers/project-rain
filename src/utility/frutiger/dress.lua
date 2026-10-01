@@ -32,6 +32,13 @@ pcall(function() theme_module = require("@src/utility/frutiger/theme") end);
 local kit = nil;
 pcall(function() kit = require("@src/utility/frutiger/material") end);
 
+local visible = nil;
+pcall(function() visible = require("@src/utility/frutiger/visible") end);
+
+if not visible then
+    visible = { menu = function() return true end, on_open = function() end };
+end;
+
 local COLORS = (kit and kit.colors) or {};
 
 local DIVIDER_MAX_HEIGHT = 3;
@@ -210,14 +217,27 @@ function dress.apply()
 
     -- Lazy content (tab pages, dropdown options, dependency boxes) is built on
     -- first visit, so keep re-dressing for a while as it appears.
+    -- Gated on visibility for the same reason as the theme guard: four
+    -- full-tree walks every 2 seconds is real cost, and all of it is invisible
+    -- while the menu is shut.
     task.spawn(function()
         for _ = 1, 20 do
             task.wait(2);
-            pcall(dress.dividers);
-            pcall(dress.cards);
-            pcall(dress.spacing);
-            pcall(dress.recheck);
+            if visible.menu() then
+                pcall(dress.dividers);
+                pcall(dress.cards);
+                pcall(dress.spacing);
+                pcall(dress.recheck);
+            end;
         end;
+    end);
+
+    -- Lazy content is built on first visit, so re-dress on each open rather
+    -- than hoping a timer happened to catch it.
+    visible.on_open(function()
+        pcall(dress.dividers);
+        pcall(dress.cards);
+        pcall(dress.recheck);
     end);
 
     return true;

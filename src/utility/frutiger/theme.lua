@@ -76,6 +76,15 @@ theme.fonts = {
 };
 
 -- ── textures ───────────────────────────────────────────────────────────────
+local visible = nil;
+pcall(function() visible = require("@src/utility/frutiger/visible") end);
+
+-- Guard against the module failing to load: without it nothing would ever run,
+-- which is worse than running too often.
+if not visible then
+    visible = { menu = function() return true end, on_open = function() end };
+end;
+
 local TEXTURE_DIR = "Frutiger/Textures";
 local TEXTURE_NAMES = { "gloss", "frost", "bubbles", "sheen", "orb" };
 
@@ -310,11 +319,17 @@ function theme.start_motion()
     task.spawn(function()
         local offset = 0;
         while theme.overlay and theme.overlay.Parent do
-            if theme.bubbles then
-                offset = (offset - 0.35) % 256;
-                theme.bubbles.Position = UDim2.fromOffset(0, offset);
+            if not visible.menu() then
+                -- Nothing to animate while hidden, and RenderStepped:Wait()
+                -- wakes every single frame. Sleep instead.
+                task.wait(0.25);
+            else
+                if theme.bubbles then
+                    offset = (offset - 0.35) % 256;
+                    theme.bubbles.Position = UDim2.fromOffset(0, offset);
+                end;
+                RunService.RenderStepped:Wait();
             end;
-            RunService.RenderStepped:Wait();
         end;
     end);
 
@@ -323,6 +338,11 @@ function theme.start_motion()
     task.spawn(function()
         while theme.overlay and theme.overlay.Parent do
             task.wait(rnd:NextNumber(9, 22));
+
+            if not visible.menu() then
+                task.wait(1);
+                continue;
+            end;
 
             local height = theme.overlay.AbsoluteSize.Y;
             if theme.sheen and height > 0 then
@@ -627,8 +647,18 @@ function theme.watch()
         end;
         queued = true;
 
-        task.delay(0.2, function()
+        task.delay(0.35, function()
             queued = false;
+
+            -- THE GATE. Everything below exists to style the window, and while
+            -- it is shut none of it is visible. In a live game instances are
+            -- added constantly -- ESP, nametags, notifications -- so this was
+            -- running several times a second across ~2000 elements for nothing.
+            -- That is the framerate complaint.
+            if not visible.menu() then
+                return;
+            end;
+
             pcall(function() theme.recolor(theme.previous_palette) end);
             pcall(theme.fix_contrast);
         end);
@@ -641,13 +671,21 @@ function theme.watch()
     -- Backstop for repaints that do not add instances: the library re-applies
     -- registry colours on theme changes and on show, which can put white text
     -- back on a light fill without anything being added.
+    -- Backstop only. While the menu is shut this costs one comparison every
+    -- 5s. It used to do two full-tree passes on that schedule regardless.
     task.spawn(function()
         for _ = 1, 60 do
             task.wait(5);
-            pcall(function() theme.recolor(theme.previous_palette) end);
-            pcall(theme.fix_contrast);
+            if visible.menu() then
+                pcall(function() theme.recolor(theme.previous_palette) end);
+                pcall(theme.fix_contrast);
+            end;
         end;
     end);
+
+    -- The useful half: do the work when it actually becomes visible, instead of
+    -- guessing on a timer.
+    visible.on_open(schedule);
 
     return true;
 end;
