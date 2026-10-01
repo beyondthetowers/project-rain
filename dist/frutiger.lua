@@ -1,6 +1,6 @@
 --[[
     Frutiger — bundled build
-    generated 2026-10-01T17:34:38.041Z
+    generated 2026-10-01T17:35:28.968Z
     modules: 284
     assets:  20
 ]]
@@ -51994,15 +51994,19 @@ function theme.recolor(previous)
             return false;
         end;
 
-        local ok, current = pcall(function() return object[property] end);
-        if not ok or typeof(current) ~= "Color3" then
+        -- Read directly. All five properties exist on every GuiObject, so the
+        -- guarded read was five wasted pcalls per object -- across 15742
+        -- descendants that is ~78000 calls per pass, which is a visible hitch
+        -- every time the pass ran rather than a rounding error.
+        local current = object[property];
+        if typeof(current) ~= "Color3" then
             return false;
         end;
 
         for _, key in ipairs(sources) do
             local pair = by_key[key];
             if pair and colors_close(current, pair.old) then
-                pcall(function() object[property] = pair.new end);
+                object[property] = pair.new;
                 return true;
             end;
         end;
@@ -52018,13 +52022,13 @@ function theme.recolor(previous)
         -- is the opposite of theirs.
         if property == "BackgroundColor3" and theme_luminance > 0.5 then
             if luminance_of(current) < 0.15 then
-                pcall(function() object[property] = Color3.fromHex(theme.palette.MainColor) end);
+                object[property] = Color3.fromHex(theme.palette.MainColor);
                 return true;
             end;
         end;
         if property == "TextColor3" and theme_luminance < 0.5 then
             if luminance_of(current) > 0.85 then
-                pcall(function() object[property] = Color3.fromHex(theme.palette.FontColor) end);
+                object[property] = Color3.fromHex(theme.palette.FontColor);
                 return true;
             end;
         end;
@@ -52095,12 +52099,11 @@ local function nearest_fill(object)
     local node = object.Parent;
 
     while node and node ~= Library.ScreenGui do
-        local ok, fill, transparency = pcall(function()
-            return node.BackgroundColor3, node.BackgroundTransparency;
-        end);
-
-        if ok and fill and transparency and transparency < 0.6 then
-            return fill;
+        if node:IsA("GuiObject") then
+            local transparency = node.BackgroundTransparency;
+            if transparency and transparency < 0.6 then
+                return node.BackgroundColor3;
+            end;
         end;
 
         node = node.Parent;
@@ -52151,10 +52154,8 @@ function theme.fix_contrast()
                 -- ...and only when what is behind it is also light
                 if fill and luminance(fill) > 0.5 then
                     local replacement = readable_text_on(fill);
-                    local ok = pcall(function() descendant.TextColor3 = replacement end);
-                    if ok then
-                        fixed = fixed + 1;
-                    end;
+                    descendant.TextColor3 = replacement;
+                    fixed = fixed + 1;
                 end;
             end;
         end;
