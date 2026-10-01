@@ -1,6 +1,6 @@
 --[[
     Frutiger — bundled build
-    generated 2026-10-01T12:05:18.094Z
+    generated 2026-10-01T12:06:57.070Z
     modules: 283
     assets:  0
 ]]
