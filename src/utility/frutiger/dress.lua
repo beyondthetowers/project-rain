@@ -46,18 +46,36 @@ end;
 
 -- The chrome and the overlay are authored in their own modules and already have
 -- their look; dressing them here would fight those modules.
+--
+-- The check stops at the chrome's DIRECT children, not anywhere beneath it. The
+-- library's whole widget tree was transplanted into FRUTIGER_CHROME by
+-- chrome.lua, so excluding anything under the chrome excluded the entire
+-- interface -- which is what happened: only 36 of 341 dividers were softened
+-- and the rest were silently skipped as "owned".
 local function owned_elsewhere(object)
     local node = object;
+    local depth = 0;
+
     while node do
         local name = node.Name;
-        if name == "FRUTIGER_CHROME"
-            or name == "FRUTIGER_OVERLAY"
+
+        if name == "FRUTIGER_OVERLAY"
             or name == "glass_shadow"
             or name == "glass_specular" then
             return true;
         end;
+
+        if name == "FRUTIGER_CHROME" then
+            -- depth 0 is the shell itself; depth 1 is its own furniture (title,
+            -- sidebar, rules). Deeper than that is transplanted content, which
+            -- must be dressed.
+            return depth <= 1;
+        end;
+
+        depth = depth + 1;
         node = node.Parent;
     end;
+
     return false;
 end;
 

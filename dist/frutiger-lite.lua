@@ -1,6 +1,6 @@
 --[[
     Frutiger — bundled build
-    generated 2026-10-01T11:55:59.839Z
+    generated 2026-10-01T11:57:18.609Z
     modules: 283
     assets:  0
 ]]
@@ -49484,7 +49484,7 @@ local function build(outer)
     local theme = theme_module;
     local palette = (theme and theme.extra) or {};
     local GLASS = palette.glass or Color3.fromRGB(244, 251, 255);
-    local EDGE  = Color3.fromRGB(159, 212, 239);
+    local EDGE  = Color3.fromRGB(255, 255, 255);   // soft white edge, per the brief
     local SKY   = palette.sky   or Color3.fromRGB(159, 212, 239);
     local AQUA  = palette.aqua  or Color3.fromRGB(41, 168, 224);
     local INK   = palette.ink   or Color3.fromRGB(14, 61, 92);
@@ -49931,18 +49931,36 @@ end;
 
 -- The chrome and the overlay are authored in their own modules and already have
 -- their look; dressing them here would fight those modules.
+--
+-- The check stops at the chrome's DIRECT children, not anywhere beneath it. The
+-- library's whole widget tree was transplanted into FRUTIGER_CHROME by
+-- chrome.lua, so excluding anything under the chrome excluded the entire
+-- interface -- which is what happened: only 36 of 341 dividers were softened
+-- and the rest were silently skipped as "owned".
 local function owned_elsewhere(object)
     local node = object;
+    local depth = 0;
+
     while node do
         local name = node.Name;
-        if name == "FRUTIGER_CHROME"
-            or name == "FRUTIGER_OVERLAY"
+
+        if name == "FRUTIGER_OVERLAY"
             or name == "glass_shadow"
             or name == "glass_specular" then
             return true;
         end;
+
+        if name == "FRUTIGER_CHROME" then
+            -- depth 0 is the shell itself; depth 1 is its own furniture (title,
+            -- sidebar, rules). Deeper than that is transplanted content, which
+            -- must be dressed.
+            return depth <= 1;
+        end;
+
+        depth = depth + 1;
         node = node.Parent;
     end;
+
     return false;
 end;
 
