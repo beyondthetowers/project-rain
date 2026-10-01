@@ -1,6 +1,6 @@
 --[[
     Frutiger — bundled build
-    generated 2026-10-01T17:36:47.938Z
+    generated 2026-10-01T17:37:45.605Z
     modules: 284
     assets:  20
 ]]
@@ -52158,27 +52158,41 @@ local function readable_text_on(background)
     return best and best.color or CONTRAST_DARK;
 end;
 
-function theme.fix_contrast()
+-- `root` scopes the pass to a subtree. Scanning only what was just added turns
+-- this from O(whole tree) into O(what changed), which matters: a full pass
+-- measured 34ms across 15742 descendants, and the add-hook was firing several
+-- times a second.
+function theme.fix_contrast(root)
     if not Library or not Library.ScreenGui then
         return 0;
     end;
 
+    root = root or Library.ScreenGui;
+
     local fixed = 0;
+    local candidates = {};
 
-    for _, descendant in ipairs(Library.ScreenGui:GetDescendants()) do
+    if root:IsA("TextLabel") or root:IsA("TextBox") then
+        candidates[1] = root;
+    end;
+
+    for _, descendant in ipairs(root:GetDescendants()) do
         if descendant:IsA("TextLabel") or descendant:IsA("TextBox") then
-            local text_luminance = luminance(descendant.TextColor3);
+            candidates[#candidates + 1] = descendant;
+        end;
+    end;
 
-            -- only text that is currently light is at risk
-            if text_luminance > 0.7 then
-                local fill = nearest_fill(descendant);
+    for _, descendant in ipairs(candidates) do
+        local text_luminance = luminance(descendant.TextColor3);
 
-                -- ...and only when what is behind it is also light
-                if fill and luminance(fill) > 0.5 then
-                    local replacement = readable_text_on(fill);
-                    descendant.TextColor3 = replacement;
-                    fixed = fixed + 1;
-                end;
+        -- only text that is currently light is at risk
+        if text_luminance > 0.7 then
+            local fill = nearest_fill(descendant);
+
+            -- ...and only when what is behind it is also light
+            if fill and luminance(fill) > 0.5 then
+                descendant.TextColor3 = readable_text_on(fill);
+                fixed = fixed + 1;
             end;
         end;
     end;
@@ -52204,8 +52218,18 @@ function theme.watch()
     theme.watching = true;
 
     local queued = false;
+    local pending = {};
+    local pending_count = 0;
+    local PENDING_LIMIT = 300;
 
-    local function schedule()
+    local function schedule(instance)
+        if instance then
+            pending_count = pending_count + 1;
+            if pending_count <= PENDING_LIMIT then
+                pending[#pending + 1] = instance;
+            end;
+        end;
+
         if queued then
             return;
         end;
@@ -52214,17 +52238,29 @@ function theme.watch()
         task.delay(0.35, function()
             queued = false;
 
-            -- THE GATE. Everything below exists to style the window, and while
-            -- it is shut none of it is visible. In a live game instances are
-            -- added constantly -- ESP, nametags, notifications -- so this was
-            -- running several times a second across ~2000 elements for nothing.
-            -- That is the framerate complaint.
+            local batch = pending;
+            local overflowed = pending_count > PENDING_LIMIT;
+            pending = {};
+            pending_count = 0;
+
+            -- THE GATE. All of this exists to style a window that is usually not
+            -- on screen, and while it is shut none of it is visible.
             if not visible.menu() then
                 return;
             end;
 
-            pcall(function() theme.recolor(theme.previous_palette) end);
-            pcall(theme.fix_contrast);
+            -- Only the subtrees that just appeared. Nothing else can have
+            -- changed, and a full pass costs 34ms across 15742 descendants.
+            if overflowed then
+                pcall(theme.fix_contrast);
+                return;
+            end;
+
+            for _, added in ipairs(batch) do
+                if added.Parent then
+                    pcall(theme.fix_contrast, added);
+                end;
+            end;
         end);
     end;
 
@@ -52237,19 +52273,25 @@ function theme.watch()
     -- back on a light fill without anything being added.
     -- Backstop only. While the menu is shut this costs one comparison every
     -- 5s. It used to do two full-tree passes on that schedule regardless.
+    -- No periodic full recolour.
+    --
+    -- Recolouring exists to convert elements built BEFORE the palette changed.
+    -- Anything created afterwards is built from Library.MainColor and friends,
+    -- which are already the new values, so it needs no conversion. That makes
+    -- the whole pass a one-shot at apply time, not a recurring one -- and at
+    -- 70ms per run across 15742 descendants, recurring was the framerate.
     task.spawn(function()
         for _ = 1, 60 do
             task.wait(5);
             if visible.menu() then
-                pcall(function() theme.recolor(theme.previous_palette) end);
                 pcall(theme.fix_contrast);
             end;
         end;
     end);
 
-    -- The useful half: do the work when it actually becomes visible, instead of
-    -- guessing on a timer.
-    visible.on_open(schedule);
+    visible.on_open(function()
+        pcall(theme.fix_contrast);
+    end);
 
     return true;
 end;
