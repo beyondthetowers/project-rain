@@ -62,7 +62,7 @@ theme.fonts = {
 
 -- ── textures ───────────────────────────────────────────────────────────────
 local TEXTURE_DIR = "Frutiger/Textures";
-local TEXTURE_NAMES = { "gloss", "bubbles", "sheen" };
+local TEXTURE_NAMES = { "gloss", "frost", "bubbles", "sheen" };
 
 theme.textures = {};
 
@@ -249,14 +249,22 @@ function theme.build_overlay()
         ScaleType = Enum.ScaleType.Stretch,
     });
 
-    theme.bubbles = layer(holder, "bubbles", theme.textures.bubbles, {
+    -- Frost sits under the bubbles. It is the diffusion that makes the pane read
+    -- as glass rather than as a plain see-through hole.
+    theme.frost = layer(holder, "frost", theme.textures.frost, {
         ZIndex = base + 2,
+        ImageTransparency = 0.55,
+        TileSize = UDim2.fromOffset(128, 128),
+    });
+
+    theme.bubbles = layer(holder, "bubbles", theme.textures.bubbles, {
+        ZIndex = base + 3,
         ImageTransparency = 0.52,
         TileSize = UDim2.fromOffset(256, 256),
     });
 
     theme.sheen = layer(holder, "sheen", theme.textures.sheen, {
-        ZIndex = base + 3,
+        ZIndex = base + 4,
         ImageTransparency = 0.35,
         ScaleType = Enum.ScaleType.Stretch,
         Size = UDim2.new(1, 0, 0, 96),

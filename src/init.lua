@@ -321,6 +321,10 @@ task.spawn(xpcall, function()
     -- re-add it if chrome ever misbehaves.
     require("@src/utility/frutiger/chrome").apply();
 
+    -- Glass: translucency, gradient and edge lighting on the shell, plus panel
+    -- depth. Runs after chrome so the shell exists to work on.
+    require("@src/utility/frutiger/glass").apply();
+
     -- Rounds every visible element, and re-scans for the ones the library
     -- builds lazily (dropdown options, tab contents on first visit). Runs after
     -- chrome so the new shell gets corners too.

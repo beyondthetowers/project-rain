@@ -186,8 +186,28 @@ function sheen() {
     return encodePNG(w, h, px);
 }
 
+// Frost: very fine, very faint white speckle. This is what sells frosted glass
+// -- a surface with nothing on it reads as flat transparency, and a little
+// diffusion makes it read as a pane. Kept at single-digit alpha on purpose: the
+// grunge theme used grain at 4-5x this strength and it read as dirt.
+function frost() {
+    const w = 128, h = 128;
+    const px = blank(w, h);
+    const rnd = mulberry32(0xf0057);
+    for (let y = 0; y < h; y++) {
+        for (let x = 0; x < w; x++) {
+            const v = rnd();
+            // clustered faint speckle, cool-tinted rather than neutral grey
+            const a = v > 0.55 ? (v - 0.55) * 34 : 0;
+            if (a <= 0) continue;
+            blend(px, w, x, y, 226, 244, 255, a);
+        }
+    }
+    return encodePNG(w, h, px);
+}
+
 // ── write ──────────────────────────────────────────────────────────────────
-const textures = { gloss, bubbles, sheen };
+const textures = { gloss, bubbles, sheen, frost };
 
 if (!fs.existsSync(OUT)) fs.mkdirSync(OUT, { recursive: true });
 
