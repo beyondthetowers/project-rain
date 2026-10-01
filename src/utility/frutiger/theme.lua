@@ -397,6 +397,16 @@ end;
 -- So capture the palette that was live when the UI was built, then walk the
 -- tree and swap any colour that still matches one of those values.
 
+-- Property sets per class. Hoisted so the loop allocates nothing, and so the
+-- class check happens once per object rather than once per property.
+--
+-- A plain Frame genuinely has no TextColor3, ImageColor3 or PlaceholderColor3,
+-- and reading one raises.
+local PROPS_FRAME   = { "BackgroundColor3", "BorderColor3" };
+local PROPS_TEXT    = { "BackgroundColor3", "BorderColor3", "TextColor3" };
+local PROPS_TEXTBOX = { "BackgroundColor3", "BorderColor3", "TextColor3", "PlaceholderColor3" };
+local PROPS_IMAGE   = { "BackgroundColor3", "BorderColor3", "ImageColor3" };
+
 local function colors_close(a, b)
     return math.abs(a.R - b.R) < 0.02
        and math.abs(a.G - b.G) < 0.02
@@ -503,10 +513,22 @@ function theme.recolor(previous)
 
     for _, descendant in ipairs(Library.ScreenGui:GetDescendants()) do
         if descendant:IsA("GuiObject") then
-            for _, property in ipairs({
-                "BackgroundColor3", "TextColor3", "ImageColor3",
-                "PlaceholderColor3", "BorderColor3",
-            }) do
+            -- Which properties this class actually has. One IsA chain per object
+            -- replaces five pcalls per object, and it is what the pcall was
+            -- really guarding: a plain Frame carries no TextColor3, and reading
+            -- it raises. Removing the pcall without this threw and aborted the
+            -- entire recolour, which is a worse failure than being slow.
+            local properties = PROPS_FRAME;
+
+            if descendant:IsA("TextBox") then
+                properties = PROPS_TEXTBOX;
+            elseif descendant:IsA("TextLabel") then
+                properties = PROPS_TEXT;
+            elseif descendant:IsA("ImageLabel") or descendant:IsA("ImageButton") then
+                properties = PROPS_IMAGE;
+            end;
+
+            for _, property in ipairs(properties) do
                 if remap(descendant, property) then
                     changed = changed + 1;
                 end;
