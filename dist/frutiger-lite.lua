@@ -1,6 +1,6 @@
 --[[
     Frutiger — bundled build
-    generated 2026-10-01T18:50:37.249Z
+    generated 2026-10-01T18:53:23.477Z
     modules: 284
     assets:  0
 ]]
@@ -42241,7 +42241,7 @@ MainFrame:WaitForChild("CreditF").Kofi.MouseButton1Click:Connect(function()
 		setclipboard("https://ko-fi.com/ukiyodev")
 	end
 
-	MainFrame.CreditF.PaddinglessBehavoir.Copied.TextStrokeTransparency = 0
+	MainFrame.CreditF.PaddinglessBehavoir.Copied.TextStrokeTransparency = 1
 	MainFrame.CreditF.PaddinglessBehavoir.Copied.TextTransparency = 0
 
 	wait()
@@ -42261,7 +42261,7 @@ MainFrame.CreditF.Twitter.MouseButton1Click:Connect(function()
 		setclipboard("https://twitter.com/Geno_Dev")
 	end
 
-	MainFrame.CreditF.PaddinglessBehavoir.Copied.TextStrokeTransparency = 0
+	MainFrame.CreditF.PaddinglessBehavoir.Copied.TextStrokeTransparency = 1
 	MainFrame.CreditF.PaddinglessBehavoir.Copied.TextTransparency = 0
 
 	wait()
@@ -44040,7 +44040,7 @@ Converted["_TextLabel"].Font = Enum.Font.Code
 Converted["_TextLabel"].Text = "Would you like to use a default pre-made config?"
 Converted["_TextLabel"].TextColor3 = Color3.fromRGB(216, 222, 233)
 Converted["_TextLabel"].TextSize = 14
-Converted["_TextLabel"].TextStrokeTransparency = 0
+Converted["_TextLabel"].TextStrokeTransparency = 1
 Converted["_TextLabel"].TextWrapped = true
 Converted["_TextLabel"].BackgroundColor3 = Color3.fromRGB(255, 255, 255)
 Converted["_TextLabel"].BackgroundTransparency = 1
@@ -46811,7 +46811,7 @@ Converted["_TextLabel1"].Position = UDim2.new(0.5, 0, 0, 10)
 Converted["_TextLabel1"].Size = UDim2.new(1, 0, 0, 20)
 Converted["_TextLabel1"].Parent = Converted["_Frame"]
 Converted["_TextLabel1"].TextStrokeColor3 = Color3.fromHex("343d46")
-Converted["_TextLabel1"].TextStrokeTransparency = 0;
+Converted["_TextLabel1"].TextStrokeTransparency = 1;
 
 Converted["_Accept"].Font = Enum.Font.Code
 Converted["_Accept"].Text = "Scroll to read (8)"
@@ -53111,7 +53111,7 @@ return function(Library, context)
 			Text = '#FFFFFF',
 			TextColor3 = Library.FontColor;
 			TextSize = 14;
-			TextStrokeTransparency = 0;
+			TextStrokeTransparency = 1;
 			TextXAlignment = Enum.TextXAlignment.Left;
 			ZIndex = 20,
 			Parent = HueBoxInner;
@@ -53727,7 +53727,7 @@ return function(Library, context)
 				Text = '';
 				TextColor3 = Library.FontColor;
 				TextSize = 14;
-				TextStrokeTransparency = 0;
+				TextStrokeTransparency = 1;
 				TextXAlignment = Enum.TextXAlignment.Left;
 				ClearTextOnFocus = false;
 				ZIndex = 23;
@@ -54508,7 +54508,7 @@ return function(Library, context)
 			Text = Info.Default or '';
 			TextColor3 = Library.FontColor;
 			TextSize = 14;
-			TextStrokeTransparency = 0;
+			TextStrokeTransparency = 1;
 			TextXAlignment = Enum.TextXAlignment.Left;
 			ClearTextOnFocus = false;
 
@@ -54985,7 +54985,7 @@ return function(Library, context)
 			Text = '';
 			TextColor3 = Library.FontColor;
 			TextSize = 14;
-			TextStrokeTransparency = 0;
+			TextStrokeTransparency = 1;
 			TextXAlignment = Enum.TextXAlignment.Center;
 			TextYAlignment = Enum.TextYAlignment.Center;
 			Visible = false;
@@ -57428,9 +57428,21 @@ end;
 function Library:ApplyTextStroke(Inst)
 	Inst.TextStrokeTransparency = 1;
 
+	-- The stroke is kept as an instance but made invisible.
+	--
+	-- It used to be Color3.new(0,0,0) at thickness 1, i.e. a black outline
+	-- drawn around every label in the interface -- 1783 of them, measured. An
+	-- outline on text reads as BOLD, which is exactly what it looked like, and
+	-- it is not a font-weight problem: every text element already resolves to
+	-- Enum.FontWeight.Regular.
+	--
+	-- Returned rather than removed because callers hold a reference to it and
+	-- may restyle it later; setting Transparency keeps that reference valid
+	-- while drawing nothing.
 	return Library:Create('UIStroke', {
 		Color = Color3.new(0, 0, 0);
 		Thickness = 1;
+		Transparency = 1;
 		LineJoinMode = Enum.LineJoinMode.Miter;
 		Parent = Inst;
 	})
@@ -57460,7 +57472,7 @@ function Library:CreateLabel(Properties, IsHud, Font)
 		TextColor3 = Library.FontColor;
 		AutoLocalize = false;
 		TextSize = 16;
-		TextStrokeTransparency = 0;
+		TextStrokeTransparency = 1;
 	});
 
 	local Stroke = Library:ApplyTextStroke(_Instance);
@@ -58622,7 +58634,7 @@ function Library:CreateWindow(...)
 
 		Text = '';
 		TextColor3 = Library.FontColor;
-		TextStrokeTransparency = 0;
+		TextStrokeTransparency = 1;
 		TextXAlignment = Enum.TextXAlignment.Center;
 		TextYAlignment = Enum.TextYAlignment.Center;
 

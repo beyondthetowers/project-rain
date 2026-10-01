@@ -97,7 +97,7 @@ return function(Library, context)
 			Text = Info.Default or '';
 			TextColor3 = Library.FontColor;
 			TextSize = 14;
-			TextStrokeTransparency = 0;
+			TextStrokeTransparency = 1;
 			TextXAlignment = Enum.TextXAlignment.Left;
 			ClearTextOnFocus = false;
 

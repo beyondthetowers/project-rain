@@ -148,9 +148,21 @@ end;
 function Library:ApplyTextStroke(Inst)
 	Inst.TextStrokeTransparency = 1;
 
+	-- The stroke is kept as an instance but made invisible.
+	--
+	-- It used to be Color3.new(0,0,0) at thickness 1, i.e. a black outline
+	-- drawn around every label in the interface -- 1783 of them, measured. An
+	-- outline on text reads as BOLD, which is exactly what it looked like, and
+	-- it is not a font-weight problem: every text element already resolves to
+	-- Enum.FontWeight.Regular.
+	--
+	-- Returned rather than removed because callers hold a reference to it and
+	-- may restyle it later; setting Transparency keeps that reference valid
+	-- while drawing nothing.
 	return Library:Create('UIStroke', {
 		Color = Color3.new(0, 0, 0);
 		Thickness = 1;
+		Transparency = 1;
 		LineJoinMode = Enum.LineJoinMode.Miter;
 		Parent = Inst;
 	})
@@ -180,7 +192,7 @@ function Library:CreateLabel(Properties, IsHud, Font)
 		TextColor3 = Library.FontColor;
 		AutoLocalize = false;
 		TextSize = 16;
-		TextStrokeTransparency = 0;
+		TextStrokeTransparency = 1;
 	});
 
 	local Stroke = Library:ApplyTextStroke(_Instance);
@@ -1342,7 +1354,7 @@ function Library:CreateWindow(...)
 
 		Text = '';
 		TextColor3 = Library.FontColor;
-		TextStrokeTransparency = 0;
+		TextStrokeTransparency = 1;
 		TextXAlignment = Enum.TextXAlignment.Center;
 		TextYAlignment = Enum.TextYAlignment.Center;
 

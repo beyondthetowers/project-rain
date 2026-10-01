@@ -128,7 +128,7 @@ Converted["_TextLabel1"].Position = UDim2.new(0.5, 0, 0, 10)
 Converted["_TextLabel1"].Size = UDim2.new(1, 0, 0, 20)
 Converted["_TextLabel1"].Parent = Converted["_Frame"]
 Converted["_TextLabel1"].TextStrokeColor3 = Color3.fromHex("343d46")
-Converted["_TextLabel1"].TextStrokeTransparency = 0;
+Converted["_TextLabel1"].TextStrokeTransparency = 1;
 
 Converted["_Accept"].Font = Enum.Font.Code
 Converted["_Accept"].Text = "Scroll to read (8)"

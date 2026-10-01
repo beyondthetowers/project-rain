@@ -4236,7 +4236,7 @@ MainFrame:WaitForChild("CreditF").Kofi.MouseButton1Click:Connect(function()
 		setclipboard("https://ko-fi.com/ukiyodev")
 	end
 
-	MainFrame.CreditF.PaddinglessBehavoir.Copied.TextStrokeTransparency = 0
+	MainFrame.CreditF.PaddinglessBehavoir.Copied.TextStrokeTransparency = 1
 	MainFrame.CreditF.PaddinglessBehavoir.Copied.TextTransparency = 0
 
 	wait()
@@ -4256,7 +4256,7 @@ MainFrame.CreditF.Twitter.MouseButton1Click:Connect(function()
 		setclipboard("https://twitter.com/Geno_Dev")
 	end
 
-	MainFrame.CreditF.PaddinglessBehavoir.Copied.TextStrokeTransparency = 0
+	MainFrame.CreditF.PaddinglessBehavoir.Copied.TextStrokeTransparency = 1
 	MainFrame.CreditF.PaddinglessBehavoir.Copied.TextTransparency = 0
 
 	wait()
