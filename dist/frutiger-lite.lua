@@ -1,6 +1,6 @@
 --[[
     Frutiger — bundled build
-    generated 2026-10-01T17:39:15.053Z
+    generated 2026-10-01T17:53:56.164Z
     modules: 284
     assets:  0
 ]]
@@ -21552,17 +21552,7 @@ end
         end
 
         local magnitude = (root.Position - local_player.root_part.Position).Magnitude;
-        -- Both limits defaulted. dont_process_mobs_over_studs is nil until the
-        -- auto-parry dependency box has been opened (its slider is created
-        -- lazily), and `magnitude > nil` throws -- which aborts the rest of this
-        -- handler. That handler is attached to the animator, so the failure is
-        -- not cosmetic: it is a candidate for the weapon not appearing in hand
-        -- after a respawn.
-        local player_limit = aztup.flags.dont_process_players_over_studs or 500;
-        local mob_limit = aztup.flags.dont_process_mobs_over_studs or 2000;
-
-        if (self.is_player and magnitude > player_limit)
-            or (not self.is_player and magnitude > mob_limit) then
+        if self.is_player and magnitude > aztup.flags.dont_process_players_over_studs or not self.is_player and magnitude > aztup.flags.dont_process_mobs_over_studs then
             return        
 end;
 
@@ -23340,7 +23330,9 @@ local function is_using_utility_tool()
     if not tool then return false end;
 
     local weapon = current_weapon_name();
-    if weapon and (tool.Name == weapon or tool.Name:match(weapon)) then
+    if weapon and tool.Name:find(weapon, 1, true) then
+        -- plain find, not :match -- the weapon name is data, and :match would
+        -- treat any % or - in it as a pattern and raise "malformed pattern"
         return false;
     end;
 

@@ -26,7 +26,9 @@ local function is_using_utility_tool()
     if not tool then return false end;
 
     local weapon = current_weapon_name();
-    if weapon and (tool.Name == weapon or tool.Name:match(weapon)) then
+    if weapon and tool.Name:find(weapon, 1, true) then
+        -- plain find, not :match -- the weapon name is data, and :match would
+        -- treat any % or - in it as a pattern and raise "malformed pattern"
         return false;
     end;
 
