@@ -1,6 +1,6 @@
 --[[
     Frutiger — bundled build
-    generated 2026-10-01T17:37:45.605Z
+    generated 2026-10-01T17:39:14.917Z
     modules: 284
     assets:  20
 ]]
@@ -23314,11 +23314,37 @@ end;
 __modules["src/features/automation/auto_equip_weapon"] = function()
 local feature = Feature:new("auto_equip_weapon");
 
+-- The weapon's name, as the game records it. Same source titus_echofarm uses to
+-- decide what to equip.
+local function current_weapon_name()
+    local backpack = local_player.instance:FindFirstChild("Backpack");
+    if not backpack then return nil end;
+
+    local marker = backpack:FindFirstChild("Weapon");
+    local value = marker and marker:FindFirstChild("Weapon");
+    return value and value.Value or nil;
+end
+
+-- A utility tool is a Tool that is NOT the player's weapon.
+--
+-- This used to be "the character has any Tool at all", which is wrong in
+-- exactly the case that matters: the weapon is a Tool, and after you die and
+-- respawn the game re-adds it to the character. So the check returned true,
+-- draw_weapon returned early, DrawWeapon was never fired, and the weapon could
+-- not be held -- every life after a death.
 local function is_using_utility_tool()
     local character = local_player.character;
     if not character then return false end;
 
-    return character:FindFirstChildOfClass("Tool") ~= nil
+    local tool = character:FindFirstChildOfClass("Tool");
+    if not tool then return false end;
+
+    local weapon = current_weapon_name();
+    if weapon and (tool.Name == weapon or tool.Name:match(weapon)) then
+        return false;
+    end;
+
+    return true;
 end
 
 local function draw_weapon()
