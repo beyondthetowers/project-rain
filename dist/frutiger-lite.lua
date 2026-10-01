@@ -1,6 +1,6 @@
 --[[
     Frutiger — bundled build
-    generated 2026-10-01T18:53:23.477Z
+    generated 2026-10-01T18:54:32.029Z
     modules: 284
     assets:  0
 ]]
@@ -50132,6 +50132,47 @@ function dress.spacing()
     return loosened
 end;
 
+-- ── typography ─────────────────────────────────────────────────────────────
+-- Remove every outline from text.
+--
+-- There is no bold font in this UI: all 2246 text elements resolve to
+-- Enum.FontWeight.Regular, and only six labels anywhere use a Lexend
+-- medium/bold face. The heaviness was an OUTLINE -- and outlines on text read
+-- as bold.
+--
+-- The main source is Library:ApplyTextStroke, which adds a black 1px UIStroke
+-- to every label; that one is fixed at source. This pass exists for the rest:
+-- the InfoLogger's labels and the intro message are built on separate paths
+-- that add their own stroke, and measured, they were the last 7 elements still
+-- outlined after the source fix.
+--
+-- Cheaper than the other passes: it only descends into text elements rather
+-- than doing anything per-frame or per-object.
+function dress.typography()
+    local cleared = 0;
+
+    for _, descendant in ipairs(Library.ScreenGui:GetDescendants()) do
+        if descendant:IsA("TextLabel")
+            or descendant:IsA("TextBox")
+            or descendant:IsA("TextButton") then
+
+            if descendant.TextStrokeTransparency < 1 then
+                descendant.TextStrokeTransparency = 1;
+                cleared = cleared + 1;
+            end;
+
+            for _, child in ipairs(descendant:GetChildren()) do
+                if child:IsA("UIStroke") and child.Transparency < 1 then
+                    child.Transparency = 1;
+                    cleared = cleared + 1;
+                end;
+            end;
+        end;
+    end;
+
+    return cleared;
+end;
+
 -- ── contrast follow-up ─────────────────────────────────────────────────────
 -- Dressing changes fills, so anything the contrast guard fixed earlier can end
 -- up light-on-light again. Cheap to re-run; it only touches text that is still
@@ -50153,6 +50194,7 @@ function dress.apply()
     dress.softened_dividers = dress.dividers();
     dress.dressed_cards = dress.cards();
     dress.loosened_layouts = dress.spacing();
+    dress.cleared_outlines = dress.typography();
     dress.recheck();
 
     dress.applied = true;
@@ -50169,6 +50211,7 @@ function dress.apply()
                 pcall(dress.dividers);
                 pcall(dress.cards);
                 pcall(dress.spacing);
+                pcall(dress.typography);
                 pcall(dress.recheck);
             end;
         end;
@@ -50179,6 +50222,7 @@ function dress.apply()
     visible.on_open(function()
         pcall(dress.dividers);
         pcall(dress.cards);
+        pcall(dress.typography);
         pcall(dress.recheck);
     end);
 
