@@ -1,6 +1,6 @@
 --[[
     Frutiger — bundled build
-    generated 2026-10-01T11:57:18.609Z
+    generated 2026-10-01T12:01:20.631Z
     modules: 283
     assets:  0
 ]]
@@ -49484,7 +49484,7 @@ local function build(outer)
     local theme = theme_module;
     local palette = (theme and theme.extra) or {};
     local GLASS = palette.glass or Color3.fromRGB(244, 251, 255);
-    local EDGE  = Color3.fromRGB(255, 255, 255);   // soft white edge, per the brief
+    local EDGE  = Color3.fromRGB(255, 255, 255);   -- soft white edge, per the brief
     local SKY   = palette.sky   or Color3.fromRGB(159, 212, 239);
     local AQUA  = palette.aqua  or Color3.fromRGB(41, 168, 224);
     local INK   = palette.ink   or Color3.fromRGB(14, 61, 92);

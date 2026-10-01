@@ -35,6 +35,12 @@ const OUT = (() => {
 
 // ── helpers ────────────────────────────────────────────────────────────────
 
+// Refuse to emit a bundle containing a JS comment in a Lua file. A parse failure
+// costs the entire build AND reports nothing, because every consumer wraps
+// loadstring in pcall -- which is how one bad comment survived four verification
+// runs unnoticed. See tools/lua-guard.js.
+require("./lua-guard.js").check(ROOT);
+
 function walk(dir, out = []) {
     for (const entry of fs.readdirSync(dir, { withFileTypes: true })) {
         const full = path.join(dir, entry.name);
