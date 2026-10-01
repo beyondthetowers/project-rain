@@ -31,27 +31,42 @@ local theme = {};
 -- Near-absolute black, carbon grey, desaturated mould green, dirty beige,
 -- rust. No saturated or clean values anywhere.
 
--- Frutiger Aero: light, glossy, glass. The exact inverse of the black/white
--- brutalist pass that preceded it.
+-- Frutiger Aero / liquid glass. Bright, airy, watery, translucent.
 --
--- FontColor is dark on purpose. Every other slot is light now, so the text has
--- to carry the contrast -- and it also leaves the contrast guard (which darkens
--- light text on light fills) with nothing to do, instead of fighting the theme.
+-- The palette is deliberately low-contrast between its own slots: everything is
+-- a pale cyan or an ice white, and the ONLY strong values are the cyan accent
+-- and the text. Structure comes from transparency and highlights, not from
+-- outlines -- heavy borders are what makes a glass UI read as a flat dashboard
+-- with blue trim.
+--
+-- Text is the one place contrast is allowed to be strong, because it has to sit
+-- on translucent surfaces over arbitrary scenery.
 theme.palette = {
-    FontColor       = "0e3d5c",   -- deep sky navy, for contrast on light fills
-    MainColor       = "f4fbff",   -- glass white panels
-    AccentColor     = "29a8e0",   -- sky blue: hover fills, selections, toggles
-    BackgroundColor = "dbf0fb",   -- pale sky
-    OutlineColor    = "9fd4ef",   -- soft blue edge, i.e. the corners
+    FontColor       = "20384a",   -- primary text: navy-grey, not black
+    MainColor       = "eafbff",   -- glass card fill
+    AccentColor     = "37c7ff",   -- cyan accent: selections, toggles, sliders
+    BackgroundColor = "dcf5ff",   -- window glass
+    OutlineColor    = "ffffff",   -- soft white border, never a hard blue line
 };
 
 theme.extra = {
-    aqua  = Color3.fromRGB(41, 168, 224),
-    sky   = Color3.fromRGB(159, 212, 239),
-    glass = Color3.fromRGB(244, 251, 255),
-    lime  = Color3.fromRGB(126, 200, 80),
-    white = Color3.fromRGB(255, 255, 255),
-    ink   = Color3.fromRGB(14, 61, 92),
+    -- glass fills, lightest to deepest
+    glass   = Color3.fromRGB(234, 251, 255),   -- #EAFBFF
+    bgGlass = Color3.fromRGB(220, 245, 255),   -- #DCF5FF
+    sky     = Color3.fromRGB(216, 243, 255),   -- #D8F3FF
+
+    -- cyan family, for accents and glows
+    aqua    = Color3.fromRGB(55, 199, 255),    -- #37C7FF
+    cyan2   = Color3.fromRGB(93, 216, 255),    -- #5DD8FF
+    cyan3   = Color3.fromRGB(123, 229, 255),   -- #7BE5FF
+
+    -- text
+    ink     = Color3.fromRGB(32, 56, 74),      -- #20384A primary
+    text2   = Color3.fromRGB(41, 72, 90),      -- #29485A
+    muted   = Color3.fromRGB(85, 115, 131),    -- #557383 secondary, e.g. "N/A"
+
+    white   = Color3.fromRGB(255, 255, 255),
+    lime    = Color3.fromRGB(126, 200, 80),
 };
 
 -- Condensed industrial for headings, technical mono for everything else.
@@ -62,7 +77,7 @@ theme.fonts = {
 
 -- ── textures ───────────────────────────────────────────────────────────────
 local TEXTURE_DIR = "Frutiger/Textures";
-local TEXTURE_NAMES = { "gloss", "frost", "bubbles", "sheen" };
+local TEXTURE_NAMES = { "gloss", "frost", "bubbles", "sheen", "orb" };
 
 theme.textures = {};
 
@@ -381,7 +396,10 @@ end;
 -- Matching per property removes the ambiguity: a fill is only ever compared
 -- against the old fills, text against the old text, and so on.
 local PROPERTY_SOURCE = {
-    BackgroundColor3  = { "MainColor", "BackgroundColor" };
+    -- OutlineColor belongs here too: the library paints dividers and separators
+    -- with BorderColor3 = OutlineColor, i.e. OutlineColor IS their background, so
+    -- leaving it out meant every divider kept the previous theme's edge colour.
+    BackgroundColor3  = { "MainColor", "BackgroundColor", "OutlineColor" };
     TextColor3        = { "FontColor", "AccentColor" };
     PlaceholderColor3 = { "FontColor" };
     BorderColor3      = { "OutlineColor" };

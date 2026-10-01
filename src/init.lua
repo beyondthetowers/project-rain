@@ -325,6 +325,10 @@ task.spawn(xpcall, function()
     -- depth. Runs after chrome so the shell exists to work on.
     require("@src/utility/frutiger/glass").apply();
 
+    -- Dress: applies the material kit across the library tree. Dividers soft,
+    -- cards glass, list spacing loosened. Appearance only -- no logic touched.
+    require("@src/utility/frutiger/dress").apply();
+
     -- Rounds every visible element, and re-scans for the ones the library
     -- builds lazily (dropdown options, tab contents on first visit). Runs after
     -- chrome so the new shell gets corners too.

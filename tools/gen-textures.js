@@ -206,8 +206,31 @@ function frost() {
     return encodePNG(w, h, px);
 }
 
+// Orb: a round radial white gradient, bright centre fading to nothing at the
+// rim. The single most useful primitive for this style -- it serves as the
+// specular highlight on toggles and slider knobs, a soft glow behind the
+// selected sidebar tab, and the faint white blobs that make glass read as
+// liquid rather than flat.
+function orb() {
+    const w = 128, h = 128;
+    const px = blank(w, h);
+    const cx = (w - 1) / 2, cy = (h - 1) / 2;
+    const radius = w / 2;
+    for (let y = 0; y < h; y++) {
+        for (let x = 0; x < w; x++) {
+            const dx = x - cx, dy = y - cy;
+            const d = Math.sqrt(dx * dx + dy * dy) / radius;
+            if (d > 1) continue;
+            // soft falloff, not linear -- a linear ramp reads as a flat disc
+            const a = Math.pow(1 - d, 2.4) * 255;
+            blend(px, w, x, y, 255, 255, 255, a);
+        }
+    }
+    return encodePNG(w, h, px);
+}
+
 // ── write ──────────────────────────────────────────────────────────────────
-const textures = { gloss, bubbles, sheen, frost };
+const textures = { gloss, bubbles, sheen, frost, orb };
 
 if (!fs.existsSync(OUT)) fs.mkdirSync(OUT, { recursive: true });
 

@@ -1,7 +1,7 @@
 --[[
     Frutiger — bundled build
-    generated 2026-10-01T11:51:23.426Z
-    modules: 281
+    generated 2026-10-01T11:55:59.839Z
+    modules: 283
     assets:  0
 ]]
 
@@ -43053,6 +43053,10 @@ task.spawn(xpcall, function()
     -- depth. Runs after chrome so the shell exists to work on.
     require("@src/utility/frutiger/glass").apply();
 
+    -- Dress: applies the material kit across the library tree. Dividers soft,
+    -- cards glass, list spacing loosened. Appearance only -- no logic touched.
+    require("@src/utility/frutiger/dress").apply();
+
     -- Rounds every visible element, and re-scans for the ones the library
     -- builds lazily (dropdown options, tab contents on first visit). Runs after
     -- chrome so the new shell gets corners too.
@@ -49878,6 +49882,205 @@ return chrome;
 
 end;
 
+__modules["src/utility/frutiger/dress"] = function()
+--[[
+    src/utility/frutiger/dress.lua
+
+    Applies the material kit across the existing tree. Nothing is rebuilt and no
+    logic is touched -- this only reads geometry and sets appearance.
+
+    It is deliberately conservative. An earlier attempt at classifying "buttons"
+    by shape matched 589 elements, because almost every row in this UI is a
+    small frame with a fill and a label: toggle rows, slider rows, dropdown
+    rows, section headers. Styling all of them as buttons would have made the
+    interface look like a wall of pills.
+
+    So it only touches things it can identify without ambiguity:
+
+      dividers   hairline frames. The brief asks for fewer strong lines and this
+                 is where most of them are -- there are 341 of them in the live
+                 tree, drawn in the theme's edge colour at full opacity.
+      cards      large fills, 155 of them. These become layered glass: softer
+                 border, vertical light, corner, and a soft shadow underneath.
+      spacing    list padding, so rows stop touching.
+
+    Buttons, toggles, sliders and dropdowns are NOT in this pass. They need to
+    be matched by their actual structure rather than by size, and getting that
+    wrong is how you end up with everything styled the same.
+]]
+
+local dress = {};
+
+local theme_module = nil;
+pcall(function() theme_module = require("@src/utility/frutiger/theme") end);
+
+local kit = nil;
+pcall(function() kit = require("@src/utility/frutiger/material") end);
+
+local COLORS = (kit and kit.colors) or {};
+
+local DIVIDER_MAX_HEIGHT = 3;
+local DIVIDER_TRANSPARENCY = 0.72;
+
+local CARD_MIN_WIDTH = 200;
+local CARD_MIN_HEIGHT = 80;
+
+local is_panel = function(object)
+    return object:GetAttribute("glass_panel") == true;
+end;
+
+-- The chrome and the overlay are authored in their own modules and already have
+-- their look; dressing them here would fight those modules.
+local function owned_elsewhere(object)
+    local node = object;
+    while node do
+        local name = node.Name;
+        if name == "FRUTIGER_CHROME"
+            or name == "FRUTIGER_OVERLAY"
+            or name == "glass_shadow"
+            or name == "glass_specular" then
+            return true;
+        end;
+        node = node.Parent;
+    end;
+    return false;
+end;
+
+-- ── dividers ───────────────────────────────────────────────────────────────
+-- The brief: reduce the amount of strong divider lines. There are 341 of these
+-- and they are drawn at full opacity in the edge colour, which is most of why
+-- the interface reads as busy. Softened rather than deleted -- they still do
+-- the job of separating rows, they just stop competing with the content.
+function dress.dividers()
+    local softened = 0;
+
+    for _, descendant in ipairs(Library.ScreenGui:GetDescendants()) do
+        if descendant:IsA("Frame") then
+            local size = descendant.AbsoluteSize;
+
+            if size.X >= 60 and size.Y > 0 and size.Y <= DIVIDER_MAX_HEIGHT
+                and descendant.BackgroundTransparency < 0.9
+                and not owned_elsewhere(descendant) then
+
+                pcall(function()
+                    descendant.BackgroundColor3 = Color3.fromRGB(255, 255, 255);
+                    descendant.BackgroundTransparency = DIVIDER_TRANSPARENCY;
+                end);
+                softened = softened + 1;
+            end;
+        end;
+    end;
+
+    return softened;
+end;
+
+-- ── cards ──────────────────────────────────────────────────────────────────
+function dress.cards()
+    local dressed = 0;
+    if not kit then
+        return 0;
+    end;
+
+    for _, descendant in ipairs(Library.ScreenGui:GetDescendants()) do
+        if descendant:IsA("Frame")
+            and not is_panel(descendant)
+            and not owned_elsewhere(descendant) then
+
+            local size = descendant.AbsoluteSize;
+
+            if size.X >= CARD_MIN_WIDTH and size.Y >= CARD_MIN_HEIGHT
+                and descendant.BackgroundTransparency > 0
+                and descendant.BackgroundTransparency < 0.6 then
+
+                local ok = pcall(function()
+                    kit.panel(descendant, {
+                        radius = 12,
+                        stroke_transparency = 0.62,
+                        depth = 3,
+                        top_transparency = 0.60,
+                        mid_transparency = 0.94,
+                        bottom_transparency = 0.86,
+                    });
+                end);
+                if ok then
+                    dressed = dressed + 1;
+                end;
+            end;
+        end;
+    end;
+
+    return dressed;
+end;
+
+-- ── spacing ────────────────────────────────────────────────────────────────
+-- The brief: the list feels too compressed. Rows are laid out by UIListLayouts
+-- with zero padding, so the cheapest fix that respects the layout is to widen
+-- the layout padding rather than move anything by hand.
+local MIN_ROW_PADDING = 6;
+
+function dress.spacing()
+    local loosened = 0;
+
+    for _, descendant in ipairs(Library.ScreenGui:GetDescendants()) do
+        local layout = descendant:IsA("UIListLayout") and descendant or nil;
+        if layout and not owned_elsewhere(layout.Parent) then
+            local ok = pcall(function()
+                local current = layout.Padding
+                if current.Offset < MIN_ROW_PADDING then
+                    layout.Padding = UDim.new(0, MIN_ROW_PADDING)
+                    loosened = loosened + 1
+                end
+            end)
+        end
+    end
+
+    return loosened
+end;
+
+-- ── contrast follow-up ─────────────────────────────────────────────────────
+-- Dressing changes fills, so anything the contrast guard fixed earlier can end
+-- up light-on-light again. Cheap to re-run; it only touches text that is still
+-- unreadable.
+function dress.recheck()
+    if theme_module and theme_module.fix_contrast then
+        pcall(theme_module.fix_contrast);
+    end;
+end;
+
+function dress.apply()
+    if dress.applied then
+        return true;
+    end;
+    if not Library or not Library.ScreenGui then
+        return false;
+    end;
+
+    dress.softened_dividers = dress.dividers();
+    dress.dressed_cards = dress.cards();
+    dress.loosened_layouts = dress.spacing();
+    dress.recheck();
+
+    dress.applied = true;
+
+    -- Lazy content (tab pages, dropdown options, dependency boxes) is built on
+    -- first visit, so keep re-dressing for a while as it appears.
+    task.spawn(function()
+        for _ = 1, 20 do
+            task.wait(2);
+            pcall(dress.dividers);
+            pcall(dress.cards);
+            pcall(dress.spacing);
+            pcall(dress.recheck);
+        end;
+    end);
+
+    return true;
+end;
+
+return dress;
+
+end;
+
 __modules["src/utility/frutiger/glass"] = function()
 --[[
     src/utility/frutiger/glass.lua
@@ -50290,6 +50493,320 @@ function hover.count()
 end;
 
 return hover;
+
+end;
+
+__modules["src/utility/frutiger/material"] = function()
+--[[
+    src/utility/frutiger/material.lua
+
+    The styling kit. Every visual in this theme comes from here rather than being
+    set per element, so the material stays consistent and a change to the
+    language is one edit instead of two hundred.
+
+    What it provides, and why each exists:
+
+      corner      rounded geometry. Glass has no sharp edges.
+      stroke      a soft border. Bright, never a hard coloured outline -- heavy
+                  borders are what make a glass UI read as a flat dashboard with
+                  blue trim rather than as layered panes.
+      gradient    the vertical light. Top edge brighter (reflected light),
+                  middle clear, bottom faintly cyan. This is what sells a flat
+                  fill as a curved surface.
+      shadow      depth. Roblox cannot blur, so this is a translucent offset
+                  frame behind the element. It reads as a soft drop shadow at
+                  small depths and avoids looking like a hard cast.
+      specular    a small radial white highlight from the orb texture, placed
+                  off-centre. Individually barely visible; collectively it is
+                  what makes the surfaces feel wet.
+      hover       brightness and tint on MouseEnter / MouseLeave. Tweened, so it
+                  feels like light moving rather than a state flip.
+      press       a small scale and dim on click, so buttons feel physical.
+
+    Everything is instance-driven and pcall-guarded: a missing texture or a
+    locked property costs one highlight, never the interface.
+]]
+
+local material = {};
+
+local TWEEN = game:GetService("TweenService");
+
+-- ── palette ────────────────────────────────────────────────────────────────
+local theme_module = nil;
+pcall(function() theme_module = require("@src/utility/frutiger/theme") end);
+
+local extra = (theme_module and theme_module.extra) or {};
+
+material.colors = {
+    glass    = extra.glass or Color3.fromRGB(234, 251, 255),
+    bgGlass  = extra.bgGlass or Color3.fromRGB(220, 245, 255),
+    sky      = extra.sky or Color3.fromRGB(216, 243, 255),
+    cyan     = extra.aqua or Color3.fromRGB(55, 199, 255),
+    cyan2    = extra.cyan2 or Color3.fromRGB(93, 216, 255),
+    cyan3    = extra.cyan3 or Color3.fromRGB(123, 229, 255),
+    white    = Color3.fromRGB(255, 255, 255),
+    ink      = extra.ink or Color3.fromRGB(32, 56, 74),
+    muted    = extra.muted or Color3.fromRGB(85, 115, 131),
+    shadow   = Color3.fromRGB(78, 150, 180),
+};
+
+-- standard timings
+material.FAST = 0.15;
+material.SOFT = 0.22;
+
+-- ── primitives ─────────────────────────────────────────────────────────────
+local function find_class(object, class)
+    for _, child in ipairs(object:GetChildren()) do
+        if child:IsA(class) then
+            return child;
+        end;
+    end;
+    return nil;
+end;
+
+function material.corner(object, radius)
+    radius = radius or 12;
+    local existing = find_class(object, "UICorner");
+    if existing then
+        pcall(function() existing.CornerRadius = UDim.new(0, radius) end);
+        return existing;
+    end;
+
+    local corner = Instance.new("UICorner");
+    corner.CornerRadius = UDim.new(0, radius);
+    corner.Parent = object;
+    return corner;
+end;
+
+function material.stroke(object, options)
+    options = options or {};
+    local stroke = find_class(object, "UIStroke");
+    if not stroke then
+        stroke = Instance.new("UIStroke");
+        stroke.Parent = object;
+    end;
+
+    pcall(function()
+        stroke.Color = options.color or material.colors.white;
+        stroke.Thickness = options.thickness or 1;
+        stroke.Transparency = options.transparency or 0.55;
+        stroke.ApplyStrokeMode = Enum.ApplyStrokeMode.Border;
+    end);
+
+    return stroke;
+end;
+
+-- top brighter, middle clear, bottom faint cyan. Left subtle on purpose: an
+-- aggressive ramp looks like a plastic gradient rather than glass.
+function material.gradient(object, options)
+    options = options or {};
+    local gradient = find_class(object, "UIGradient");
+    if not gradient then
+        gradient = Instance.new("UIGradient");
+        gradient.Name = "glass";
+        gradient.Parent = object;
+    end;
+
+    pcall(function()
+        gradient.Rotation = options.rotation or 90;
+        gradient.Color = ColorSequence.new({
+            ColorSequenceKeypoint.new(0.00, options.top or material.colors.white),
+            ColorSequenceKeypoint.new(0.50, options.middle or material.colors.glass),
+            ColorSequenceKeypoint.new(1.00, options.bottom or material.colors.cyan3),
+        });
+        gradient.Transparency = NumberSequence.new({
+            NumberSequenceKeypoint.new(0.00, options.top_transparency or 0.55),
+            NumberSequenceKeypoint.new(0.45, options.mid_transparency or 0.90),
+            NumberSequenceKeypoint.new(1.00, options.bottom_transparency or 0.80),
+        });
+    end);
+
+    return gradient;
+end;
+
+-- Roblox has no blur, so a shadow is a translucent offset copy sitting behind.
+-- Small depths only: at large offsets the lack of blur becomes obvious and it
+-- looks like a dupe rather than a shadow.
+function material.shadow(object, options)
+    options = options or {};
+    if object:FindFirstChild("glass_shadow") then
+        return;
+    end;
+
+    local depth = options.depth or 3;
+    local shadow = Instance.new("Frame");
+    shadow.Name = "glass_shadow";
+    shadow.BackgroundColor3 = options.color or material.colors.shadow;
+    shadow.BackgroundTransparency = options.transparency or 0.86;
+    shadow.BorderSizePixel = 0;
+    shadow.Active = false;
+    shadow.ZIndex = math.max(0, (object.ZIndex or 1) - 1);
+    shadow.Size = object.Size;
+    shadow.Position = object.Position + UDim2.fromOffset(0, depth);
+    shadow.AnchorPoint = object.AnchorPoint;
+    shadow.Parent = object.Parent;
+
+    local radius = options.radius or 12;
+    local corner = Instance.new("UICorner");
+    corner.CornerRadius = UDim.new(0, radius);
+    corner.Parent = shadow;
+
+    object:GetPropertyChangedSignal("Size"):Connect(function()
+        pcall(function() shadow.Size = object.Size end);
+    end);
+    object:GetPropertyChangedSignal("Position"):Connect(function()
+        pcall(function() shadow.Position = object.Position + UDim2.fromOffset(0, depth) end);
+    end);
+
+    return shadow;
+end;
+
+function material.specular(object, options)
+    options = options or {};
+    local texture = theme_module and theme_module.textures and theme_module.textures.orb;
+    if not texture then
+        return nil;
+    end;
+
+    local dot = Instance.new("ImageLabel");
+    dot.Name = "glass_specular";
+    dot.BackgroundTransparency = 1;
+    dot.BorderSizePixel = 0;
+    dot.Image = texture;
+    dot.ImageColor3 = material.colors.white;
+    dot.ImageTransparency = options.transparency or 0.80;
+    dot.AnchorPoint = options.anchor or Vector2.new(0, 0);
+    dot.Position = options.position or UDim2.new(0, 3, 0, 2);
+    dot.Size = options.size or UDim2.fromOffset(14, 14);
+    dot.ZIndex = (object.ZIndex or 1) + 1;
+    dot.Active = false;
+    dot.Parent = object;
+
+    return dot;
+end;
+
+-- ── motion ─────────────────────────────────────────────────────────────────
+local function tween(object, properties, duration, style)
+    local info = TweenInfo.new(
+        duration or material.SOFT,
+        style or Enum.EasingStyle.Quad,
+        Enum.EasingDirection.Out
+    );
+    local ok, result = pcall(function()
+        return TWEEN:Create(object, info, properties);
+    end);
+    if ok and result then
+        result:Play();
+    end;
+    return result;
+end;
+
+material.tween = tween;
+
+-- Adds a soft light-up on hover. Written to record the element's CURRENT values
+-- at enter rather than at attach: the library repaints colours on theme change,
+-- so a snapshot taken at attach time goes stale and leaving would restore an
+-- older theme's colour.
+function material.hover(object, options)
+    options = options or {};
+    if object:GetAttribute("glass_hover") then
+        return;
+    end;
+    object:SetAttribute("glass_hover", true);
+
+    local state = {};
+
+    object.MouseEnter:Connect(function()
+        state.bg = object.BackgroundColor3;
+        state.transparency = object.BackgroundTransparency;
+
+        local target = options.tint or material.colors.cyan2;
+        tween(object, {
+            BackgroundColor3 = state.bg:Lerp(target, options.strength or 0.45),
+            BackgroundTransparency = math.max(0, state.transparency - (options.lift or 0.10)),
+        }, material.FAST);
+    end);
+
+    object.MouseLeave:Connect(function()
+        if not state.bg then
+            return;
+        end;
+        tween(object, {
+            BackgroundColor3 = state.bg,
+            BackgroundTransparency = state.transparency,
+        }, material.FAST);
+    end);
+end;
+
+function material.press(object, options)
+    options = options or {};
+    if object:GetAttribute("glass_press") then
+        return;
+    end;
+    object:SetAttribute("glass_press", true);
+
+    local base = options.scale or 0.985;
+
+    -- Captured on press, not at attach and not on release. At attach it is stale
+    -- by the time anything is clicked; on release the size is already the
+    -- shrunken one, so restoring it would leave the button permanently small.
+    local before = nil;
+
+    object.MouseButton1Down:Connect(function()
+        before = object.Size;
+        tween(object, { Size = UDim2.new(
+            before.X.Scale * base, before.X.Offset * base,
+            before.Y.Scale * base, before.Y.Offset * base
+        ) }, 0.08);
+    end);
+
+    object.MouseButton1Up:Connect(function()
+        if before then
+            tween(object, { Size = before }, 0.14);
+        end;
+    end);
+end;
+
+-- ── composites ─────────────────────────────────────────────────────────────
+function material.panel(object, options)
+    options = options or {};
+    material.corner(object, options.radius or 12);
+    material.stroke(object, {
+        color = options.stroke_color,
+        transparency = options.stroke_transparency or 0.55,
+        thickness = options.stroke_thickness or 1,
+    });
+    material.gradient(object, options);
+    if options.shadow ~= false then
+        material.shadow(object, { radius = options.radius or 12, depth = options.depth or 3 });
+    end;
+    if options.specular ~= false then
+        material.specular(object, options.specular_options);
+    end;
+    object:SetAttribute("glass_panel", true);
+    return object;
+end;
+
+-- A button is a panel that reacts: brighter on hover, smaller on press.
+function material.button(object, options)
+    options = options or {};
+    options.radius = options.radius or 10;
+    material.panel(object, options);
+    material.hover(object, options);
+    material.press(object, options);
+    object:SetAttribute("glass_button", true);
+    return object;
+end;
+
+-- A pill is a button with full rounding -- used for compact controls where the
+-- radius should read as a capsule rather than a card.
+function material.pill(object, options)
+    options = options or {};
+    options.radius = math.huge;   -- clamped by Roblox to half the height
+    return material.button(object, options);
+end;
+
+return material;
 
 end;
 
@@ -50938,27 +51455,42 @@ local theme = {};
 -- Near-absolute black, carbon grey, desaturated mould green, dirty beige,
 -- rust. No saturated or clean values anywhere.
 
--- Frutiger Aero: light, glossy, glass. The exact inverse of the black/white
--- brutalist pass that preceded it.
+-- Frutiger Aero / liquid glass. Bright, airy, watery, translucent.
 --
--- FontColor is dark on purpose. Every other slot is light now, so the text has
--- to carry the contrast -- and it also leaves the contrast guard (which darkens
--- light text on light fills) with nothing to do, instead of fighting the theme.
+-- The palette is deliberately low-contrast between its own slots: everything is
+-- a pale cyan or an ice white, and the ONLY strong values are the cyan accent
+-- and the text. Structure comes from transparency and highlights, not from
+-- outlines -- heavy borders are what makes a glass UI read as a flat dashboard
+-- with blue trim.
+--
+-- Text is the one place contrast is allowed to be strong, because it has to sit
+-- on translucent surfaces over arbitrary scenery.
 theme.palette = {
-    FontColor       = "0e3d5c",   -- deep sky navy, for contrast on light fills
-    MainColor       = "f4fbff",   -- glass white panels
-    AccentColor     = "29a8e0",   -- sky blue: hover fills, selections, toggles
-    BackgroundColor = "dbf0fb",   -- pale sky
-    OutlineColor    = "9fd4ef",   -- soft blue edge, i.e. the corners
+    FontColor       = "20384a",   -- primary text: navy-grey, not black
+    MainColor       = "eafbff",   -- glass card fill
+    AccentColor     = "37c7ff",   -- cyan accent: selections, toggles, sliders
+    BackgroundColor = "dcf5ff",   -- window glass
+    OutlineColor    = "ffffff",   -- soft white border, never a hard blue line
 };
 
 theme.extra = {
-    aqua  = Color3.fromRGB(41, 168, 224),
-    sky   = Color3.fromRGB(159, 212, 239),
-    glass = Color3.fromRGB(244, 251, 255),
-    lime  = Color3.fromRGB(126, 200, 80),
-    white = Color3.fromRGB(255, 255, 255),
-    ink   = Color3.fromRGB(14, 61, 92),
+    -- glass fills, lightest to deepest
+    glass   = Color3.fromRGB(234, 251, 255),   -- #EAFBFF
+    bgGlass = Color3.fromRGB(220, 245, 255),   -- #DCF5FF
+    sky     = Color3.fromRGB(216, 243, 255),   -- #D8F3FF
+
+    -- cyan family, for accents and glows
+    aqua    = Color3.fromRGB(55, 199, 255),    -- #37C7FF
+    cyan2   = Color3.fromRGB(93, 216, 255),    -- #5DD8FF
+    cyan3   = Color3.fromRGB(123, 229, 255),   -- #7BE5FF
+
+    -- text
+    ink     = Color3.fromRGB(32, 56, 74),      -- #20384A primary
+    text2   = Color3.fromRGB(41, 72, 90),      -- #29485A
+    muted   = Color3.fromRGB(85, 115, 131),    -- #557383 secondary, e.g. "N/A"
+
+    white   = Color3.fromRGB(255, 255, 255),
+    lime    = Color3.fromRGB(126, 200, 80),
 };
 
 -- Condensed industrial for headings, technical mono for everything else.
@@ -50969,7 +51501,7 @@ theme.fonts = {
 
 -- ── textures ───────────────────────────────────────────────────────────────
 local TEXTURE_DIR = "Frutiger/Textures";
-local TEXTURE_NAMES = { "gloss", "frost", "bubbles", "sheen" };
+local TEXTURE_NAMES = { "gloss", "frost", "bubbles", "sheen", "orb" };
 
 theme.textures = {};
 
@@ -51288,7 +51820,10 @@ end;
 -- Matching per property removes the ambiguity: a fill is only ever compared
 -- against the old fills, text against the old text, and so on.
 local PROPERTY_SOURCE = {
-    BackgroundColor3  = { "MainColor", "BackgroundColor" };
+    -- OutlineColor belongs here too: the library paints dividers and separators
+    -- with BorderColor3 = OutlineColor, i.e. OutlineColor IS their background, so
+    -- leaving it out meant every divider kept the previous theme's edge colour.
+    BackgroundColor3  = { "MainColor", "BackgroundColor", "OutlineColor" };
     TextColor3        = { "FontColor", "AccentColor" };
     PlaceholderColor3 = { "FontColor" };
     BorderColor3      = { "OutlineColor" };
