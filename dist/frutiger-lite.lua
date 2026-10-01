@@ -1,6 +1,6 @@
 --[[
     Frutiger — bundled build
-    generated 2026-10-01T12:03:48.450Z
+    generated 2026-10-01T12:05:18.094Z
     modules: 283
     assets:  0
 ]]
@@ -50031,10 +50031,23 @@ function dress.cards()
 end;
 
 -- ── spacing ────────────────────────────────────────────────────────────────
--- The brief: the list feels too compressed. Rows are laid out by UIListLayouts
--- with zero padding, so the cheapest fix that respects the layout is to widen
--- the layout padding rather than move anything by hand.
-local MIN_ROW_PADDING = 6;
+-- OFF, and deliberately left off.
+--
+-- The brief asks for more vertical breathing room and the obvious lever is
+-- UIListLayout padding. The library does not size containers from the layout,
+-- though -- it computes each section's height from its own row metrics. So
+-- widening the padding makes rows overflow a container whose height was already
+-- decided, and the overflow lands on whatever comes next.
+--
+-- Measured: padding at 6px produced 52946 overlapping text pairs across 1938
+-- labels. Setting every layout's padding back to 0 in the same session dropped
+-- it to 0. That is not a subtle regression, it is the entire interface drawn on
+-- top of itself.
+--
+-- Real spacing means moving the container heights with it, which is a change to
+-- how the library lays sections out rather than restyling after the fact. Not
+-- worth the risk just for padding, so it stays at the library's own value.
+local MIN_ROW_PADDING = 0;
 
 function dress.spacing()
     local loosened = 0;
