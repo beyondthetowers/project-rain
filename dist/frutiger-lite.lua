@@ -1,6 +1,6 @@
 --[[
     Frutiger — bundled build
-    generated 2026-10-01T12:01:20.631Z
+    generated 2026-10-01T12:03:48.450Z
     modules: 283
     assets:  0
 ]]
@@ -50582,6 +50582,30 @@ local function find_class(object, class)
     return nil;
 end;
 
+-- True when the object positions its own children itself. Adding an instance to
+-- such an object (or beside one) makes it a layout item too, which silently
+-- doubles the row count and overlaps everything.
+--
+-- This was not theoretical: the first version of panel() gave 82 cards both a
+-- shadow (a SIBLING frame) and a specular (a CHILD image), so every
+-- list-layout container was asked to lay out roughly twice as many rows as it
+-- had. The result was text drawn on top of text across the whole interface.
+local function layout_managed(object)
+    if not object then
+        return false;
+    end;
+
+    for _, child in ipairs(object:GetChildren()) do
+        if child:IsA("UIListLayout")
+            or child:IsA("UIGridLayout")
+            or child:IsA("UITableLayout") then
+            return true;
+        end;
+    end;
+
+    return false;
+end;
+
 function material.corner(object, radius)
     radius = radius or 12;
     local existing = find_class(object, "UICorner");
@@ -50651,6 +50675,12 @@ function material.shadow(object, options)
         return;
     end;
 
+    -- A shadow is a SIBLING. Beside a layout-managed object it becomes an
+    -- extra row in that layout, which is how the overlap started.
+    if layout_managed(object.Parent) then
+        return nil;
+    end;
+
     local depth = options.depth or 3;
     local shadow = Instance.new("Frame");
     shadow.Name = "glass_shadow";
@@ -50683,6 +50713,12 @@ function material.specular(object, options)
     options = options or {};
     local texture = theme_module and theme_module.textures and theme_module.textures.orb;
     if not texture then
+        return nil;
+    end;
+
+    -- A specular is a CHILD, so it is also a layout item when the host lays
+    -- out its own children.
+    if layout_managed(object) then
         return nil;
     end;
 
