@@ -2,6 +2,19 @@ local profiler = require("@src/utility/profiler")
 local anti_ap_breaker = require("@src/features/auto-parry/handlers/anti-ap-breaker")
 local trace = require("@src/utility/trace")
 
+-- Divisione sicura per track.Speed (vedi base.lua).
+-- track.Speed puo' essere 0, e x/0 da' infinito: quel valore si propaga fino a
+-- "wait time invalid: inf" e l'auto-parry salta l'azione.
+local function speed_of(track)
+    local s = track and track.Speed;
+    if type(s) ~= "number" or s ~= s or s < 1e-6 then
+        return 1;
+    end;
+    return s;
+end;
+
+
+
 local random = Random.new();
 local cached = {};
 
@@ -30,7 +43,7 @@ break_anims = function(track, time, data, action_type, self)
     if not data then return end
     if track:HasTag("FRUTIGER_BREAKER_IGNORE") then return end
 
-    if aztup.flags.ap_breaker and aztup_options.ap_breaker_type.Value == "Tester Aggressive 1 (Blatant)" and not track.Looped and track.Speed > 0.1 then
+    if aztup.flags.ap_breaker and aztup_options.ap_breaker_type.Value == "Tester Aggressive 1 (Blatant)" and not track.Looped and speed_of(track) > 0.1 then
         while track.IsPlaying do
             
             
@@ -45,13 +58,13 @@ break_anims = function(track, time, data, action_type, self)
         end;
     end;
 
-    if aztup.flags.ap_breaker and aztup_options.ap_breaker_type.Value == "Aggressive 3 (Blatant)" and not track.Looped and track.Speed > 0.1 then
+    if aztup.flags.ap_breaker and aztup_options.ap_breaker_type.Value == "Aggressive 3 (Blatant)" and not track.Looped and speed_of(track) > 0.1 then
         ap_breaker_tracks[track] = true;
         track.Priority = Enum.AnimationPriority.Movement;
         
         
         track:Stop(9e9);
-        task.wait((track.Length / track.Speed) - Latency:half_ping());
+        task.wait((track.Length / speed_of(track)) - Latency:half_ping());
         track.TimePosition = track.Length;
         track:Play(0.1,0,0)
         track:AdjustWeight(0, 0.1);
@@ -1015,7 +1028,7 @@ end;
                 track_state.action = action;
             end;
 
-            local starting_speed = track.Speed;
+            local starting_speed = speed_of(track);
             local hitbox = action.hitbox or Vector3.zero;
             local offset = action.offset or CFrame.new();
             local type = action.type or "Parry";
@@ -1090,7 +1103,7 @@ end;
                 end;
             end);
 
-            if track.Speed > 50 then
+            if speed_of(track) > 50 then
                 input_task:remove();
                 break            
 end;
@@ -1301,11 +1314,11 @@ elseif chime_gale_skip == "return" then
 end;
 
             if aztup.flags.log_speed_changes then
-                if starting_speed == track.Speed then
+                if starting_speed == speed_of(track) then
                     trace.write("DO", "%s ac%s type=%s rtt=%.4f speed=%.2f", tostring(name), tostring(index), tostring(type), current_rtt, starting_speed);
                     debug_print("[%s] Performing action %i: %s (%.2fs srtt -> %.2fs, %.2f speed)", name, index, type, current_rtt, Latency:get_ping(), starting_speed); 
                 else
-                    debug_print("[%s] Performing action %i: %s (%.2fs srtt -> %.2fs, %.2f -> %.2f speed)", name, index, type, current_rtt, Latency:get_ping(), starting_speed, track.Speed);
+                    debug_print("[%s] Performing action %i: %s (%.2fs srtt -> %.2fs, %.2f -> %.2f speed)", name, index, type, current_rtt, Latency:get_ping(), starting_speed, speed_of(track));
                 end
             else
                 debug_print("[%s] Performing action %i: %s (%.2fs srtt -> %.2fs)", name, index, type, current_rtt, Latency:get_ping()); 

@@ -1,3 +1,14 @@
+-- Divisione sicura per track.Speed (vedi base.lua).
+-- track.Speed puo' essere 0, e x/0 da' infinito: quel valore si propaga fino a
+-- "wait time invalid: inf" e l'auto-parry salta l'azione.
+local function speed_of(track)
+    local s = track and track.Speed;
+    if type(s) ~= "number" or s ~= s or s < 1e-6 then
+        return 1;
+    end;
+    return s;
+end;
+
 local anti_ap_breaker = {}
 
 local dead_tracks = setmetatable({}, { __mode = "k" })
@@ -35,12 +46,12 @@ function anti_ap_breaker:initial_check(defender, track)
 end
 
     
-    if track.Speed >= aztup.flags.anti_ap_breaker_max_speed and self:is_filter_on("S >= X (S = Speed)") then
-        self:log("S >= X (S = Speed)", "Speed is too high, Speed: %.1f", track.Speed)
+    if speed_of(track) >= aztup.flags.anti_ap_breaker_max_speed and self:is_filter_on("S >= X (S = Speed)") then
+        self:log("S >= X (S = Speed)", "Speed is too high, Speed: %.1f", speed_of(track))
         return true
     end;
 
-    if track.Length / track.Speed <= (aztup.flags.anti_ap_breaker_length_ms / 1000) and self:is_filter_on("Length <= Xms") then
+    if track.Length / speed_of(track) <= (aztup.flags.anti_ap_breaker_length_ms / 1000) and self:is_filter_on("Length <= Xms") then
         self:log("Length <= Xms", "Length is too short, Length: %.1f", track.Length)
         return true
     end;
@@ -55,7 +66,7 @@ end
         return true
     end;
 
-    if track.Speed == 0 and self:is_filter_on("Speed == 0") then 
+    if speed_of(track) == 0 and self:is_filter_on("Speed == 0") then 
         return self:log("Speed == 0", "Track is frozen")    
 end
 
@@ -92,7 +103,7 @@ function anti_ap_breaker:handle_priority_hiding(defender, track)
         if track.Priority.Value >= other_track.Priority.Value then continue end;
         if other_track.WeightCurrent <= track.WeightCurrent / 2 then continue end
         if other_track.WeightTarget <= 0.3 then continue end
-        if other_track.Speed == 0 and other_track.TimePosition >= track.Length - 0.01 or other_track.TimePosition <= 0.01 then continue end;
+        if other_speed_of(track) == 0 and other_track.TimePosition >= track.Length - 0.01 or other_track.TimePosition <= 0.01 then continue end;
         if not asset_id.get_id(other_track.Animation.AnimationId) then continue end
         if self:final_check(defender, other_track, true) then continue end
         hidden_count += 1;

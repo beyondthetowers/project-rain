@@ -1,3 +1,23 @@
+-- Divisione sicura per track.Speed.
+--
+-- track.Speed puo' valere 0, e `x / 0` in Lua da' infinito, non un errore.
+-- Quel valore poi si propaga: windup diventa inf, il nome dell'azione diventa
+-- "Sword M1 - inf", action.when diventa inf, e alla fine l'auto-parry salta
+-- l'azione con "wait time invalid: inf". Misurato dal vivo:
+--
+--   SKIP  Sword M1 - inf, 8.0, none  wait=inf time=inf allot=0.0000 rtt=0.0709
+--
+-- Quarantaquattro punti dividono per track.Speed. Se e' zero o non valido si
+-- usa 1, che e' la velocita' normale di un'animazione: il calcolo torna
+-- sensato invece di diventare infinito.
+local function speed_of(track)
+    local s = track and speed_of(track);
+    if type(s) ~= "number" or s ~= s or s < 1e-6 then
+        return 1;
+    end;
+    return s;
+end;
+
 local ht = services.HttpService; local jd = ht.JSONDecode; local tbl;
 local extra_data = LPH_NO_VIRTUALIZE(function() 
     function decode_asset(asset)
@@ -622,7 +642,7 @@ return {
         action.when = 0
         action.type = "Parry"
         action.hitbox = Vector3.new(145, 65, 145)
-        action.name = string.format("(%.2f) Chaser Slam", track.Speed)
+        action.name = string.format("(%.2f) Chaser Slam", speed_of(track))
         action:push();
 
         return action    
@@ -907,7 +927,7 @@ return {
     allow_parry_to_block = true,
 
     run = function(action)
-	    local speed = track.Speed
+	    local speed = speed_of(track)
         local when = 0.3;
 
 	    if speed >= 0.45 and speed <= 0.55 then
@@ -1276,7 +1296,7 @@ return {
 			action.when = when
 			action.type = "Parry"
 			action.hitbox = Vector3.new(100, 250, 100)
-			action.name = string.format("(%.2f) Primadon SixStomp %i", track.Speed, idx)
+			action.name = string.format("(%.2f) Primadon SixStomp %i", speed_of(track), idx)
 			action:push()
 		end
 
@@ -1294,11 +1314,11 @@ return {
 	action_type = "Undefined",
 
 	run = function(action)
-		local when = ((1200 * 1.21) / track.Speed) / 1000
+		local when = ((1200 * 1.21) / speed_of(track)) / 1000
 		action.when = when
 		action.type = "Dodge"
 		action.hitbox = Vector3.new(80, 250, 140)
-		action.name = string.format("(%.2f) Dynamic Primadon Timing", track.Speed)
+		action.name = string.format("(%.2f) Dynamic Primadon Timing", speed_of(track))
 		action:push()
 
 		return action
@@ -1315,10 +1335,10 @@ return {
     action_type = "Undefined",
 
     run = function(action)
-        action.when = ((750 * 1.21) / track.Speed) / 1000
+        action.when = ((750 * 1.21) / speed_of(track)) / 1000
         action.type = "Parry"
         action.hitbox = Vector3.new(80, 250, 140)
-        action.name = string.format("(%.2f) Dynamic Primadon Timing", track.Speed)
+        action.name = string.format("(%.2f) Dynamic Primadon Timing", speed_of(track))
         action:push()
         return action
     end,
@@ -1333,10 +1353,10 @@ return {
     action_type = "Undefined",
 
     run = function(action)
-        action.when = ((2130 * 1.21) / track.Speed) / 1000
+        action.when = ((2130 * 1.21) / speed_of(track)) / 1000
         action.type = "Parry"
         action.hitbox = Vector3.new(100, 250, 100)
-        action.name = string.format("(%.2f) Dynamic Primadon Timing", track.Speed)
+        action.name = string.format("(%.2f) Dynamic Primadon Timing", speed_of(track))
         action:push()
         return action
     end,
@@ -2032,7 +2052,7 @@ return {
     run = function(action)
         if not weapon.type or not weapon.length then return end
         
-        task.wait(((0.163 / track.Speed) + 0.1) - Latency:get_ping());
+        task.wait(((0.163 / speed_of(track)) + 0.1) - Latency:get_ping());
         while self:is_playing() and task.wait(0.035) do
             if not defender or not defender.entity then continue end
             if not defender:in_hitbox_with_pos(
@@ -2084,7 +2104,7 @@ return {
         local windup = 0.35;
 
         if weapon.type == "Rifle" then
-            windup =  (0.16 / track.Speed) + 0.150;
+            windup =  (0.16 / speed_of(track)) + 0.150;
             hitbox = Vector3.new(weapon.length * 2.3, weapon.length * 3, weapon.length * 2);
 
         end
@@ -2352,22 +2372,22 @@ return {
         local hitbox = Vector3.new(weapon.length * 2.65, weapon.length * 3, weapon.length * 2.8); 
         local windup = 0;
         local offset = CFrame.new(0, 0, -5);
-        if weapon.type == "Greataxe" and track.Speed ~= 1.0 then
-            windup = (0.171 / track.Speed) + 0.120
-        elseif weapon.type == "Greataxe" and track.Speed == 1.0 then
-            windup = (0.171 / track.Speed)
+        if weapon.type == "Greataxe" and speed_of(track) ~= 1.0 then
+            windup = (0.171 / speed_of(track)) + 0.120
+        elseif weapon.type == "Greataxe" and speed_of(track) == 1.0 then
+            windup = (0.171 / speed_of(track))
             windup += 0.250 / (weapon.ss * (has_heavy_hands(defender.entity) and 0.9 or 1))
-        elseif weapon.type == "Greathammer" and track.Speed ~= 1.0 then
-            windup = (0.150 / track.Speed) + 0.150
-        elseif weapon.type == "Greathammer" and track.Speed == 1.0 then
-            windup = (0.150 / track.Speed)
+        elseif weapon.type == "Greathammer" and speed_of(track) ~= 1.0 then
+            windup = (0.150 / speed_of(track)) + 0.150
+        elseif weapon.type == "Greathammer" and speed_of(track) == 1.0 then
+            windup = (0.150 / speed_of(track))
             windup += 0.250 / weapon.ss
-        elseif weapon.type == "Greatcannon" and track.Speed ~= 1.0 then
-            windup = (0.155 / track.Speed) + 0.160
-        elseif weapon.type == "Greatcannon" and track.Speed == 1.0 then
-            windup = (0.155 / track.Speed) + 0.300
+        elseif weapon.type == "Greatcannon" and speed_of(track) ~= 1.0 then
+            windup = (0.155 / speed_of(track)) + 0.160
+        elseif weapon.type == "Greatcannon" and speed_of(track) == 1.0 then
+            windup = (0.155 / speed_of(track)) + 0.300
         elseif weapon.type == "Rapier" then
-            windup = (0.155 / track.Speed) + 0.120
+            windup = (0.155 / speed_of(track)) + 0.120
         elseif weapon.type == "Bow" then
             local thrown_object = workspace.Thrown:FindFirstChild("Attach_" .. defender.entity.Name)
             local tip_attachment: Attachment? = thrown_object and thrown_object:FindFirstChild("HandWeapon") and thrown_object:FindFirstChild("HandWeapon"):FindFirstChild("TipAttachment");
@@ -2386,60 +2406,60 @@ return {
         elseif weapon.type == "Pistol" and not (track.Animation.AnimationId:match("14435770311") or track.Animation.AnimationId:match("14435773739") or track.Animation.AnimationId:match("14435778571")) then
             windup = 0.350 / weapon.ss
         elseif weapon.type == "Pistol" and (track.Animation.AnimationId:match("14435770311") or track.Animation.AnimationId:match("14435773739") or track.Animation.AnimationId:match("14435778571")) then
-	        local ispeed = track.Speed
+	        local ispeed = speed_of(track)
             repeat
                 task.wait()
-            until track.Speed ~= ispeed
+            until speed_of(track) ~= ispeed
     
-            windup = 0.075 / track.Speed
+            windup = 0.075 / speed_of(track)
     
-            if track.Speed == 0.0 then
+            if speed_of(track) == 0.0 then
                 windup = 0.100
             end
         elseif weapon.type == "Rifle" and track.Animation.AnimationId:match("9928485641") then    
-            windup = track.Speed * 0.55
+            windup = speed_of(track) * 0.55
             
     
-            if track.Speed == 0.0 then
+            if speed_of(track) == 0.0 then
                 windup = 0.100
                 debug_extras ..= " 0s"
             end
             debug_extras ..= " [odd anim]"
         elseif weapon.type == "Rifle" then
-            windup = (0.2 / track.Speed)
+            windup = (0.2 / speed_of(track))
         elseif weapon.type == "Club" then
-            windup = (0.180 / track.Speed) + 0.100
+            windup = (0.180 / speed_of(track)) + 0.100
         elseif weapon.type == "Twinblade" then
-            windup = (0.150 / track.Speed) + 0.050
+            windup = (0.150 / speed_of(track)) + 0.050
             
             if track.Animation.AnimationId:match("123456225328134") then
                 windup = 0.45;
                 debug_extras ..= "first"
             end
         elseif weapon.type == "Spear" then
-            windup = (0.150 / track.Speed) + 0.100
+            windup = (0.150 / speed_of(track)) + 0.100
             hitbox = Vector3.new(weapon.length * 2.5, weapon.length * 2, weapon.length * 2.4);
             ignore_ball = true
         elseif weapon.type == "Greatsword" then
             hitbox = Vector3.one * (weapon.length * 2.5); 
-            windup = (0.158 / track.Speed) + 0.150
+            windup = (0.158 / speed_of(track)) + 0.150
         elseif weapon.type == "Fist" then 
-            windup = (0.140 / track.Speed) + 0.130
+            windup = (0.140 / speed_of(track)) + 0.130
             for _, anim in defender.entity.Humanoid:GetPlayingAnimationTracks() do
                 if anim.Animation.AnimationId == "rbxassetid://92562352733890" then
                     windup = 0;
                 end
             end
         elseif weapon.type == "Dagger" then
-            windup = (0.150 / track.Speed) + 0.075
+            windup = (0.150 / speed_of(track)) + 0.075
             hitbox = Vector3.new(weapon.length * 3.8, weapon.length * 4, weapon.length * 4); 
         elseif weapon.type == "Sword" then
-            windup = (0.150 / track.Speed) + 0.05
+            windup = (0.150 / speed_of(track)) + 0.05
             hitbox = Vector3.one * (weapon.length * 2.5); 
             ignore_ball = true;
         end
         if weapon.type == "Staff" then
-            windup = (0.150 / track.Speed) + 0.08
+            windup = (0.150 / speed_of(track)) + 0.08
             hitbox = Vector3.new(weapon.length * 3.65, weapon.length * 2.7, weapon.length * 3.8); 
         end
 
@@ -2561,58 +2581,58 @@ return {
 
         local windup = 0;
         if weapon.type == "Dagger" then
-            windup = (0.147 / track.Speed) + 0.140
+            windup = (0.147 / speed_of(track)) + 0.140
         elseif weapon.type == "Greatsword" then
-            windup = (0.160 / track.Speed) + 0.160
+            windup = (0.160 / speed_of(track)) + 0.160
             windup += 0.1 / weapon.ss
             action.hitbox = Vector3.new(weapon.length * 2.65, weapon.length * 3, weapon.length * 4); 
 
         elseif weapon.type == "Greataxe" then
-            windup = (0.150 / track.Speed) + 0.100
+            windup = (0.150 / speed_of(track)) + 0.100
             windup += 0.100 / weapon.ss
         elseif weapon.type == "Greatcannon" then
-            windup = (0.160 / track.Speed) + 0.160
+            windup = (0.160 / speed_of(track)) + 0.160
             windup += 0.100 / weapon.ss
         elseif weapon.type == "Greathammer" then
-            windup = (0.160 / track.Speed) + 0.160
+            windup = (0.160 / speed_of(track)) + 0.160
             windup += 0.100 / weapon.ss
             action.hitbox = Vector3.new(weapon.length * 2.65, weapon.length * 3, weapon.length * 4); 
         elseif weapon.type == "Spear" then
-            windup = (0.150 / track.Speed) + 0.140
+            windup = (0.150 / speed_of(track)) + 0.140
             windup += 0.100 / weapon.ss
         elseif weapon.type == "Pistol" then
             repeat
                 task.wait()
-            until track.Speed >= 0.1
+            until speed_of(track) >= 0.1
     
-            windup = (0.300 / track.Speed)
+            windup = (0.300 / speed_of(track))
         elseif weapon.type == "Rifle" then
-            windup = (0.169 / track.Speed) + 0.180
+            windup = (0.169 / speed_of(track)) + 0.180
             windup += 0.100 / weapon.ss
             action.hitbox = Vector3.new(weapon.length * 2.65, weapon.length * 3, weapon.length * 2.825); 
             action.offset = CFrame.new()
             action.half_size_offset = true;
         elseif weapon.type == "Sword" then
-            windup = (0.135 / track.Speed) + 0.100
+            windup = (0.135 / speed_of(track)) + 0.100
             windup += 0.1 / weapon.ss
         elseif weapon.type == "Staff" then
-            windup = (0.135 / track.Speed) + 0.100
+            windup = (0.135 / speed_of(track)) + 0.100
             windup += 0.150 / weapon.ss
             action.hitbox = Vector3.new(weapon.length * 2.65, weapon.length * 3, weapon.length * 2.8); 
             action.offset = CFrame.new()
             action.half_size_offset = true;
         elseif weapon.type == "Rapier" then
-            windup = (0.238 / track.Speed) + 0.060
+            windup = (0.238 / speed_of(track)) + 0.060
         elseif weapon.type == "Club" then
-            windup = (0.173 / track.Speed) + 0.100
+            windup = (0.173 / speed_of(track)) + 0.100
             windup += 0.150 / weapon.ss
         elseif weapon.type == "Bow" then
             windup = 0.2
         elseif weapon.type == "Twinblade" then
-            windup = (0.164 / track.Speed) + 0.100
+            windup = (0.164 / speed_of(track)) + 0.100
             windup += 0.150 / weapon.ss
         elseif weapon.type == "Fist" then
-            windup = (0.153 / track.Speed) + 0.120
+            windup = (0.153 / speed_of(track)) + 0.120
             action.hitbox = Vector3.new(weapon.length * 2.65, weapon.length * 3, weapon.length * 3.3); 
             action.offset = CFrame.new()
             action.half_size_offset = true;
@@ -3802,7 +3822,7 @@ return {
     allow_parry_to_block = true,
 
     run = function(action)
-        local timingValue = (1.05 * 0.7) / track.Speed
+        local timingValue = (1.05 * 0.7) / speed_of(track)
         
         action.when = timingValue
         action.type = "Parry"
@@ -3837,7 +3857,7 @@ return {
             hitbox = Vector3.new(80, 250, 80)
         end
 
-        local when = ((750 * 1.21) / track.Speed) / 1000
+        local when = ((750 * 1.21) / speed_of(track)) / 1000
         if hum.Health <= (hum.MaxHealth / 2) then
             when = when / 1.21
         end
@@ -3872,7 +3892,7 @@ return {
         
         local baseTimings = {0.8, 1.4, 2.05}
         
-	    if mob.Name:match(".monkyking") and track.Speed >= 1.5 and track.Speed <= 1.7 then
+	    if mob.Name:match(".monkyking") and speed_of(track) >= 1.5 and speed_of(track) <= 1.7 then
 	    	baseTimings = {
 	    		[1] = 0.6,
 	    		[2] = 1,
@@ -3880,7 +3900,7 @@ return {
 	    	}
 	    end
     
-	    if mob.Name:match(".monkyking") and track.Speed >= 1.7 and track.Speed <= 2.15 then
+	    if mob.Name:match(".monkyking") and speed_of(track) >= 1.7 and speed_of(track) <= 2.15 then
 	    	baseTimings = {
 	    		[1] = 0.5,
 	    		[2] = 0.9,
@@ -3979,10 +3999,10 @@ return {
 
             local windup = 0
             if weapon.type == "Greataxe" then
-                windup = (0.150 / track.Speed) + 0.100
+                windup = (0.150 / speed_of(track)) + 0.100
                 windup += 0.100 / weapon.ss
             elseif weapon.type == "Greathammer" then
-                windup = (0.160 / track.Speed) + 0.180
+                windup = (0.160 / speed_of(track)) + 0.180
                 windup += 0.100 / weapon.ss
                 action.hitbox = Vector3.new(weapon.length * 2.65, weapon.length * 3, weapon.length * 4)
             end
@@ -3998,15 +4018,15 @@ return {
             local hitbox = Vector3.new(weapon.length * 2.65, weapon.length * 3, weapon.length * 2.8)
             local windup = 0
 
-            if weapon.type == "Greataxe" and track.Speed ~= 1.0 then
-                windup = (0.171 / track.Speed) + 0.120
-            elseif weapon.type == "Greataxe" and track.Speed == 1.0 then
-                windup = (0.171 / track.Speed)
+            if weapon.type == "Greataxe" and speed_of(track) ~= 1.0 then
+                windup = (0.171 / speed_of(track)) + 0.120
+            elseif weapon.type == "Greataxe" and speed_of(track) == 1.0 then
+                windup = (0.171 / speed_of(track))
                 windup += 0.250 / (weapon.ss * (has_heavy_hands(defender.entity) and 0.9 or 1))
-            elseif weapon.type == "Greathammer" and track.Speed ~= 1.0 then
-                windup = (0.150 / track.Speed) + 0.150
-            elseif weapon.type == "Greathammer" and track.Speed == 1.0 then
-                windup = (0.150 / track.Speed)
+            elseif weapon.type == "Greathammer" and speed_of(track) ~= 1.0 then
+                windup = (0.150 / speed_of(track)) + 0.150
+            elseif weapon.type == "Greathammer" and speed_of(track) == 1.0 then
+                windup = (0.150 / speed_of(track))
                 windup += 0.250 / weapon.ss
             end
 
@@ -4475,7 +4495,7 @@ return {
         action.when = 0
         action.type = "Dodge"
         action.hitbox = Vector3.new(50, 65, 145)
-        action.name = string.format("(%.2f) Sharko Cero", track.Speed)
+        action.name = string.format("(%.2f) Sharko Cero", speed_of(track))
         action:push();
 
         return action    
@@ -4490,7 +4510,7 @@ return {
     allow_parry_to_roll = true,
 
     run = function(action)
-        action.when = track.Speed <= 1.1 and 0.5 or 0.4
+        action.when = speed_of(track) <= 1.1 and 0.5 or 0.4
         action.type = "Parry"
         action.hitbox = Vector3.new(40, 40, 40)
         action.name = ("Silentheart Heavy Rising Star")
@@ -4536,7 +4556,7 @@ return {
 
     run = function(action)
         local distance = self:distance() or 0
-        local speed = track.Speed
+        local speed = speed_of(track)
         local when
 
         if speed >= 0.7 then
@@ -4580,7 +4600,7 @@ return {
 
     run = function(action)
         local distance = self:distance() or 0
-        local speed = track.Speed
+        local speed = speed_of(track)
         local when = 0.45
 
         if speed >= 0.7 then
@@ -4623,7 +4643,7 @@ return {
         action.offset = CFrame.new(0,0,-7.5);
         action.hitbox = Vector3.new(20, 30, 16);
         action.type = "Parry"
-        action.name = string.format("Soulflare Siphon %.2f %.2f", self:distance(), track.Speed)
+        action.name = string.format("Soulflare Siphon %.2f %.2f", self:distance(), speed_of(track))
         action:push()
 
 
@@ -4645,13 +4665,13 @@ return {
 
     run = function(action)
         local distance = self:distance()
-        local speed = track.Speed;
+        local speed = speed_of(track);
         local low_speed_variant = speed >= 0.2 and speed <= 0.3;
 
         action.when_ms = low_speed_variant and 975 or 450 + (distance * 4)
         action.type = low_speed_variant and "Jump" or "Dodge"
         action.hitbox = Vector3.new(40, 40, 50)
-        action.name = string.format("(%.2f) (%.2f) Squidward Eruption", distance, track.Speed)
+        action.name = string.format("(%.2f) (%.2f) Squidward Eruption", distance, speed_of(track))
         action:push()
 
         return action    
@@ -4727,7 +4747,7 @@ return {
         action.when = 0.5
         action.hitbox = Vector3.new(23, 15, 25);
         action.type = "Parry"
-        action.name = string.format("Strong Left %.2f %.2f", self:distance(), track.Speed)
+        action.name = string.format("Strong Left %.2f %.2f", self:distance(), speed_of(track))
         
 	    if defender.entity.Name:match(".theduke") then
             action.ignore_hitbox = true;
