@@ -1,3 +1,4 @@
+local trace_mod = require("@src/utility/trace");
 
 
 
@@ -90,6 +91,8 @@ local KeyHandlerClass = {} do
 
         -- Mai nil: i chiamanti fanno `KeyHandler:get_key("Dodge"):FireServer(...)`
         -- senza controlli, in quindici punti.
+        trace_mod.write("GETKEY", "%s non trovato; registro pronto=%s", tostring(remote),
+            tostring(self[STR_TBL_SF_INVOKE("remotes")] ~= nil and self[STR_TBL_SF_INVOKE("enc_f")] ~= nil));
         return inert_key;
     end
 

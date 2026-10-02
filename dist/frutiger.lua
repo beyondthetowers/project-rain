@@ -1,7 +1,7 @@
 --[[
     Frutiger — bundled build
-    generated 2026-10-02T20:05:30.992Z
-    modules: 284
+    generated 2026-10-02T20:09:19.651Z
+    modules: 285
     assets:  20
 ]]
 
@@ -20625,6 +20625,7 @@ end;
 __modules["src/features/auto-parry/handlers/animator-handler"] = function()
 local profiler = require("@src/utility/profiler")
 local anti_ap_breaker = require("@src/features/auto-parry/handlers/anti-ap-breaker")
+local trace = require("@src/utility/trace")
 
 local random = Random.new();
 local cached = {};
@@ -21790,6 +21791,12 @@ end;
                 task.wait(wait_time)
                 alotted += wait_time
             elseif wait_time ~= wait_time or wait_time > 0 then
+                -- I tre numeri che compongono wait_time. E' questo che serve:
+                -- dal messaggio a schermo si legge solo "inf", senza sapere
+                -- quale dei tre lo produce.
+                trace.write("SKIP", "%s ac%s wait=%.4f time=%.4f allot=%.4f rtt=%.4f",
+                    tostring(name), tostring(index), wait_time, time, alotted, current_rtt);
+
                 -- Rate limited. This fires for EVERY action, and when the timing
                 -- is bad that is every action there is -- observed live filling
                 -- the info logger and stalling the client. One line per second
@@ -21920,6 +21927,7 @@ end;
 
             if aztup.flags.log_speed_changes then
                 if starting_speed == track.Speed then
+                    trace.write("DO", "%s ac%s type=%s rtt=%.4f speed=%.2f", tostring(name), tostring(index), tostring(type), current_rtt, starting_speed);
                     debug_print("[%s] Performing action %i: %s (%.2fs srtt -> %.2fs, %.2f speed)", name, index, type, current_rtt, Latency:get_ping(), starting_speed); 
                 else
                     debug_print("[%s] Performing action %i: %s (%.2fs srtt -> %.2fs, %.2f -> %.2f speed)", name, index, type, current_rtt, Latency:get_ping(), starting_speed, track.Speed);
@@ -27233,6 +27241,7 @@ return feature
 end;
 
 __modules["src/features/hooking"] = function()
+local trace_mod = require("@src/utility/trace");
 
 
 
@@ -27325,6 +27334,8 @@ local KeyHandlerClass = {} do
 
         -- Mai nil: i chiamanti fanno `KeyHandler:get_key("Dodge"):FireServer(...)`
         -- senza controlli, in quindici punti.
+        trace_mod.write("GETKEY", "%s non trovato; registro pronto=%s", tostring(remote),
+            tostring(self[STR_TBL_SF_INVOKE("remotes")] ~= nil and self[STR_TBL_SF_INVOKE("enc_f")] ~= nil));
         return inert_key;
     end
 
@@ -61487,6 +61498,80 @@ if not shared.damage_registry then
 end;
 
 return shared.damage_registry
+
+end;
+
+__modules["src/utility/trace"] = function()
+-- Registratore di eventi su file, per capire cosa fa l'auto-parry quando rompe.
+--
+-- Scrive in Frutiger/logs/trace.txt, che si legge direttamente dal disco: non
+-- serve iniettare niente per leggere, e non passa dalla console, quindi non
+-- puo' causare il lag che il logger dell'interfaccia causava.
+--
+-- Si attiva SOLO se esiste il file Frutiger/logs/TRACE_ON.txt, controllato una
+-- volta al caricamento. Cosi':
+--   * per accenderlo basta creare quel file (io lo faccio da fuori)
+--   * se non c'e', questo modulo non costa praticamente niente
+--   * non resta acceso per sbaglio in una build normale
+--
+-- Scrittura a blocchi: si accumula e si scrive al massimo una volta al secondo.
+-- Un writefile per riga sarebbe esso stesso un problema di prestazioni.
+
+local trace = {};
+
+local FLAG_PATH = "Frutiger/logs/TRACE_ON.txt";
+local PATH = "Frutiger/logs/trace.txt";
+local MAX_BYTES = 160000;
+local FLUSH_EVERY = 1.0;
+
+local enabled = false;
+pcall(function()
+    enabled = isfile(FLAG_PATH) == true;
+end);
+
+local buffer = {};
+local last_flush = 0;
+local started = tick();
+
+function trace.enabled()
+    return enabled;
+end;
+
+function trace.write(tag, fmt, ...)
+    if not enabled then
+        return;
+    end;
+
+    local ok, line = pcall(string.format, "[%7.2f] %-7s " .. fmt .. "\n", tick() - started, tag, ...);
+    if not ok then
+        return;
+    end;
+
+    buffer[#buffer + 1] = line;
+
+    local now = tick();
+    if now - last_flush < FLUSH_EVERY then
+        return;
+    end;
+    last_flush = now;
+
+    local payload = table.concat(buffer);
+    buffer = {};
+
+    pcall(function()
+        local existing = isfile(PATH) and readfile(PATH) or "";
+        if #existing > MAX_BYTES then
+            -- Tiene solo la coda: gli eventi recenti sono quelli che servono.
+            existing = existing:sub(-math.floor(MAX_BYTES / 2));
+        end;
+        writefile(PATH, existing .. payload);
+    end);
+end;
+
+-- Una nota all'avvio, per sapere che il file e' di questa sessione.
+trace.write("BOOT", "trace attivo");
+
+return trace;
 
 end;
 

@@ -1,5 +1,6 @@
 local profiler = require("@src/utility/profiler")
 local anti_ap_breaker = require("@src/features/auto-parry/handlers/anti-ap-breaker")
+local trace = require("@src/utility/trace")
 
 local random = Random.new();
 local cached = {};
@@ -1165,6 +1166,12 @@ end;
                 task.wait(wait_time)
                 alotted += wait_time
             elseif wait_time ~= wait_time or wait_time > 0 then
+                -- I tre numeri che compongono wait_time. E' questo che serve:
+                -- dal messaggio a schermo si legge solo "inf", senza sapere
+                -- quale dei tre lo produce.
+                trace.write("SKIP", "%s ac%s wait=%.4f time=%.4f allot=%.4f rtt=%.4f",
+                    tostring(name), tostring(index), wait_time, time, alotted, current_rtt);
+
                 -- Rate limited. This fires for EVERY action, and when the timing
                 -- is bad that is every action there is -- observed live filling
                 -- the info logger and stalling the client. One line per second
@@ -1295,6 +1302,7 @@ end;
 
             if aztup.flags.log_speed_changes then
                 if starting_speed == track.Speed then
+                    trace.write("DO", "%s ac%s type=%s rtt=%.4f speed=%.2f", tostring(name), tostring(index), tostring(type), current_rtt, starting_speed);
                     debug_print("[%s] Performing action %i: %s (%.2fs srtt -> %.2fs, %.2f speed)", name, index, type, current_rtt, Latency:get_ping(), starting_speed); 
                 else
                     debug_print("[%s] Performing action %i: %s (%.2fs srtt -> %.2fs, %.2f -> %.2f speed)", name, index, type, current_rtt, Latency:get_ping(), starting_speed, track.Speed);
