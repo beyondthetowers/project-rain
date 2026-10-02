@@ -1,6 +1,6 @@
 --[[
     Frutiger — bundled build
-    generated 2026-10-02T20:33:37.683Z
+    generated 2026-10-02T20:35:16.484Z
     modules: 285
     assets:  20
 ]]
@@ -19424,7 +19424,20 @@ return {
  
         if not user or user == local_player.instance then return end
         
+        -- Limite di tempo su questo ciclo.
+        --
+        -- Era un `while task.wait(0.00) do` senza via d'uscita se non
+        -- l'hitbox o la sparizione del proiettile: se il proiettile resta vivo
+        -- e non arriva mai a segno, il ciclo gira il piu' veloce possibile e a
+        -- ogni giro fa una scansione spaziale (general:in_hitbox). Osservato
+        -- come freeze totale del client su un attacco con proiettile.
+        --
+        -- Il comportamento normale non cambia: quando colpisce o sparisce,
+        -- esce come prima. Cambia solo che non puo' piu' girare per sempre.
+        local __loop_t1 = tick();
         while task.wait(0.00) do
+            if tick() - __loop_t1 > 8 then break end;
+
             if not part.Parent then break end
             if  
                 not general:in_hitbox(Vector3.new(10, 8, 50 + part.Velocity.Magnitude), CFrame.new(0,0,-7.5 + part.Velocity.Magnitude), local_player.root_part.CFrame, part.CFrame, false, false)
@@ -19458,7 +19471,20 @@ return {
  
         if not user or user == local_player.instance then return end
         
+        -- Limite di tempo su questo ciclo.
+        --
+        -- Era un `while task.wait(0.00) do` senza via d'uscita se non
+        -- l'hitbox o la sparizione del proiettile: se il proiettile resta vivo
+        -- e non arriva mai a segno, il ciclo gira il piu' veloce possibile e a
+        -- ogni giro fa una scansione spaziale (general:in_hitbox). Osservato
+        -- come freeze totale del client su un attacco con proiettile.
+        --
+        -- Il comportamento normale non cambia: quando colpisce o sparisce,
+        -- esce come prima. Cambia solo che non puo' piu' girare per sempre.
+        local __loop_t2 = tick();
         while task.wait(0.03) do
+            if tick() - __loop_t2 > 8 then break end;
+
             if not part.Parent then break end
             if  
                 not general:in_hitbox(Vector3.new(10, 8, 30 + part.Velocity.Magnitude), CFrame.new(0,0,-7.5 + part.Velocity.Magnitude), local_player.root_part.CFrame, part.CFrame, false, false)
@@ -19502,7 +19528,20 @@ return {
             return        
 end;
 
+        -- Limite di tempo su questo ciclo.
+        --
+        -- Era un `while task.wait(0.00) do` senza via d'uscita se non
+        -- l'hitbox o la sparizione del proiettile: se il proiettile resta vivo
+        -- e non arriva mai a segno, il ciclo gira il piu' veloce possibile e a
+        -- ogni giro fa una scansione spaziale (general:in_hitbox). Osservato
+        -- come freeze totale del client su un attacco con proiettile.
+        --
+        -- Il comportamento normale non cambia: quando colpisce o sparisce,
+        -- esce come prima. Cambia solo che non puo' piu' girare per sempre.
+        local __loop_t3 = tick();
         while task.wait(0.00) do
+            if tick() - __loop_t3 > 8 then break end;
+
             if not part.Parent then break end
 
             local compensation = (10 * Latency:get_ping());
@@ -19538,7 +19577,20 @@ return {
  
         if not user or user == local_player.instance then return end
         
+        -- Limite di tempo su questo ciclo.
+        --
+        -- Era un `while task.wait(0.00) do` senza via d'uscita se non
+        -- l'hitbox o la sparizione del proiettile: se il proiettile resta vivo
+        -- e non arriva mai a segno, il ciclo gira il piu' veloce possibile e a
+        -- ogni giro fa una scansione spaziale (general:in_hitbox). Osservato
+        -- come freeze totale del client su un attacco con proiettile.
+        --
+        -- Il comportamento normale non cambia: quando colpisce o sparisce,
+        -- esce come prima. Cambia solo che non puo' piu' girare per sempre.
+        local __loop_t4 = tick();
         while task.wait(0.00) do
+            if tick() - __loop_t4 > 8 then break end;
+
             if not part.Parent then break end
             if  
                 not general:in_hitbox(Vector3.new(5, 8, 20 + part.Velocity.Magnitude), CFrame.new(0,0,-7.5 + part.Velocity.Magnitude), local_player.root_part.CFrame, part.CFrame, false, false)
@@ -19572,7 +19624,20 @@ return {
  
         if not user or user == local_player.instance then return end
         
+        -- Limite di tempo su questo ciclo.
+        --
+        -- Era un `while task.wait(0.00) do` senza via d'uscita se non
+        -- l'hitbox o la sparizione del proiettile: se il proiettile resta vivo
+        -- e non arriva mai a segno, il ciclo gira il piu' veloce possibile e a
+        -- ogni giro fa una scansione spaziale (general:in_hitbox). Osservato
+        -- come freeze totale del client su un attacco con proiettile.
+        --
+        -- Il comportamento normale non cambia: quando colpisce o sparisce,
+        -- esce come prima. Cambia solo che non puo' piu' girare per sempre.
+        local __loop_t5 = tick();
         while task.wait(0.00) do
+            if tick() - __loop_t5 > 8 then break end;
+
             if not part.Parent then break end
             if  
                 not general:in_hitbox(Vector3.new(5, 15, 3 + part.Velocity.Magnitude), CFrame.new(0,0,0 + part.Velocity.Magnitude), local_player.root_part.CFrame, part.CFrame, false, false)
@@ -19686,7 +19751,20 @@ return {
  
         if not user or user == local_player.instance then return end
         
+        -- Limite di tempo su questo ciclo.
+        --
+        -- Era un `while task.wait(0.00) do` senza via d'uscita se non
+        -- l'hitbox o la sparizione del proiettile: se il proiettile resta vivo
+        -- e non arriva mai a segno, il ciclo gira il piu' veloce possibile e a
+        -- ogni giro fa una scansione spaziale (general:in_hitbox). Osservato
+        -- come freeze totale del client su un attacco con proiettile.
+        --
+        -- Il comportamento normale non cambia: quando colpisce o sparisce,
+        -- esce come prima. Cambia solo che non puo' piu' girare per sempre.
+        local __loop_t6 = tick();
         while task.wait(0.00) do
+            if tick() - __loop_t6 > 8 then break end;
+
             if not part.Parent then break end
             if  
                 not general:in_hitbox(Vector3.new(10, 8, 50 + part.Velocity.Magnitude), CFrame.new(0,0,-7.5 + part.Velocity.Magnitude), local_player.root_part.CFrame, part.CFrame, false, false)
