@@ -1,6 +1,6 @@
 --[[
     Frutiger — bundled build
-    generated 2026-10-02T01:02:24.705Z
+    generated 2026-10-02T01:27:01.587Z
     modules: 284
     assets:  20
 ]]
@@ -43368,12 +43368,50 @@ local function upvalues_of(f)
     return nil;
 end;
 
+-- Snapshot of the whole heap, remembered between calls.
+--
+-- There was no cache here before, and that was the freeze. getgc(true) reads
+-- EVERY table and function in the game's memory; on a live server that is six
+-- figures of objects. And resolve_keyhandler is called from a retry loop in
+-- hooking.lua that runs up to 41 times:
+--
+--     repeat
+--         resolved = bypass.resolve_keyhandler()   -- full heap read
+--         ...
+--     until resolved or attempts > 40;
+--
+-- So a session could sit through 41 complete reads of memory, stalling the
+-- client for a fraction of a second each time, over and over. That is the
+-- freeze that was seen while the script was executing -- and a frozen client
+-- while hooks install is both very visible to anti-cheat and running without
+-- protection for the duration.
+--
+-- With the cache, that window costs ONE read instead of up to 41. The TTL keeps
+-- it honest: the heap grows during startup, so a snapshot is reused for a
+-- couple of seconds and then re-taken, which is why the retry loop can still
+-- find something that only appears later.
+local snapshot_cache = nil;
+local snapshot_taken_at = 0;
+local SNAPSHOT_TTL = 2;
+
 local function gc_snapshot()
     if type(getgc) ~= "function" then
         return {};
     end;
+
+    local now = tick();
+    if snapshot_cache and (now - snapshot_taken_at) < SNAPSHOT_TTL then
+        return snapshot_cache;
+    end;
+
     local ok, snapshot = pcall(getgc, true);
-    return ok and snapshot or {};
+    if ok and snapshot then
+        snapshot_cache = snapshot;
+        snapshot_taken_at = now;
+        return snapshot;
+    end;
+
+    return snapshot_cache or {};
 end;
 
 -- ── shape classification ───────────────────────────────────────────────────
@@ -43500,10 +43538,30 @@ function bypass.resolve_keyhandler()
 
     -- Fall back to a whole-heap shape scan. Slower, but constant-free: any
     -- table that looks like the KeyHandler registry will match.
+    --
+    -- The scan now breathes. Walking six figures of objects in one go holds the
+    -- main thread for the whole walk, and this runs while the game is live --
+    -- so a stall here is both visible and, worse, happens before the hooks are
+    -- installed. Every few thousand objects it hands the thread back for a
+    -- frame, which keeps the client responsive without changing what the scan
+    -- finds or the order it looks in.
+    --
+    -- Only yields when yielding is actually allowed. resolve_keyhandler is
+    -- reached both from bypass.install and from hooking.lua's retry loop, and a
+    -- task.wait() in a context that cannot yield raises rather than waits.
+    local seen = 0;
+    local can_yield = coroutine.isyieldable and coroutine.isyieldable();
+    local YIELD_EVERY = 2000;
+
     for _, value in next, gc_snapshot() do
         local tbl, encoder = classify_remote_table(value);
         if tbl then
             return { remotes = tbl, encoder = encoder, source = "gc_scan" };
+        end;
+
+        seen = seen + 1;
+        if can_yield and seen % YIELD_EVERY == 0 then
+            task.wait();
         end;
     end;
 
