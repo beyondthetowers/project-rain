@@ -1,6 +1,6 @@
 --[[
     Frutiger — bundled build
-    generated 2026-10-02T20:14:53.016Z
+    generated 2026-10-02T20:19:38.393Z
     modules: 285
     assets:  0
 ]]
@@ -21147,10 +21147,26 @@ end
 
     local position_prediction_service = require("@src/features/auto-parry/services/position_prediction_service");
     function AnimatorHandler:in_hitbox(hitbox: Vector3, offset: CFrame, hidden: boolean?, predict, predict_time, predict_rotation, base_predict)  
+        -- Cronometro. Il lag compare quando certi mob attaccano, e questo e' il
+        -- punto che per ogni controllo fa due predizioni e due scansioni dello
+        -- spazio. Invece di indovinare quale delle quattro pesa, si misura: le
+        -- voci TIME dicono quanto ci mette ciascuna.
+        local t_all = tick();
+
+        local t_us = tick();
         local predicted_pos_us = position_prediction_service.our_predicted_position(); 
+        local dt_us = tick() - t_us;
+
+        local t_pred = tick();
         local predicted_other_pos, dbg = position_prediction_service.predict(self.player, (Latency:get_ping() + (predict_time and typeof(predict_time) == "number" and predict_time or 0)) + 0.5, {
             predict_rotation = predict_rotation
         })
+        local dt_pred = tick() - t_pred;
+
+        if dt_us > 0.002 or dt_pred > 0.002 then
+            trace.write("TIME", "our_pos=%.1fms predict=%.1fms predict=%s",
+                dt_us * 1000, dt_pred * 1000, tostring(predict));
+        end;
 
         local other_pos = predicted_other_pos or self.entity:FindFirstChild("HumanoidRootPart") and self.entity.HumanoidRootPart.CFrame or CFrame.new();
 
@@ -21158,8 +21174,17 @@ end
             return general:in_hitbox_with_pos(local_player.root_part.CFrame, self.entity.HumanoidRootPart.CFrame, hitbox, offset, hidden, self.ball)
         end;
 
+        local t_hb = tick();
         local predicted = general:in_hitbox_with_pos(predicted_pos_us, other_pos, hitbox, offset, hidden, self.ball, Color3.fromRGB(205, 119, 255), Color3.fromRGB(255, 165, 130));
+        local dt_hb = tick() - t_hb;
+
+        local t_hb2 = tick();
         local base = base_predict and general:in_hitbox_with_pos(local_player.root_part.CFrame, self.entity.HumanoidRootPart.CFrame, hitbox, offset, hidden, self.ball);
+        local dt_hb2 = tick() - t_hb2;
+
+        if dt_hb > 0.002 or dt_hb2 > 0.002 then
+            trace.write("TIME", "hitbox=%.1fms base=%.1fms", dt_hb * 1000, dt_hb2 * 1000);
+        end;
 
         return base or predicted 
         
