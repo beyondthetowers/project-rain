@@ -314,7 +314,19 @@ function material.panel(object, options)
         thickness = options.stroke_thickness or 1,
     });
     material.gradient(object, options);
-    if options.shadow ~= false then
+
+    -- Shadows are opt-in, and off.
+    --
+    -- They were on for every panel. Roblox has no blur, so material.shadow is a
+    -- translucent OFFSET COPY of the object, and 43 of them were live. On a
+    -- light translucent window that does not read as a soft shadow -- it reads
+    -- as a tinted rounded rectangle, visible through the panel above it and
+    -- extending past its edge. Reported as "a square left on the screen" when
+    -- the window is moved.
+    --
+    -- Real depth needs real blur, which Roblox does not give a ScreenGui. An
+    -- approximation that produces visible rectangles is worse than no shadow.
+    if options.shadow == true then
         material.shadow(object, { radius = options.radius or 12, depth = options.depth or 3 });
     end;
     if options.specular ~= false then

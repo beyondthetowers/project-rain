@@ -1,6 +1,6 @@
 --[[
     Frutiger — bundled build
-    generated 2026-10-02T00:38:16.476Z
+    generated 2026-10-02T00:41:00.040Z
     modules: 284
     assets:  0
 ]]
@@ -50190,6 +50190,27 @@ function dress.spacing()
     return loosened
 end;
 
+-- ── shadow cleanup ─────────────────────────────────────────────────────────
+-- material.panel used to give every card a shadow, which is a translucent
+-- offset copy of the card -- and on a light window that reads as a tinted
+-- rectangle rather than a shadow. They are no longer created; this removes any
+-- that already exist, so a session that is already running cleans up instead of
+-- keeping them until the next injection.
+function dress.clear_shadows()
+    local removed = 0;
+    local root = Library and Library.ScreenGui;
+    if not root then return 0 end;
+
+    for _, descendant in ipairs(root:GetDescendants()) do
+        if descendant.Name == "glass_shadow" then
+            pcall(function() descendant:Destroy() end);
+            removed = removed + 1;
+        end;
+    end;
+
+    return removed;
+end;
+
 -- ── typography ─────────────────────────────────────────────────────────────
 -- Remove every outline from text.
 --
@@ -50253,6 +50274,7 @@ function dress.apply()
     dress.dressed_cards = dress.cards();
     dress.loosened_layouts = dress.spacing();
     dress.cleared_outlines = dress.typography();
+    dress.shadows_removed = dress.clear_shadows();
     dress.recheck();
 
     dress.applied = true;
@@ -50270,6 +50292,8 @@ function dress.apply()
                 pcall(dress.cards);
                 pcall(dress.spacing);
                 pcall(dress.typography);
+        pcall(dress.clear_shadows);
+                pcall(dress.clear_shadows);
                 pcall(dress.recheck);
             end;
         end;
@@ -51033,7 +51057,19 @@ function material.panel(object, options)
         thickness = options.stroke_thickness or 1,
     });
     material.gradient(object, options);
-    if options.shadow ~= false then
+
+    -- Shadows are opt-in, and off.
+    --
+    -- They were on for every panel. Roblox has no blur, so material.shadow is a
+    -- translucent OFFSET COPY of the object, and 43 of them were live. On a
+    -- light translucent window that does not read as a soft shadow -- it reads
+    -- as a tinted rounded rectangle, visible through the panel above it and
+    -- extending past its edge. Reported as "a square left on the screen" when
+    -- the window is moved.
+    --
+    -- Real depth needs real blur, which Roblox does not give a ScreenGui. An
+    -- approximation that produces visible rectangles is worse than no shadow.
+    if options.shadow == true then
         material.shadow(object, { radius = options.radius or 12, depth = options.depth or 3 });
     end;
     if options.specular ~= false then

@@ -190,6 +190,27 @@ function dress.spacing()
     return loosened
 end;
 
+-- ── shadow cleanup ─────────────────────────────────────────────────────────
+-- material.panel used to give every card a shadow, which is a translucent
+-- offset copy of the card -- and on a light window that reads as a tinted
+-- rectangle rather than a shadow. They are no longer created; this removes any
+-- that already exist, so a session that is already running cleans up instead of
+-- keeping them until the next injection.
+function dress.clear_shadows()
+    local removed = 0;
+    local root = Library and Library.ScreenGui;
+    if not root then return 0 end;
+
+    for _, descendant in ipairs(root:GetDescendants()) do
+        if descendant.Name == "glass_shadow" then
+            pcall(function() descendant:Destroy() end);
+            removed = removed + 1;
+        end;
+    end;
+
+    return removed;
+end;
+
 -- ── typography ─────────────────────────────────────────────────────────────
 -- Remove every outline from text.
 --
@@ -253,6 +274,7 @@ function dress.apply()
     dress.dressed_cards = dress.cards();
     dress.loosened_layouts = dress.spacing();
     dress.cleared_outlines = dress.typography();
+    dress.shadows_removed = dress.clear_shadows();
     dress.recheck();
 
     dress.applied = true;
@@ -270,6 +292,8 @@ function dress.apply()
                 pcall(dress.cards);
                 pcall(dress.spacing);
                 pcall(dress.typography);
+        pcall(dress.clear_shadows);
+                pcall(dress.clear_shadows);
                 pcall(dress.recheck);
             end;
         end;
