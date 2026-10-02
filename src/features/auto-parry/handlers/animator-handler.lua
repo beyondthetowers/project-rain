@@ -340,7 +340,15 @@ end);
 end
 
             if child.Name == "REP_SOUND_1241766316" then
-                self:cancel_gale_feinted_tracks(self.entity.Humanoid:GetPlayingAnimationTracks());
+                -- Guarded: DescendantAdded fires for every sound, particle and
+                -- part during a fight, and this entity may have no Humanoid by
+                -- then (mob died, character replaced). Unguarded it raised
+                -- "attempt to index nil with 'GetPlayingAnimationTracks'" on a
+                -- very hot path.
+                local humanoid = self.entity and self.entity:FindFirstChild("Humanoid");
+                if humanoid then
+                    self:cancel_gale_feinted_tracks(humanoid:GetPlayingAnimationTracks());
+                end;
             end
 
             if child.Name == "Feint" and child:IsA("Sound") then
@@ -350,7 +358,7 @@ end
                 end;
 
                 self.feint_playing = child:GetPropertyChangedSignal("Playing"):Connect(function()
-                    if child.IsPlaying then
+                    if child.IsPlaying and self.animator then
                         self:cancel_feinted_tracks(self.animator:GetPlayingAnimationTracks());
                     end;
                 end);
@@ -361,14 +369,24 @@ end;
             local fake_strike = child.Name == "REP_SOUND_5115545256" and tostring(child.PlaybackSpeed) == "2";
             if child.Name ~= "REP_SOUND_4954198253" and not fake_strike then return end;
 
-            self:cancel_feinted_tracks(self.animator:GetPlayingAnimationTracks());
+            if self.animator then
+                self:cancel_feinted_tracks(self.animator:GetPlayingAnimationTracks());
+            end;
         end);
 
-        self.played = self.animator.AnimationPlayed:Connect(profiler.wrap("animator_handler::run", function(track)
-            self:run(track);
-        end));
-    
-        aztup.maid[services.HttpService:GenerateGUID(false)] = self.played;
+        -- The Animator is resolved from the entity and can be absent. Without
+        -- this guard the connect itself raised and killed the setup.
+        --
+        -- Deliberately NOT `return`: this function ends with `return self`, and
+        -- the callers depend on getting the handler back. An early return would
+        -- hand them nil -- a worse bug than the one being fixed.
+        if self.animator then
+            self.played = self.animator.AnimationPlayed:Connect(profiler.wrap("animator_handler::run", function(track)
+                self:run(track);
+            end));
+
+            aztup.maid[services.HttpService:GenerateGUID(false)] = self.played;
+        end;
         aztup.maid[services.HttpService:GenerateGUID(false)] = self.descendant_added;
         aztup.maid[services.HttpService:GenerateGUID(false)] = self.ancestry;
 

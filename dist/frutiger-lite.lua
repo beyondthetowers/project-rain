@@ -1,6 +1,6 @@
 --[[
     Frutiger — bundled build
-    generated 2026-10-02T19:44:21.261Z
+    generated 2026-10-02T19:50:48.149Z
     modules: 284
     assets:  0
 ]]
@@ -20920,7 +20920,15 @@ end);
 end
 
             if child.Name == "REP_SOUND_1241766316" then
-                self:cancel_gale_feinted_tracks(self.entity.Humanoid:GetPlayingAnimationTracks());
+                -- Guarded: DescendantAdded fires for every sound, particle and
+                -- part during a fight, and this entity may have no Humanoid by
+                -- then (mob died, character replaced). Unguarded it raised
+                -- "attempt to index nil with 'GetPlayingAnimationTracks'" on a
+                -- very hot path.
+                local humanoid = self.entity and self.entity:FindFirstChild("Humanoid");
+                if humanoid then
+                    self:cancel_gale_feinted_tracks(humanoid:GetPlayingAnimationTracks());
+                end;
             end
 
             if child.Name == "Feint" and child:IsA("Sound") then
@@ -20930,7 +20938,7 @@ end
                 end;
 
                 self.feint_playing = child:GetPropertyChangedSignal("Playing"):Connect(function()
-                    if child.IsPlaying then
+                    if child.IsPlaying and self.animator then
                         self:cancel_feinted_tracks(self.animator:GetPlayingAnimationTracks());
                     end;
                 end);
@@ -20941,14 +20949,24 @@ end;
             local fake_strike = child.Name == "REP_SOUND_5115545256" and tostring(child.PlaybackSpeed) == "2";
             if child.Name ~= "REP_SOUND_4954198253" and not fake_strike then return end;
 
-            self:cancel_feinted_tracks(self.animator:GetPlayingAnimationTracks());
+            if self.animator then
+                self:cancel_feinted_tracks(self.animator:GetPlayingAnimationTracks());
+            end;
         end);
 
-        self.played = self.animator.AnimationPlayed:Connect(profiler.wrap("animator_handler::run", function(track)
-            self:run(track);
-        end));
-    
-        aztup.maid[services.HttpService:GenerateGUID(false)] = self.played;
+        -- The Animator is resolved from the entity and can be absent. Without
+        -- this guard the connect itself raised and killed the setup.
+        --
+        -- Deliberately NOT `return`: this function ends with `return self`, and
+        -- the callers depend on getting the handler back. An early return would
+        -- hand them nil -- a worse bug than the one being fixed.
+        if self.animator then
+            self.played = self.animator.AnimationPlayed:Connect(profiler.wrap("animator_handler::run", function(track)
+                self:run(track);
+            end));
+
+            aztup.maid[services.HttpService:GenerateGUID(false)] = self.played;
+        end;
         aztup.maid[services.HttpService:GenerateGUID(false)] = self.descendant_added;
         aztup.maid[services.HttpService:GenerateGUID(false)] = self.ancestry;
 
@@ -60494,8 +60512,35 @@ local persistent_data = {} do
         storage_service:SetItem("persistent_data", self.current);
     end
 
+    -- Decode, garantendo SEMPRE una tabella.
+    --
+    -- JSONDecode restituisce nil quando il testo non e' JSON valido, e il
+    -- salvataggio puo' corrompersi (scrittura interrotta, valore vuoto, dato
+    -- di una versione precedente). Prima ogni funzione usava il risultato
+    -- direttamente:
+    --
+    --     JSONDecode(self.current)[key]
+    --
+    -- quindi un salvataggio corrotto diventava "attempt to index nil with ..."
+    -- a OGNI chiamata. E get viene chiamato di continuo dal ciclo
+    -- dell'automazione, quindi un solo valore corrotto produceva errori su un
+    -- percorso caldo -- osservato dal vivo:
+    --     ":60513: attempt to index nil with 'auto_ferryman'"
+    --
+    -- Un salvataggio illeggibile adesso viene azzerato invece di rompere tutto.
+    local function decode()
+        local ok, decoded = pcall(services.HttpService.JSONDecode, services.HttpService, persistent_data.current);
+        if ok and type(decoded) == "table" then
+            return decoded;
+        end;
+
+        persistent_data.current = "{}";
+        pcall(function() storage_service:SetItem("persistent_data", "{}") end);
+        return {};
+    end;
+
     function persistent_data:set(key, value)
-        local decoded = services.HttpService:JSONDecode(self.current);
+        local decoded = decode();
         decoded[key] = value;
         
         self.current = services.HttpService:JSONEncode(decoded);
@@ -60503,15 +60548,15 @@ local persistent_data = {} do
     end;
 
     function persistent_data:remove(key)
-        local decoded = services.HttpService:JSONDecode(self.current);
+        local decoded = decode();
         decoded[key] = nil;
         self.current = services.HttpService:JSONEncode(decoded);
         storage_service:SetItem("persistent_data", self.current);
     end;
 
     function persistent_data:get(key, or_default)
-        return services.HttpService:JSONDecode(self.current)[key] or or_default    
-end;
+        return decode()[key] or or_default
+    end;
 end;
 
 return persistent_data
