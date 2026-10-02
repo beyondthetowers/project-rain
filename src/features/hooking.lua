@@ -33,61 +33,65 @@ end)();
 local KeyHandlerClass = {} do
     KeyHandlerClass.__index = KeyHandlerClass;
     
-    KeyHandlerClass[STR_TBL_SF_INVOKE("get_key_internal")] = function(self, remote)
-        if self.cache[remote] then
-            return self[STR_TBL_SF_INVOKE("remotes")][self.cache[remote] ]        
-end
-
-        if not self[STR_TBL_SF_INVOKE("remotes")] or not self[STR_TBL_SF_INVOKE("enc_f")] then
-            repeat task.wait() until self[STR_TBL_SF_INVOKE("remotes")] and self[STR_TBL_SF_INVOKE("enc_f")];
-        end
-
-        local encoded_remote = self.cache[remote] or self[STR_TBL_SF_INVOKE("enc_f")](remote); 
-        self.cache[remote] = encoded_remote;
-
-        return encoded_remote and self[STR_TBL_SF_INVOKE("remotes")][encoded_remote] or nil        
-        
-        
-        
-    
-end;
-
-    KeyHandlerClass[STR_TBL_SF_INVOKE("get_key")] = function(self, remote)
-        local success, res = pcall(KeyHandlerClass[STR_TBL_SF_INVOKE("get_key_internal")], self, remote);
-        if success then
-            return res        
-else
-            
-            return        
-end
-    end
-
     -- ── the inert key ──────────────────────────────────────────────────────
-    -- Handed out instead of nil when a remote is not available.
+    -- Restituita al posto di nil quando un remote non e' disponibile.
     --
-    -- get_cache and get_key both returned nil for a name they did not have --
-    -- either because it is absent from this build, or because KeyHandler has
-    -- not resolved yet. Callers do this:
+    -- Questa classe e' il `KeyHandler` che lo script stesso usa, ed e' diversa
+    -- dalla funzione che viene installata nel gioco: e' QUESTA che il codice
+    -- chiama con KeyHandler:get_key(...). Correggerne solo una lascia l'altra a
+    -- restituire nil, ed e' esattamente quello che e' successo.
     --
-    --     KeyHandler:get_key("Dodge"):FireServer("roll", nil, nil, false)
-    --
-    -- at fifteen sites, none of them guarded. One unresolved name therefore
-    -- throws "attempt to index nil with 'FireServer'" in the middle of combat.
-    -- Observed live from defend_action_dodge -- the dodge path -- so the
-    -- failure lands exactly when the player needs it most.
-    --
-    -- Returning an object keeps every one of those sites working: the action
-    -- is simply not sent, which is the right outcome when the remote is not
-    -- there to send it to.
-    --
-    -- __index answers ANY name with a function returning the same object, so
-    -- any call at all -- FireServer, IsDescendantOf -- resolves and does
-    -- nothing rather than raising.
+    -- __index risponde a QUALSIASI nome con una funzione che restituisce lo
+    -- stesso oggetto, quindi FireServer e ogni altra chiamata si risolvono e non
+    -- fanno niente, invece di andare in errore.
     local inert_key = setmetatable({}, {
         __index = function()
             return function() return inert_key end;
         end;
     });
+
+    
+    KeyHandlerClass[STR_TBL_SF_INVOKE("get_key_internal")] = function(self, remote)
+        local remotes = self[STR_TBL_SF_INVOKE("remotes")];
+        local enc_f = self[STR_TBL_SF_INVOKE("enc_f")];
+
+        if self.cache[remote] and remotes then
+            return remotes[self.cache[remote]] or inert_key;
+        end;
+
+        -- NO all'attesa infinita.
+        --
+        -- Era `repeat task.wait() until self.remotes and self.enc_f`. Se il
+        -- KeyHandler non si risolveva mai, questa funzione aspettava PER SEMPRE
+        -- -- e viene chiamata durante il combattimento, quindi i thread si
+        -- accumulavano senza mai finire. Osservato come lag del client.
+        --
+        -- Se non e' pronto si restituisce la chiave inerte: chi chiama non va in
+        -- errore e la richiesta semplicemente non parte.
+        if not remotes or not enc_f then
+            return inert_key;
+        end;
+
+        local ok, encoded_remote = pcall(enc_f, remote);
+        if not ok or not encoded_remote then
+            return inert_key;
+        end;
+
+        self.cache[remote] = encoded_remote;
+
+        return remotes[encoded_remote] or inert_key
+    end;
+
+    KeyHandlerClass[STR_TBL_SF_INVOKE("get_key")] = function(self, remote)
+        local success, res = pcall(KeyHandlerClass[STR_TBL_SF_INVOKE("get_key_internal")], self, remote);
+        if success and res ~= nil then
+            return res;
+        end;
+
+        -- Mai nil: i chiamanti fanno `KeyHandler:get_key("Dodge"):FireServer(...)`
+        -- senza controlli, in quindici punti.
+        return inert_key;
+    end
 
     KeyHandlerClass[STR_TBL_SF_INVOKE("get_cache")] = function(self, remote)
         local cache = self.cache;
