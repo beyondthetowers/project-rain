@@ -3,6 +3,11 @@ local anti_ap_breaker = require("@src/features/auto-parry/handlers/anti-ap-break
 
 local random = Random.new();
 local cached = {};
+
+-- Last time the "wait time invalid" line was printed. Declared here so it
+-- survives across calls to the action loop -- inside the loop it would reset
+-- every iteration and never rate limit anything.
+local skip_notified_at = 0;
 function getInfo(id)
     local success, info = pcall(function()
         if not cached[id] then
@@ -1160,7 +1165,16 @@ end;
                 task.wait(wait_time)
                 alotted += wait_time
             elseif wait_time ~= wait_time or wait_time > 0 then
-                return debug_print("[%s] Skipping action %i, wait time invalid: %.2f", name, index, wait_time)            
+                -- Rate limited. This fires for EVERY action, and when the timing
+                -- is bad that is every action there is -- observed live filling
+                -- the info logger and stalling the client. One line per second
+                -- says as much as a thousand.
+                local now = tick();
+                if not skip_notified_at or (now - skip_notified_at) >= 1 then
+                    skip_notified_at = now;
+                    return debug_print("[%s] Skipping action %i, wait time invalid: %.2f", name, index, wait_time)
+                end;
+                return
 end;
 
             if not input_task.removed then
