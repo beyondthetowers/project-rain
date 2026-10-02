@@ -1,6 +1,6 @@
 --[[
     Frutiger — bundled build
-    generated 2026-10-02T00:40:59.907Z
+    generated 2026-10-02T01:02:24.705Z
     modules: 284
     assets:  20
 ]]
@@ -13350,28 +13350,7 @@ end;
                     if not mob_root then continue end
                 
                     local distance = (local_player.root_part.Position - mob_root.Position).Magnitude;
-
-                    -- Split from one compound condition, and guarded.
-                    --
-                    -- This loop is a dispatcher: it runs every task's hitbox check.
-                    -- It is also called from the INPUT HOOK (hooking.lua), so an
-                    -- error escaping here does not just fail one parry -- it takes
-                    -- the hook with it and the cheat stops processing input
-                    -- altogether. That is the reported symptom: mid-fight,
-                    -- suddenly cannot draw a weapon, cannot dodge, cannot do
-                    -- anything.
-                    --
-                    -- One task failing to answer must not be able to do that. A
-                    -- task whose check throws is treated as "not in hitbox" and
-                    -- skipped, and everything else keeps working.
-                    if task.range and distance > task.range then continue end;
-
-                    if task.in_hitbox then
-                        local ok, in_hitbox = pcall(task.in_hitbox);
-                        if not ok or not in_hitbox then
-                            continue;
-                        end;
-                    end;
+                    if task.range and distance > task.range or task.in_hitbox and not task.in_hitbox() then continue end
                 
                     if not should_block then
                         local block_input = aztup.flags.block_input;
@@ -25225,31 +25204,6 @@ end
             if not EffectReplicator:FindEffect("Crouching") then
                 local_player.character:WaitForChild("CharacterHandler"):WaitForChild("Requests"):WaitForChild("ServerCrouch"):FireServer(true);
                 script_crouched = true;
-
-                -- Guaranteed un-crouch.
-                --
-                -- The crouch above is undone further down this function, but the
-                -- work in between can throw -- a repeat/until that calls
-                -- Latency:get_ping(), and a task.spawn. This build does emit nil
-                -- errors, and if one lands in that window the un-crouch is never
-                -- reached, leaving the player stuck crouched with no way to stand
-                -- up because the server still believes the crouch is held.
-                --
-                -- So: if the lunge has clearly finished and we are somehow still
-                -- crouched, undo it. Deliberately generous delay -- this is a
-                -- fallback for a failure, not part of the normal flow, and firing
-                -- it early would fight a legitimate lunge.
-                task.delay(3, function()
-                    if not EffectReplicator:FindEffect("Crouching") then return end;
-                    if not local_player.character then return end;
-
-                    local character_handler = local_player.character:FindFirstChild("CharacterHandler");
-                    local requests = character_handler and character_handler:FindFirstChild("Requests");
-                    local crouch = requests and requests:FindFirstChild("ServerCrouch");
-                    if not crouch then return end;
-
-                    pcall(function() crouch:FireServer(false) end);
-                end);
             end;
 
             local start = tick();
@@ -27444,18 +27398,7 @@ elseif method == "FireServer" then
 
         if flags.block_input and self then
 
-            -- Guarded. This hook owns OffhandAttack (dodge), LeftClick and
-            -- CriticalClick, so an error escaping here does not merely fail one
-            -- check -- it fails the hook. And a hook that keeps throwing can be
-            -- dropped by the executor, which is permanent loss of input handling.
-            -- That is what "mid-fight I suddenly cannot draw a weapon, cannot
-            -- dodge, cannot do anything" looks like from the inside.
-            local block_ok, block_input_now = pcall(function()
-                return BlockInputManager:should_block_input();
-            end);
-            block_input_now = block_ok and block_input_now or false;
-
-            if block_input_now then
+            if BlockInputManager:should_block_input() then
                 if self == KeyHandler:get_cache(STR_TBL_SF_INVOKE("OffhandAttack")) and aztup_options.blocked_safe_input_user_moves.Value.M2s then
                     return
                 end
@@ -27465,7 +27408,7 @@ elseif method == "FireServer" then
             end
 
             local critical_click = KeyHandler:get_cache("CriticalClick");
-            if critical_click and self == critical_click and block_input_now and aztup_options.blocked_safe_input_user_moves.Value.Criticals then
+            if critical_click and self == critical_click and BlockInputManager:should_block_input() and aztup_options.blocked_safe_input_user_moves.Value.Criticals then
                 return            
 end;
         end

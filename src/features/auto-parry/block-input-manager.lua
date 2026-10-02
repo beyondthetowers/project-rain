@@ -68,28 +68,7 @@ end;
                     if not mob_root then continue end
                 
                     local distance = (local_player.root_part.Position - mob_root.Position).Magnitude;
-
-                    -- Split from one compound condition, and guarded.
-                    --
-                    -- This loop is a dispatcher: it runs every task's hitbox check.
-                    -- It is also called from the INPUT HOOK (hooking.lua), so an
-                    -- error escaping here does not just fail one parry -- it takes
-                    -- the hook with it and the cheat stops processing input
-                    -- altogether. That is the reported symptom: mid-fight,
-                    -- suddenly cannot draw a weapon, cannot dodge, cannot do
-                    -- anything.
-                    --
-                    -- One task failing to answer must not be able to do that. A
-                    -- task whose check throws is treated as "not in hitbox" and
-                    -- skipped, and everything else keeps working.
-                    if task.range and distance > task.range then continue end;
-
-                    if task.in_hitbox then
-                        local ok, in_hitbox = pcall(task.in_hitbox);
-                        if not ok or not in_hitbox then
-                            continue;
-                        end;
-                    end;
+                    if task.range and distance > task.range or task.in_hitbox and not task.in_hitbox() then continue end
                 
                     if not should_block then
                         local block_input = aztup.flags.block_input;

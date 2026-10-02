@@ -94,31 +94,6 @@ end
             if not EffectReplicator:FindEffect("Crouching") then
                 local_player.character:WaitForChild("CharacterHandler"):WaitForChild("Requests"):WaitForChild("ServerCrouch"):FireServer(true);
                 script_crouched = true;
-
-                -- Guaranteed un-crouch.
-                --
-                -- The crouch above is undone further down this function, but the
-                -- work in between can throw -- a repeat/until that calls
-                -- Latency:get_ping(), and a task.spawn. This build does emit nil
-                -- errors, and if one lands in that window the un-crouch is never
-                -- reached, leaving the player stuck crouched with no way to stand
-                -- up because the server still believes the crouch is held.
-                --
-                -- So: if the lunge has clearly finished and we are somehow still
-                -- crouched, undo it. Deliberately generous delay -- this is a
-                -- fallback for a failure, not part of the normal flow, and firing
-                -- it early would fight a legitimate lunge.
-                task.delay(3, function()
-                    if not EffectReplicator:FindEffect("Crouching") then return end;
-                    if not local_player.character then return end;
-
-                    local character_handler = local_player.character:FindFirstChild("CharacterHandler");
-                    local requests = character_handler and character_handler:FindFirstChild("Requests");
-                    local crouch = requests and requests:FindFirstChild("ServerCrouch");
-                    if not crouch then return end;
-
-                    pcall(function() crouch:FireServer(false) end);
-                end);
             end;
 
             local start = tick();
