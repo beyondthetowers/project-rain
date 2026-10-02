@@ -171,7 +171,7 @@ local success, result = pcall(function()
 end);
 
 if not success or not result then 
-    return game:GetService("Players").LocalPlayer:Kick("[pr] failed to hook, kicking to prevent bans\n" .. result)
+    return game:GetService("Players").LocalPlayer:Kick("[frutiger] failed to hook, kicking to prevent bans\n" .. result)
 end; 
 
 do 

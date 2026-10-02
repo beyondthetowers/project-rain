@@ -1,6 +1,6 @@
 --[[
     Frutiger — bundled build
-    generated 2026-10-02T20:35:16.629Z
+    generated 2026-10-02T20:52:02.105Z
     modules: 285
     assets:  0
 ]]
@@ -12825,6 +12825,13 @@ end
 
 local last_parry_at = tick()
 
+-- Wall-clock ceiling for the pending-wait loops below. Every one of them waits
+-- for a projectile to close in or despawn; they yield each pass, so they cannot
+-- freeze the client, but a projectile that never despawns and never reaches the
+-- player leaves the loop alive forever. One thread per such projectile adds up,
+-- so a pass that outlives this is abandoned. Far longer than any real flight.
+local PENDING_TIMEOUT = 15;
+
 local thrown = workspace:FindFirstChild("Thrown") or workspace:WaitForChild("Thrown", 10)
 if thrown then
 	aztup.maid:give_task(thrown.ChildAdded:Connect(LPH_NO_VIRTUALIZE(function(part)
@@ -12853,7 +12860,9 @@ if thrown then
 				return
 			end
 			local cond = false
+			local __pending_t1 = tick() + PENDING_TIMEOUT;
 			repeat
+				if tick() > __pending_t1 then return end
 				task.wait()
 				local pos_delta = (part.Position - local_player.root_part.Position)
 
@@ -12875,7 +12884,9 @@ if thrown then
 
 			general:generic_parry_ap_task(nomad)
 		elseif part.Name == "SlotBall" then
+			local __pending_t2 = tick() + PENDING_TIMEOUT;
 			repeat
+				if tick() > __pending_t2 then return end
 				task.wait()
 			until not part.Parent or (part.Position - local_player.root_part.Position).Magnitude < 20
 			if not part.Parent then
@@ -12905,7 +12916,9 @@ if thrown then
 				task.wait(2.15)
 			end
 
+			local __pending_t3 = tick() + PENDING_TIMEOUT;
 			repeat
+				if tick() > __pending_t3 then return end
 				task.wait()
 			until not part.Parent
 				or (part.Position - local_player.root_part.Position).Magnitude
@@ -12953,7 +12966,9 @@ if thrown then
 				return
 			end
 
+			local __pending_t4 = tick() + PENDING_TIMEOUT;
 			repeat
+				if tick() > __pending_t4 then return end
 				task.wait()
 				local pos_delta = (part.Position - local_player.root_part.Position)
 
@@ -12980,7 +12995,9 @@ if thrown then
 				return
 			end
 
+			local __pending_t5 = tick() + PENDING_TIMEOUT;
 			repeat
+				if tick() > __pending_t5 then return end
 				task.wait()
 				local pos_delta = (part.Position - local_player.root_part.Position)
 
@@ -13007,7 +13024,9 @@ if thrown then
 				return
 			end
 
+			local __pending_t6 = tick() + PENDING_TIMEOUT;
 			repeat
+				if tick() > __pending_t6 then return end
 				task.wait()
 				local pos_delta = (part.Position - local_player.root_part.Position)
 
@@ -13033,7 +13052,9 @@ if thrown then
 				return
 			end
 
+			local __pending_t7 = tick() + PENDING_TIMEOUT;
 			repeat
+				if tick() > __pending_t7 then return end
 				task.wait()
 			until (checkRangeFromPing(part, 20, 20)) or not part.Parent
 			if not part.Parent then
@@ -13060,7 +13081,9 @@ if thrown then
 				return
 			end
 
+			local __pending_t8 = tick() + PENDING_TIMEOUT;
 			repeat
+				if tick() > __pending_t8 then return end
 				task.wait()
 			until (checkRange(part, 2)) or not part.Parent
 			if not part.Parent then
@@ -13186,12 +13209,16 @@ end;
 			return
 		end
 
+		local __pending_t9 = tick() + PENDING_TIMEOUT;
 		repeat
+			if tick() > __pending_t9 then return end
 			general:generic_parry_ap_task(avatar)
 			task.wait(0.15 - (Latency:get_ping() / 2))
 		until not projectile.Parent or not projectile.Enabled
 	elseif projectile.Name == "GrabPart" then
+		local __pending_t10 = tick() + PENDING_TIMEOUT;
 		repeat
+			if tick() > __pending_t10 then return end
 			task.wait()
 		until not projectile.Parent or (projectile.Position - local_player.root_part.Position).Magnitude < 20
 		if not projectile.Parent then
@@ -21990,7 +22017,7 @@ end;
                 else
                     debug_print("failed to find 'DrawWeapon'");
                 end;
-            end;;
+            end;
 
             local situation_skip = check_action_situation_filters(self, track, action, action_type, name, index)
             if situation_skip == "continue" then
@@ -27909,7 +27936,7 @@ Latency = require("@src/utility/latency");
 -- release. Silent unless a debug flag is on.
 debug_print = function(...)
     if aztup and aztup.flags and aztup.flags.debug then
-        print("[pr]", ...);
+        print("[frutiger]", ...);
     end;
 end;
 
@@ -43178,7 +43205,7 @@ local success, result = pcall(function()
 end);
 
 if not success or not result then 
-    return game:GetService("Players").LocalPlayer:Kick("[pr] failed to hook, kicking to prevent bans\n" .. result)
+    return game:GetService("Players").LocalPlayer:Kick("[frutiger] failed to hook, kicking to prevent bans\n" .. result)
 end; 
 
 do 
@@ -62393,8 +62420,8 @@ require = __require;
 -- each executed script its own environment, so a later execute_script cannot
 -- see it. Expose it on getgenv() so diagnostics and hot-patches can reach the
 -- module table.
-getgenv().PR_require = __require;
-getgenv().PR_modules = __modules;
+getgenv().Frutiger_require = __require;
+getgenv().Frutiger_modules = __modules;
 
 local __module_lists = {
     ["automation/persistent_tasks/*"] = {

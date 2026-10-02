@@ -22,7 +22,8 @@ const fs = require("fs");
 const path = require("path");
 const zlib = require("zlib");
 
-const ROOT = "C:/Deepwoken cheat/project-rain-oss-master";
+// Repo root, derived from this file's location so the tree builds anywhere.
+const ROOT = path.resolve(__dirname, "..");
 const SRC = path.join(ROOT, "src");
 const ASSETS = path.join(ROOT, "assets");
 
@@ -210,8 +211,8 @@ require = __require;
 -- each executed script its own environment, so a later execute_script cannot
 -- see it. Expose it on getgenv() so diagnostics and hot-patches can reach the
 -- module table.
-getgenv().PR_require = __require;
-getgenv().PR_modules = __modules;`);
+getgenv().Frutiger_require = __require;
+getgenv().Frutiger_modules = __modules;`);
 
 // list_modules
 chunks.push("");

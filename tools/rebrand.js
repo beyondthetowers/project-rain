@@ -14,7 +14,7 @@
 const fs = require("fs");
 const path = require("path");
 
-const ROOT = "C:/Deepwoken cheat/project-rain-oss-master";
+const ROOT = path.resolve(__dirname, "..");
 
 const argv = process.argv.slice(2);
 const APPLY = argv.includes("--apply");

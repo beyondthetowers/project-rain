@@ -1312,7 +1312,7 @@ end;
                 else
                     debug_print("failed to find 'DrawWeapon'");
                 end;
-            end;;
+            end;
 
             local situation_skip = check_action_situation_filters(self, track, action, action_type, name, index)
             if situation_skip == "continue" then

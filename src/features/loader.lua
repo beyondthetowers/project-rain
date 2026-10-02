@@ -40,7 +40,7 @@ Latency = require("@src/utility/latency");
 -- release. Silent unless a debug flag is on.
 debug_print = function(...)
     if aztup and aztup.flags and aztup.flags.debug then
-        print("[pr]", ...);
+        print("[frutiger]", ...);
     end;
 end;
 
