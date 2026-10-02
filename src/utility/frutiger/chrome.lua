@@ -458,16 +458,32 @@ local KEYBIND_MARGIN = 10;
 --
 -- Offsets also suit the library: toggle.lua's resize code reads
 -- Position.Y.Offset, and SaveManager stores the position as a UDim2 anyway.
-local function corner_position()
+--
+-- Divided by the frame's UIScale, because a UIScale MULTIPLIES the offset.
+-- This is the bug that put the panel off the bottom of the screen: at UI Scale
+-- 200% the offset 1070 renders at 2140, so only the top sliver of the list was
+-- on screen and its labels looked clipped -- "ite Jump" instead of
+-- "Infinite Jump". Dividing it out makes the RENDERED edge land where intended
+-- regardless of the current scale.
+local function corner_position(frame)
     local camera = workspace.CurrentCamera;
     local viewport = (camera and camera.ViewportSize) or Vector2.new(1920, 1080);
 
+    local scale = 1;
+    if frame then
+        local ui = frame:FindFirstChildOfClass("UIScale");
+        local ok, value = pcall(function() return ui and ui.Scale end);
+        if ok and value and value > 0 then
+            scale = value;
+        end;
+    end;
+
     local x = (KEYBIND_ANCHOR.X == 1)
-        and (viewport.X - KEYBIND_MARGIN)
+        and (viewport.X / scale - KEYBIND_MARGIN)
         or KEYBIND_MARGIN;
 
     local y = (KEYBIND_ANCHOR.Y == 1)
-        and (viewport.Y - KEYBIND_MARGIN)
+        and (viewport.Y / scale - KEYBIND_MARGIN)
         or KEYBIND_MARGIN;
 
     return UDim2.fromOffset(x, y);
@@ -485,7 +501,30 @@ function chrome.restyle_keybinds()
     -- dismissed.
     pcall(function()
         frame.AnchorPoint = KEYBIND_ANCHOR;
-        frame.Position = corner_position();
+        frame.Position = corner_position(frame);
+    end);
+
+    -- Re-place on the two things that move it.
+    --
+    -- The offset is divided by the UI Scale, so moving the UI Scale slider moves
+    -- the panel -- and without this, nothing corrects it, which is how it ended
+    -- up hanging off the bottom of the screen. Same for a viewport resize.
+    pcall(function()
+        local ui = frame:FindFirstChildOfClass("UIScale");
+        if ui then
+            ui:GetPropertyChangedSignal("Scale"):Connect(function()
+                pcall(function() frame.Position = corner_position(frame) end);
+            end);
+        end;
+    end);
+
+    pcall(function()
+        local camera = workspace.CurrentCamera;
+        if camera then
+            camera:GetPropertyChangedSignal("ViewportSize"):Connect(function()
+                pcall(function() frame.Position = corner_position(frame) end);
+            end);
+        end;
     end);
 
     local stripped = 0;
@@ -529,7 +568,7 @@ function chrome.restyle_keybinds()
             if current and current.Parent then
                 pcall(function()
                     current.AnchorPoint = KEYBIND_ANCHOR;
-                    current.Position = corner_position();
+                    current.Position = corner_position(current);
                 end);
             end;
         end;
