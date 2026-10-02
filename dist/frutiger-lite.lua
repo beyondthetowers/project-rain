@@ -1,6 +1,6 @@
 --[[
     Frutiger — bundled build
-    generated 2026-10-02T20:21:05.382Z
+    generated 2026-10-02T20:26:39.165Z
     modules: 285
     assets:  0
 ]]
@@ -43892,6 +43892,18 @@ function bypass.resolve_keyhandler()
     -- Fall back to a whole-heap shape scan. Slower, but constant-free: any
     -- table that looks like the KeyHandler registry will match.
     --
+    -- BUT at most once every 10 seconds.
+    --
+    -- getgc(true) reads every table and function in the game's memory, and on a
+    -- live server that can take SECONDS -- not milliseconds. hooking.lua calls
+    -- this from a retry loop that runs up to 41 times, so when the registry is
+    -- not found the client could spend the whole loop inside heap scans, one
+    -- after another, with no frame in between. That is what "a few frames per
+    -- minute" looks like from the inside.
+    --
+    -- The cheap strategies above still run on every attempt, so a registry that
+    -- appears later is still found; only the expensive scan is rationed.
+    --
     -- The scan now breathes. Walking six figures of objects in one go holds the
     -- main thread for the whole walk, and this runs while the game is live --
     -- so a stall here is both visible and, worse, happens before the hooks are
@@ -43906,15 +43918,20 @@ function bypass.resolve_keyhandler()
     local can_yield = coroutine.isyieldable and coroutine.isyieldable();
     local YIELD_EVERY = 2000;
 
-    for _, value in next, gc_snapshot() do
-        local tbl, encoder = classify_remote_table(value);
-        if tbl then
-            return { remotes = tbl, encoder = encoder, source = "gc_scan" };
-        end;
+    local now_scan = tick();
+    if (now_scan - (bypass.last_heap_scan or 0)) >= 10 then
+        bypass.last_heap_scan = now_scan;
 
-        seen = seen + 1;
-        if can_yield and seen % YIELD_EVERY == 0 then
-            task.wait();
+        for _, value in next, gc_snapshot() do
+            local tbl, encoder = classify_remote_table(value);
+            if tbl then
+                return { remotes = tbl, encoder = encoder, source = "gc_scan" };
+            end;
+
+            seen = seen + 1;
+            if can_yield and seen % YIELD_EVERY == 0 then
+                task.wait();
+            end;
         end;
     end;
 
