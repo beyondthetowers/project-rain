@@ -1,6 +1,6 @@
 --[[
     Frutiger — bundled build
-    generated 2026-10-02T20:19:38.245Z
+    generated 2026-10-02T20:21:05.194Z
     modules: 285
     assets:  20
 ]]
@@ -20647,6 +20647,28 @@ local profiler = require("@src/utility/profiler")
 local anti_ap_breaker = require("@src/features/auto-parry/handlers/anti-ap-breaker")
 local trace = require("@src/utility/trace")
 
+-- Contatori al secondo.
+--
+-- Il cronometro ha escluso in_hitbox: nessuna delle sue quattro parti supera
+-- 2ms. Se il lag e' generale, allora non e' una funzione lenta ma una funzione
+-- chiamata troppe volte -- e quello un cronometro non lo vede. Questi contatori
+-- dicono quante volte al secondo passa ciascun percorso.
+local n_run, n_hb, n_desc, n_anim = 0, 0, 0, 0;
+
+task.spawn(function()
+    local last = tick();
+    while true do
+        task.wait(1);
+        local now = tick();
+        if now - last >= 0.9 then
+            trace.write("RATE", "run=%d in_hitbox=%d descendant=%d anim_played=%d",
+                n_run, n_hb, n_desc, n_anim);
+            n_run, n_hb, n_desc, n_anim = 0, 0, 0, 0;
+            last = now;
+        end;
+    end;
+end);
+
 -- Divisione sicura per track.Speed (vedi base.lua).
 -- track.Speed puo' essere 0, e x/0 da' infinito: quel valore si propaga fino a
 -- "wait time invalid: inf" e l'auto-parry salta l'azione.
@@ -20995,6 +21017,7 @@ end);
 
         self.hits = {};
         self.descendant_added = self.entity.DescendantAdded:Connect(function(child)
+            n_desc += 1;
             if child.Name == "PunchBlood" or child.Name == "PunchEffect" or child.Name == "BloodSpray" or (child:IsA("ParticleEmitter") and child.Texture == "rbxassetid://7216855595") then	
                 local id = table.insert(self.hits, {})
                 task.delay(0.2, function()
@@ -21046,6 +21069,7 @@ end;
         -- hand them nil -- a worse bug than the one being fixed.
         if self.animator then
             self.played = self.animator.AnimationPlayed:Connect(profiler.wrap("animator_handler::run", function(track)
+                n_anim += 1;
                 self:run(track);
             end));
 
@@ -21147,6 +21171,7 @@ end
 
     local position_prediction_service = require("@src/features/auto-parry/services/position_prediction_service");
     function AnimatorHandler:in_hitbox(hitbox: Vector3, offset: CFrame, hidden: boolean?, predict, predict_time, predict_rotation, base_predict)  
+        n_hb += 1;
         -- Cronometro. Il lag compare quando certi mob attaccano, e questo e' il
         -- punto che per ogni controllo fa due predizioni e due scansioni dello
         -- spazio. Invece di indovinare quale delle quattro pesa, si misura: le
