@@ -537,49 +537,4 @@ end
     end)();
 end;
 
--- ── weapon resync after a knockdown ───────────────────────────────────────
---
--- The auto equip inside the handlers sits AFTER the action loop's early exits,
--- so it never runs when an action is skipped -- and observed live, EVERY action
--- was being skipped ("wait time invalid: inf"). The weapon therefore never came
--- back no matter whether auto equip was on or off, which is exactly what was
--- reported.
---
--- This lives outside that path on purpose.
---
--- It only acts on the DESYNC state: the game reports the weapon as equipped
--- while nothing is in hand. That is deliberately narrow --
---
---   * if the player sheathed on purpose, "Equipped" is absent, so nothing here
---     happens and their weapon is left alone
---   * `true` alone cannot fix the desync, because the game already believes the
---     weapon is out; lowering it first is what makes the state rebuild
---
--- The check runs on any entity's recovery, not only the local player's, because
--- the effect hook does not identify an owner. That is safe for the reason
--- above: it only ever inspects and corrects the local player, and only in a
--- state a deliberate action cannot produce.
-pcall(function()
-    EffectReplicatorHandler:hook("removed", function(effect)
-        if effect.Class ~= "Knocked" and effect.Class ~= "Ragdoll" then return end;
-
-        task.delay(0.35, function()
-            if not EffectReplicator:FindEffect("Equipped") then return end;
-
-            local character = local_player.character;
-            if not character then return end;
-            if character:FindFirstChildOfClass("Tool") then return end;
-
-            local character_handler = character:FindFirstChild("CharacterHandler");
-            local requests = character_handler and character_handler:FindFirstChild("Requests");
-            local remote = requests and requests:FindFirstChild("DrawWeapon");
-            if not remote then return end;
-
-            remote:FireServer(false);
-            task.wait(0.15);
-            remote:FireServer(true);
-        end);
-    end);
-end);
-
 return DefendActionManager
