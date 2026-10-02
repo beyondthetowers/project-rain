@@ -44,11 +44,27 @@ function GenericTeleport:run()
             local_player.root_part.AssemblyLinearVelocity = Vector3.one * (math.random() / 100);
             local_player.root_part.CFrame = self.destination * CFrame.new(math.random() / 100, math.random() / 100, math.random() / 100);
             
+            -- Rate limited, and this is the lag that was reported.
+            --
+            -- `print` was the error handler, so every failure printed a line.
+            -- firetouchinterest fails with "new overlap in different world"
+            -- whenever the two parts sit in different worlds, and this code
+            -- runs in a loop -- so it printed hundreds of lines a second and
+            -- drowned the logger. Observed live as ":24425: new overlap in
+            -- different world" repeating back to back.
+            --
+            -- One warning every five seconds says the same thing without
+            -- flooding everything.
             xpcall(function()
-                
                 firetouchinterest(local_player.root_part, destinationPart, true);
                 firetouchinterest(local_player.root_part, destinationPart, false);
-            end, print);
+            end, function(err)
+                local now = tick();
+                if now - (self.touch_error_at or 0) >= 5 then
+                    self.touch_error_at = now;
+                    print(err);
+                end;
+            end);
         end;
 
         if local_player.humanoid then
