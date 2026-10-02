@@ -96,40 +96,53 @@ aztup.maid:give_task(client_effect.OnClientEvent:Connect(function(effectName, ef
 			typ = "Dodge"
 		end
 
-		if aztup.flags[user_flag .. "auto_equip"] and not EffectReplicator:FindEffect("Equipped") then
-			-- Never ask for the weapon while we are on the floor.
-			--
-			-- Mid-ragdoll the server does not honour DrawWeapon(true), but the
-			-- client still registers the Equipped effect. That leaves the weapon
-			-- reported as equipped with nothing actually in hand -- a state the
-			-- player cannot escape: they cannot sheathe a weapon the game thinks
-			-- is already out, and cannot use one that is not there.
-			--
-			-- So wait for the knockdown to clear, then draw normally. Same
-			-- outcome when it matters, no broken state when it does not.
-			task.delay(0.1 + (math.random() / 1000), function()
-				local deadline = tick() + 10
-				while tick() < deadline and (EffectReplicator:FindEffect("Knocked") or EffectReplicator:FindEffect("Ragdoll")) do
-					task.wait(0.1)
-				end
+		if aztup.flags[user_flag .. "auto_equip"] then
+			local character_now = local_player.character;
+			local in_hand_now = character_now and character_now:FindFirstChildOfClass("Tool");
 
-				-- Still down after 10s: skip rather than recreate the broken
-				-- state. Auto-equip runs again on the next action anyway.
-				if EffectReplicator:FindEffect("Knocked") or EffectReplicator:FindEffect("Ragdoll") then
-					return
-				end
+			if not in_hand_now then
+				-- Two different situations, previously treated as one.
+				--
+				--   weapon away, client does NOT think it is equipped -> draw it
+				--   nothing in hand, client SAYS equipped             -> desync
+				--
+				-- The second is what strands the player, and the old test was
+				-- `not Equipped`, which is false in exactly that state -- so
+				-- auto equip never even ran, and `true` on its own would not
+				-- have helped either, because the game already believes the
+				-- weapon is out. Lower it, then raise it, and it rebuilds.
+				task.delay(0.1 + (math.random() / 1000), function()
+					-- Never while we are on the floor: the server ignores the
+					-- request and the client marks it equipped anyway, which is
+					-- how the desync starts in the first place.
+					local deadline = tick() + 10;
+					while tick() < deadline and (EffectReplicator:FindEffect("Knocked") or EffectReplicator:FindEffect("Ragdoll")) do
+						task.wait(0.1);
+					end;
+					if EffectReplicator:FindEffect("Knocked") or EffectReplicator:FindEffect("Ragdoll") then
+						return;
+					end;
 
-				-- Re-fetched: the character may have respawned during the wait.
-				local character = local_player.character
-				local character_handler = character and character:FindFirstChild("CharacterHandler")
-				local requests = character_handler and character_handler:FindFirstChild("Requests")
-				local remote = requests and requests:FindFirstChild("DrawWeapon")
-				if remote then
-					remote:FireServer(true)
-				else
-					debug_print("failed to find 'DrawWeapon'")
-				end
-			end)
+					-- Re-fetched: the character may have respawned while waiting.
+					local character = local_player.character;
+					if not character then return end;
+					if character:FindFirstChildOfClass("Tool") then return end;
+
+					local character_handler = character:FindFirstChild("CharacterHandler");
+					local requests = character_handler and character_handler:FindFirstChild("Requests");
+					local equip_weapon = requests and requests:FindFirstChild("DrawWeapon");
+					if not equip_weapon then
+						debug_print("failed to find 'DrawWeapon'");
+						return;
+					end;
+
+					if EffectReplicator:FindEffect("Equipped") then
+						equip_weapon:FireServer(false);
+						task.wait(0.15);
+					end;
+					equip_weapon:FireServer(true);
+				end);
+			end;
 		end
 
 		if aztup_options.filters.Value["Dont Parry If Holding Block"] and general:is_holding_f() then
