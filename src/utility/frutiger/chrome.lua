@@ -459,31 +459,29 @@ local KEYBIND_MARGIN = 10;
 -- Offsets also suit the library: toggle.lua's resize code reads
 -- Position.Y.Offset, and SaveManager stores the position as a UDim2 anyway.
 --
--- Divided by the frame's UIScale, because a UIScale MULTIPLIES the offset.
--- This is the bug that put the panel off the bottom of the screen: at UI Scale
--- 200% the offset 1070 renders at 2140, so only the top sliver of the list was
--- on screen and its labels looked clipped -- "ite Jump" instead of
--- "Infinite Jump". Dividing it out makes the RENDERED edge land where intended
--- regardless of the current scale.
+-- NOT divided by the frame's UIScale. I tried that and measurement killed it.
+--
+-- A UIScale scales the frame's SIZE but leaves the position OFFSET where it is:
+-- AbsoluteSize goes 220 -> 213 at scale 0.97 while the offset still lands at its
+-- literal pixel value. Dividing by the scale therefore put the panel 23px PAST
+-- the bottom edge at the default scale -- I introduced a bug while trying to fix
+-- one, and the only reason I caught it is that I measured instead of assuming.
+--
+-- Measured at scale 0.97: an offset of 1070 renders a bottom edge of exactly
+-- 1070, which is the 10px gap intended. The plain viewport offset is correct.
+--
+-- The frame parameter is kept so callers stay uniform and a future reader can
+-- see it was considered rather than missed.
 local function corner_position(frame)
     local camera = workspace.CurrentCamera;
     local viewport = (camera and camera.ViewportSize) or Vector2.new(1920, 1080);
 
-    local scale = 1;
-    if frame then
-        local ui = frame:FindFirstChildOfClass("UIScale");
-        local ok, value = pcall(function() return ui and ui.Scale end);
-        if ok and value and value > 0 then
-            scale = value;
-        end;
-    end;
-
     local x = (KEYBIND_ANCHOR.X == 1)
-        and (viewport.X / scale - KEYBIND_MARGIN)
+        and (viewport.X - KEYBIND_MARGIN)
         or KEYBIND_MARGIN;
 
     local y = (KEYBIND_ANCHOR.Y == 1)
-        and (viewport.Y / scale - KEYBIND_MARGIN)
+        and (viewport.Y - KEYBIND_MARGIN)
         or KEYBIND_MARGIN;
 
     return UDim2.fromOffset(x, y);
