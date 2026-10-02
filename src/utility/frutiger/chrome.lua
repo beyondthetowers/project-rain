@@ -525,6 +525,27 @@ function chrome.restyle_keybinds()
         end;
     end);
 
+    -- Show the bind list only while the menu is open.
+    --
+    -- The library parents this frame to the ScreenGui rather than to Outer, so
+    -- Library:Toggle -- which fades Outer:GetDescendants() and then sets
+    -- Outer.Visible -- neither fades nor hides it. It is built as an always-on
+    -- overlay, which is what left it on screen after the menu closed.
+    --
+    -- Mirroring the window's own visibility keeps the two in step, including
+    -- the fade: the library sets Outer.Visible at the END of the toggle, so this
+    -- follows once the fade has finished rather than cutting it short.
+    pcall(function()
+        local window = Library.FrutigerWindow;
+        local holder = window and window.Holder;
+        if holder then
+            frame.Visible = holder.Visible;
+            holder:GetPropertyChangedSignal("Visible"):Connect(function()
+                pcall(function() frame.Visible = holder.Visible end);
+            end);
+        end;
+    end);
+
     local stripped = 0;
 
     for _, descendant in ipairs(frame:GetDescendants()) do
