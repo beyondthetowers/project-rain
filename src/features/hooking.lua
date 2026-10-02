@@ -62,14 +62,47 @@ else
 end
     end
 
-    KeyHandlerClass[STR_TBL_SF_INVOKE("get_cache")] = function(self, remote)
-        local encoded_remote = self.cache[remote];
-        if not encoded_remote then
-            return nil        
-end
+    -- ── the inert key ──────────────────────────────────────────────────────
+    -- Handed out instead of nil when a remote is not available.
+    --
+    -- get_cache and get_key both returned nil for a name they did not have --
+    -- either because it is absent from this build, or because KeyHandler has
+    -- not resolved yet. Callers do this:
+    --
+    --     KeyHandler:get_key("Dodge"):FireServer("roll", nil, nil, false)
+    --
+    -- at fifteen sites, none of them guarded. One unresolved name therefore
+    -- throws "attempt to index nil with 'FireServer'" in the middle of combat.
+    -- Observed live from defend_action_dodge -- the dodge path -- so the
+    -- failure lands exactly when the player needs it most.
+    --
+    -- Returning an object keeps every one of those sites working: the action
+    -- is simply not sent, which is the right outcome when the remote is not
+    -- there to send it to.
+    --
+    -- __index answers ANY name with a function returning the same object, so
+    -- any call at all -- FireServer, IsDescendantOf -- resolves and does
+    -- nothing rather than raising.
+    local inert_key = setmetatable({}, {
+        __index = function()
+            return function() return inert_key end;
+        end;
+    });
 
-        return self[STR_TBL_SF_INVOKE("remotes")][encoded_remote]    
-end;
+    KeyHandlerClass[STR_TBL_SF_INVOKE("get_cache")] = function(self, remote)
+        local cache = self.cache;
+        local encoded_remote = cache and cache[remote];
+        if not encoded_remote then
+            return inert_key
+        end;
+
+        local remotes = self[STR_TBL_SF_INVOKE("remotes")];
+        if not remotes then
+            return inert_key
+        end;
+
+        return remotes[encoded_remote] or inert_key
+    end;
 
     KeyHandlerClass[STR_TBL_SF_INVOKE("handle_gk")] = function(self)
         -- Shape-based, retrying: ReplicatedStorage.Modules may not have
@@ -134,11 +167,22 @@ end;
 
         local function get_key(remote)
             if typeof(remote) ~= "string" then
-                return            
-end
+                return inert_key
+            end;
 
-            return self[STR_TBL_SF_INVOKE("remotes")][self[STR_TBL_SF_INVOKE("enc_f")](remote)]        
-end
+            local remotes = self[STR_TBL_SF_INVOKE("remotes")];
+            local enc_f = self[STR_TBL_SF_INVOKE("enc_f")];
+            if not remotes or not enc_f then
+                return inert_key
+            end;
+
+            -- pcall: enc_f is game code, and a bad name must not throw here.
+            local ok, key = pcall(function()
+                return remotes[enc_f(remote)];
+            end);
+
+            return (ok and key) or inert_key
+        end
 
         hookfunction(key_handler_module, function() 
             return {
