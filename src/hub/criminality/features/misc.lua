@@ -312,7 +312,11 @@ function Misc.start(ctx)
             end
         end
 
-        Game.camera.FieldOfView = State.get("misc.fov_changer") and State.get("misc.fov") or originalFov
+        if State.get("misc.fov_changer") then
+            Game.camera.FieldOfView = State.get("misc.fov")
+        elseif Game.camera.FieldOfView ~= originalFov then
+            Game.camera.FieldOfView = originalFov
+        end
 
         hbe()
         autoPickup()

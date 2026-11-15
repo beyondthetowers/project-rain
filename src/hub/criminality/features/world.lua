@@ -154,16 +154,31 @@ function World.start(ctx)
     colorCorrection.Parent = Game.camera
 
     track(Game.runService.Heartbeat:Connect(function()
-        lighting.ClockTime = State.get("world.force_time") and State.get("world.time") or originalTime
+        local wantedTime = State.get("world.force_time") and State.get("world.time") or originalTime
+
+        if lighting.ClockTime ~= wantedTime then
+            lighting.ClockTime = wantedTime
+        end
 
         local clouds = workspace:FindFirstChild("Terrain") and workspace.Terrain:FindFirstChild("Clouds")
 
         if clouds then
-            clouds.Enabled = not State.get("world.disable_clouds")
+            local wantedClouds = not State.get("world.disable_clouds")
+
+            if clouds.Enabled ~= wantedClouds then
+                clouds.Enabled = wantedClouds
+            end
         end
 
-        colorCorrection.Enabled = State.get("world.color_correction")
-        colorCorrection.Saturation = (tonumber(State.get("world.saturation")) or 0) / 50
+        if colorCorrection.Enabled ~= State.get("world.color_correction") then
+            colorCorrection.Enabled = State.get("world.color_correction")
+        end
+
+        local saturation = (tonumber(State.get("world.saturation")) or 0) / 50
+
+        if colorCorrection.Saturation ~= saturation then
+            colorCorrection.Saturation = saturation
+        end
     end))
 
     State.on("world.skybox", function(value)

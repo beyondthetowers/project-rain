@@ -1,7 +1,7 @@
 --[[
     Arteria — bundled build
-    generated 2026-11-15T01:49:48.836Z
-    modules: 318
+    generated 2026-11-15T01:56:24.774Z
+    modules: 320
     assets:  2
 ]]
 
@@ -46657,6 +46657,172 @@ return Bypass
 
 end;
 
+__modules["src/hub/criminality/catalog"] = function()
+--[[
+    src/hub/criminality/catalog.lua
+
+    Entry list for the Arteria interface. Entry ids are State keys, so a toggle
+    in the UI writes straight into the same store the features read.
+
+    Settings arrays follow the Arteria catalog schema:
+      number(id, label, low, high)  -> numeric field
+      choice(id, label, values)     -> cycling button
+]]
+
+local State = require("@src/hub/criminality/state")
+
+local Catalog = {
+    sections = { "Movement", "Combat", "Visuals", "World", "Removals", "Misc" },
+    entries = {},
+}
+
+local function number(id, label, low, high)
+    return { id = id, label = label, low = low, high = high }
+end
+
+local function choice(id, label, values)
+    return { id = id, label = label, values = values }
+end
+
+local function add(section, id, label, note, settings, kind)
+    table.insert(Catalog.entries, {
+        section = section,
+        id = id,
+        label = label,
+        note = note or "",
+        settings = settings or {},
+        kind = kind or "module",
+    })
+end
+
+-- Combat -------------------------------------------------------------------
+
+add("Combat", "aimbot.enabled", "Aimbot / camera lock", "Smooth or snap lock, FOV and prediction", {
+    choice("aimbot.mode", "Mode", { "toggle", "hold", "always" }),
+    choice("aimbot.part", "Target part", { "Head", "Torso", "HumanoidRootPart", "Closest" }),
+    choice("aimbot.priority", "Priority", { "crosshair", "distance", "health" }),
+    number("aimbot.fov", "FOV radius", 30, 600),
+    number("aimbot.smoothing", "Smoothing", 1, 50),
+    number("aimbot.max_distance", "Max distance", 50, 1500),
+})
+
+add("Combat", "aimbot.snap", "Instant snap")
+add("Combat", "aimbot.prediction", "Predict movement", nil, { number("aimbot.prediction_velocity", "Prediction strength", 1, 40) })
+add("Combat", "aimbot.visible_check", "Aimbot visible check")
+add("Combat", "aimbot.draw_fov", "Draw FOV ring")
+
+add("Combat", "silent.enabled", "Silent aim", "Redirects the shot, not the camera", {
+    choice("silent.mode", "Mode", { "toggle", "hold", "always" }),
+    choice("silent.part", "Hitbox", { "Head", "Torso", "HumanoidRootPart" }),
+    number("silent.hitchance", "Hitchance", 1, 100),
+    number("silent.fov", "FOV radius", 30, 900),
+    number("silent.max_distance", "Max distance", 50, 1500),
+})
+
+add("Combat", "silent.wallbang", "Silent wallbang")
+add("Combat", "silent.visualize", "Silent target line")
+add("Combat", "silent.hook_mouse", "Silent mouse hook", "Only for games reading Mouse.X/Y")
+add("Combat", "silent.visible_check", "Silent visible check")
+
+add("Combat", "disablers.down", "No down")
+add("Combat", "disablers.ragdoll", "No ragdoll")
+add("Combat", "disablers.zawarudo", "No za warudo")
+add("Combat", "disablers.jailed", "No jailed")
+add("Combat", "disablers.handcuffed", "No handcuffs")
+
+add("Combat", "teleport.action", "Teleport", "Uses the selected waypoint", {
+    choice("teleport.target", "Waypoint", { "tower", "vibe check", "subway", "sewers", "junkyard", "gas station", "motel", "grey wall" }),
+}, "action")
+
+-- Visuals ------------------------------------------------------------------
+
+add("Visuals", "esp.enabled", "Player ESP", "Boxes, health, names, distance", {
+    number("esp.max_distance", "Maximum range", 50, 1500),
+})
+add("Visuals", "esp.box", "Player boxes")
+add("Visuals", "esp.name", "Player names")
+add("Visuals", "esp.health", "Health bar")
+add("Visuals", "esp.distance", "Distance")
+add("Visuals", "esp.tool", "Held tool")
+add("Visuals", "esp.chams", "Chams")
+add("Visuals", "esp.through_walls", "Chams through walls")
+
+add("Visuals", "world.enabled", "World ESP", "Safes, scrap, dealers, ATMs, cash", {
+    number("world.max_distance", "Maximum range", 50, 1500),
+})
+add("Visuals", "world.safes", "Safes")
+add("Visuals", "world.piles", "Scrap piles")
+add("Visuals", "world.dealers", "Dealers")
+add("Visuals", "world.atms", "ATMs")
+add("Visuals", "world.cash", "Dropped cash")
+
+-- World --------------------------------------------------------------------
+
+add("World", "world.color_correction", "Colour correction", nil, {
+    number("world.saturation", "Saturation", 0, 100),
+})
+add("World", "world.force_time", "Force time of day", nil, {
+    number("world.time", "Time", 0, 24),
+})
+add("World", "world.disable_clouds", "Sky", "Preset and cloud toggle", {
+    choice("world.skybox", "Skybox", { "none", "nebula", "vaporwave", "clouds", "twilight" }),
+})
+
+-- Removals -----------------------------------------------------------------
+
+add("Removals", "world.remove_smoke", "Smoke")
+add("Removals", "world.remove_bullet_holes", "Bullet holes")
+add("Removals", "world.remove_blind", "Blind effect")
+add("Removals", "world.remove_smoke_vignette", "Smoke vignette")
+add("Removals", "world.remove_atm_blur", "ATM blur")
+add("Removals", "world.remove_blood_vignette", "Blood vignette")
+
+-- Misc ---------------------------------------------------------------------
+
+add("Movement", "misc.walkspeed", "Walk speed", nil, {
+    number("misc.speed", "Speed", 16, 120),
+})
+add("Movement", "misc.noclip", "Noclip")
+add("Movement", "misc.stamina", "Infinite stamina")
+add("Movement", "misc.no_jump_cooldown", "No jump cooldown")
+add("Movement", "misc.hbe", "Hitbox expander", nil, {
+    number("misc.hbe_multiplier", "Hitbox size %", 100, 400),
+})
+add("Misc", "misc.fullbright", "Fullbright")
+add("Misc", "misc.fov_changer", "FOV changer", nil, {
+    number("misc.fov", "Field of view", 30, 120),
+})
+add("Misc", "misc.show_chat", "Force chat visible")
+add("Misc", "misc.no_fall", "No fall damage")
+add("Misc", "misc.lockpick", "Lockpick bars")
+add("Misc", "misc.autopickup", "Auto pickup", nil, {
+    number("misc.autopickup_range", "Pickup range", 2, 20),
+})
+
+add("Misc", "gun.enabled", "Gun mods", "Config swap", {
+    number("gun.recoil", "Recoil %", 0, 100),
+    number("gun.firerate", "Fire rate", 1, 3),
+})
+add("Misc", "gun.fast_equip", "Fast equip")
+add("Misc", "gun.no_spread", "No spread")
+
+-- make sure every option has a backing value
+for _, entry in next, Catalog.entries do
+    State.define(entry.id, false)
+
+    for _, option in next, entry.settings do
+        if option.values then
+            State.define(option.id, option.values[1])
+        else
+            State.define(option.id, option.low or 0)
+        end
+    end
+end
+
+return Catalog
+
+end;
+
 __modules["src/hub/criminality/config"] = function()
 --[[
     src/hub/criminality/config.lua
@@ -47804,7 +47970,11 @@ function Misc.start(ctx)
             end
         end
 
-        Game.camera.FieldOfView = State.get("misc.fov_changer") and State.get("misc.fov") or originalFov
+        if State.get("misc.fov_changer") then
+            Game.camera.FieldOfView = State.get("misc.fov")
+        elseif Game.camera.FieldOfView ~= originalFov then
+            Game.camera.FieldOfView = originalFov
+        end
 
         hbe()
         autoPickup()
@@ -48292,16 +48462,31 @@ function World.start(ctx)
     colorCorrection.Parent = Game.camera
 
     track(Game.runService.Heartbeat:Connect(function()
-        lighting.ClockTime = State.get("world.force_time") and State.get("world.time") or originalTime
+        local wantedTime = State.get("world.force_time") and State.get("world.time") or originalTime
+
+        if lighting.ClockTime ~= wantedTime then
+            lighting.ClockTime = wantedTime
+        end
 
         local clouds = workspace:FindFirstChild("Terrain") and workspace.Terrain:FindFirstChild("Clouds")
 
         if clouds then
-            clouds.Enabled = not State.get("world.disable_clouds")
+            local wantedClouds = not State.get("world.disable_clouds")
+
+            if clouds.Enabled ~= wantedClouds then
+                clouds.Enabled = wantedClouds
+            end
         end
 
-        colorCorrection.Enabled = State.get("world.color_correction")
-        colorCorrection.Saturation = (tonumber(State.get("world.saturation")) or 0) / 50
+        if colorCorrection.Enabled ~= State.get("world.color_correction") then
+            colorCorrection.Enabled = State.get("world.color_correction")
+        end
+
+        local saturation = (tonumber(State.get("world.saturation")) or 0) / 50
+
+        if colorCorrection.Saturation ~= saturation then
+            colorCorrection.Saturation = saturation
+        end
     end))
 
     State.on("world.skybox", function(value)
@@ -48480,8 +48665,9 @@ __modules["src/hub/criminality/init"] = function()
 --[[
     src/hub/criminality/init.lua
 
-    Criminality hub entry point. Builds the interface, wires the features and
-    exposes getgenv().criminality_hub for teardown.
+    Criminality hub entry point. Mounts the Arteria interface with a
+    Criminality catalog, wires the features and exposes
+    getgenv().criminality_hub for teardown.
 ]]
 
 if not game:IsLoaded() then
@@ -48502,10 +48688,8 @@ if env.criminality_hub and env.criminality_hub.destroy then
     end)
 end
 
-local UI = require("@src/hub/criminality/ui")
-local State = require("@src/hub/criminality/state")
-local Config = require("@src/hub/criminality/config")
-local Game = require("@src/hub/criminality/game")
+local Catalog = require("@src/hub/criminality/catalog")
+local Adapter = require("@src/hub/criminality/ui_arteria")
 local Aimbot = require("@src/hub/criminality/features/aimbot")
 local Silent = require("@src/hub/criminality/features/silent")
 local ESP = require("@src/hub/criminality/features/esp")
@@ -48514,250 +48698,17 @@ local World = require("@src/hub/criminality/features/world")
 local Gun = require("@src/hub/criminality/features/gun")
 local Disablers = require("@src/hub/criminality/features/disablers")
 
-State.define("config.name", "default")
-
--- drop a window left behind by an earlier failed boot
-do
-    local parent = (gethui and gethui()) or game:GetService("CoreGui")
-    local previous = parent and parent:FindFirstChild("criminality_hub")
-
-    if previous then
-        previous:Destroy()
-    end
-end
-
-local window = UI.new({
-    title = "criminality  ·  hub",
-    menuKey = Enum.KeyCode.RightShift,
-    status = "booting",
-})
-
 local hub = {
-    window = window,
-    version = "1.0",
+    version = "1.1",
 }
 
---------------------------------------------------------------------------
--- aimbot
---------------------------------------------------------------------------
+hub.ui = Adapter.mount(Catalog, {
+    teleport = function(name)
+        return Misc.teleport(name)
+    end,
+})
 
-do
-    local tab = window:tab("aimbot", "Aimbot")
-    local lock = tab:section("Lock", "camera aim with smoothing")
-
-    lock:toggle("aimbot.enabled", "Enabled")
-    lock:keybind("aimbot.key", "Keybind")
-    lock:dropdown("aimbot.mode", "Mode", { "toggle", "hold", "always" })
-    lock:dropdown("aimbot.part", "Target part", { "Head", "Torso", "HumanoidRootPart", "Closest" })
-    lock:dropdown("aimbot.priority", "Priority", { "crosshair", "distance", "health" })
-
-    local aim = tab:section("Aim behaviour", "how the camera moves")
-
-    aim:slider("aimbot.fov", "FOV radius", 30, 600, 1)
-    aim:slider("aimbot.smoothing", "Smoothing", 1, 50, 1)
-    aim:slider("aimbot.max_distance", "Max distance", 50, 1500, 10)
-    aim:toggle("aimbot.snap", "Instant snap")
-    aim:toggle("aimbot.prediction", "Predict movement")
-    aim:slider("aimbot.prediction_velocity", "Prediction strength", 1, 40, 1)
-    aim:toggle("aimbot.visible_check", "Visible check")
-    aim:toggle("aimbot.friends", "Ignore friends")
-    aim:toggle("aimbot.team", "Ignore teammates")
-
-    local visuals = tab:section("Overlay")
-
-    visuals:toggle("aimbot.draw_fov", "Draw FOV ring")
-
-    local travel = tab:section("Teleports", "map waypoints")
-
-    travel:dropdown("teleport.target", "Location", Misc.positions())
-    travel:button("Teleport", function()
-        if Misc.teleport(State.get("teleport.target")) then
-            window:notify("teleported to " .. tostring(State.get("teleport.target")))
-        else
-            window:notify("teleport on cooldown or no character", "error")
-        end
-    end)
-end
-
---------------------------------------------------------------------------
--- silent aim
---------------------------------------------------------------------------
-
-do
-    local tab = window:tab("silent", "Silent")
-    local core = tab:section("Silent aim", "redirects the shot, not the camera")
-
-    core:toggle("silent.enabled", "Enabled")
-    core:keybind("silent.key", "Keybind")
-    core:dropdown("silent.mode", "Mode", { "toggle", "hold", "always" })
-    core:dropdown("silent.part", "Hitbox", { "Head", "Torso", "HumanoidRootPart" })
-    core:dropdown("silent.priority", "Priority", { "crosshair", "distance", "health" })
-
-    local tuning = tab:section("Tuning")
-
-    tuning:slider("silent.hitchance", "Hitchance", 1, 100, 1, nil, "%")
-    tuning:slider("silent.fov", "FOV radius", 30, 900, 5)
-    tuning:slider("silent.max_distance", "Max distance", 50, 1500, 10)
-    tuning:toggle("silent.visible_check", "Visible check")
-    tuning:toggle("silent.wallbang", "Wallbang")
-    tuning:toggle("silent.friends", "Ignore friends")
-
-    local visual = tab:section("Feedback")
-
-    visual:toggle("silent.visualize", "Draw target")
-    visual:toggle("silent.hook_mouse", "Hook mouse position")
-    visual:label("Mouse hook only needed when the game reads Mouse.X/Y instead of raycasting.")
-end
-
---------------------------------------------------------------------------
--- visuals
---------------------------------------------------------------------------
-
-do
-    local tab = window:tab("visuals", "Visuals")
-    local players = tab:section("Players")
-
-    players:toggle("esp.enabled", "Player ESP")
-    players:toggle("esp.box", "Box")
-    players:toggle("esp.name", "Name")
-    players:toggle("esp.health", "Health bar")
-    players:toggle("esp.distance", "Distance")
-    players:toggle("esp.tool", "Held tool")
-    players:toggle("esp.chams", "Chams")
-    players:toggle("esp.through_walls", "Through walls")
-    players:slider("esp.max_distance", "Max distance", 50, 1500, 10)
-
-    local world = tab:section("World")
-
-    world:toggle("world.enabled", "World ESP")
-    world:toggle("world.safes", "Safes")
-    world:toggle("world.piles", "Scrap piles")
-    world:toggle("world.dealers", "Dealers")
-    world:toggle("world.atms", "ATMs")
-    world:toggle("world.cash", "Dropped cash")
-    world:slider("world.max_distance", "Max distance", 50, 1500, 10)
-
-    local earth = tab:section("World settings", "sky and light")
-
-    earth:dropdown("world.skybox", "Skybox", { "none", "nebula", "vaporwave", "clouds", "twilight" })
-    earth:toggle("world.color_correction", "Colour correction")
-    earth:slider("world.saturation", "Saturation", 0, 100, 1)
-    earth:toggle("world.force_time", "Force time of day")
-    earth:slider("world.time", "Time", 0, 24, 1)
-    earth:toggle("world.disable_clouds", "Disable clouds")
-
-    local removals = tab:section("Removals", "strip effects")
-
-    removals:toggle("world.remove_smoke", "Smoke")
-    removals:toggle("world.remove_bullet_holes", "Bullet holes")
-    removals:toggle("world.remove_blind", "Blind effect")
-    removals:toggle("world.remove_smoke_vignette", "Smoke vignette")
-    removals:toggle("world.remove_atm_blur", "ATM blur")
-    removals:toggle("world.remove_blood_vignette", "Blood vignette")
-end
-
---------------------------------------------------------------------------
--- misc
---------------------------------------------------------------------------
-
-do
-    local tab = window:tab("misc", "Misc")
-    local character = tab:section("Character")
-
-    character:toggle("misc.walkspeed", "Walk speed")
-    character:slider("misc.speed", "Speed", 16, 120, 1)
-    character:toggle("misc.noclip", "Noclip")
-    character:toggle("misc.stamina", "Infinite stamina")
-    character:toggle("misc.no_jump_cooldown", "No jump cooldown")
-    character:toggle("misc.hbe", "Hitbox expander")
-    character:slider("misc.hbe_multiplier", "Hitbox size", 100, 400, 5, nil, "%")
-
-    local world = tab:section("World")
-    world:toggle("misc.fullbright", "Fullbright")
-    world:toggle("misc.fov_changer", "FOV changer")
-    world:slider("misc.fov", "Field of view", 30, 120, 1)
-    world:toggle("misc.show_chat", "Force chat visible")
-
-    local utility = tab:section("Utility")
-    utility:toggle("misc.no_fall", "No fall damage")
-    utility:toggle("misc.lockpick", "Lockpick bars")
-    utility:toggle("misc.autopickup", "Auto pickup")
-    utility:slider("misc.autopickup_range", "Pickup range", 2, 20, 1)
-
-    local weapons = tab:section("Gun mods", "config swap")
-
-    weapons:toggle("gun.enabled", "Enabled")
-    weapons:slider("gun.recoil", "Recoil", 0, 100, 1, nil, "%")
-    weapons:slider("gun.firerate", "Fire rate", 1, 3, 0.1, nil, "x")
-    weapons:toggle("gun.fast_equip", "Fast equip")
-    weapons:toggle("gun.no_spread", "No spread")
-
-    local disablers = tab:section("Disablers")
-
-    disablers:toggle("disablers.down", "No down")
-    disablers:toggle("disablers.ragdoll", "No ragdoll")
-    disablers:toggle("disablers.zawarudo", "No za warudo")
-    disablers:toggle("disablers.jailed", "No jailed")
-    disablers:toggle("disablers.handcuffed", "No handcuffs")
-end
-
---------------------------------------------------------------------------
--- config
---------------------------------------------------------------------------
-
-do
-    local tab = window:tab("config", "Config")
-    local profiles = tab:section("Profiles", "stored in " .. "criminality/Configs")
-
-    profiles:text("config.name", "Profile name", "default")
-    profiles:button("Save profile", function()
-        local name = State.get("config.name")
-
-        if type(name) ~= "string" or name == "" then
-            window:notify("profile name is empty", "error")
-            return
-        end
-
-        local ok, err = Config.save(name)
-
-        if ok then
-            window:notify("saved " .. name)
-        else
-            window:notify("save failed: " .. tostring(err), "error")
-        end
-    end)
-    profiles:button("Load profile", function()
-        local ok, message = Config.load(State.get("config.name"))
-
-        if ok then
-            window:notify("loaded " .. tostring(message) .. " settings")
-        else
-            window:notify(tostring(message), "error")
-        end
-    end)
-    profiles:button("Delete profile", function()
-        local ok = Config.delete(State.get("config.name"))
-
-        if ok then
-            window:notify("deleted")
-        else
-            window:notify("delete failed", "error")
-        end
-    end)
-
-    local info = tab:section("Session")
-
-    info:label("Right shift hides the window. Settings live in memory until saved.")
-    info:button("Unload hub", function()
-        hub:destroy()
-    end, true)
-end
-
---------------------------------------------------------------------------
--- boot
---------------------------------------------------------------------------
-
-Config.autoload()
+local ui = hub.ui
 
 if env.criminality_ui_only ~= true then
     Aimbot.start(hub)
@@ -48769,20 +48720,8 @@ if env.criminality_ui_only ~= true then
     Disablers.start(hub)
 end
 
-window.status.Text = "ready"
-
-task.spawn(function()
-    while hub and window.screenGui and window.screenGui.Parent do
-        local count = 0
-
-        if State.get("aimbot.enabled") then
-            count = #require("@src/hub/criminality/targeting").list
-        end
-
-        window.status.Text = "right shift  ·  " .. tostring(count) .. " targets"
-        task.wait(0.5)
-    end
-end)
+ui.status = "ready"
+ui.refresh()
 
 function hub:destroy()
     if self.destroyed then
@@ -48799,8 +48738,16 @@ function hub:destroy()
     Gun.stop()
     Disablers.stop()
 
-    if self.window and self.window.screenGui then
-        self.window.screenGui:Destroy()
+    if self.ui then
+        self.ui.alive = false
+
+        pcall(function()
+            self.ui.maid:do_cleaning()
+        end)
+
+        if self.ui.gui then
+            self.ui.gui:Destroy()
+        end
     end
 
     if getgenv().criminality_hub == self then
@@ -50065,6 +50012,95 @@ end
 UI.THEME = THEME
 
 return UI
+
+end;
+
+__modules["src/hub/criminality/ui_arteria"] = function()
+--[[
+    src/hub/criminality/ui_arteria.lua
+
+    Mounts the Deepwoken Arteria interface (src/arteria/ui.lua) for Criminality.
+    The interface is driven by a runtime table; this adapter fills that table
+    from the hub's State store so every toggle and option writes straight into
+    the same values the features read.
+]]
+
+local Maid = require("@src/utility/maid")
+local State = require("@src/hub/criminality/state")
+local ArteriaUI = require("@src/arteria/ui")
+
+local Adapter = {}
+
+function Adapter.mount(catalog, callbacks)
+    callbacks = callbacks or {}
+
+    local runtime = {
+        alive = true,
+        busy = false,
+        status = "ready",
+        errors = {},
+        reduce_motion = false,
+        flags = {},
+        bindings = {},
+        features = {},
+        catalog = catalog,
+        maid = Maid.new(),
+        ac_loaded = type(getgenv().criminality_bypass) == "table",
+        ui_key = Enum.KeyCode.RightShift,
+    }
+
+    local function sync(id)
+        runtime.flags[id] = State.get(id)
+    end
+
+    function runtime:set(id, value)
+        if id == "teleport.action" then
+            if callbacks.teleport then
+                callbacks.teleport(State.get("teleport.target"))
+            end
+
+            return
+        end
+
+        State.set(id, value)
+        sync(id)
+    end
+
+    function runtime:option(option, value)
+        State.set(option.id, value)
+        sync(option.id)
+    end
+
+    for _, entry in next, catalog.entries do
+        sync(entry.id)
+
+        State.on(entry.id, function(value)
+            runtime.flags[entry.id] = value
+
+            if runtime.refresh then
+                runtime.refresh()
+            end
+        end)
+
+        for _, option in next, entry.settings do
+            sync(option.id)
+
+            State.on(option.id, function(value)
+                runtime.flags[option.id] = value
+
+                if runtime.refresh then
+                    runtime.refresh()
+                end
+            end)
+        end
+    end
+
+    ArteriaUI.mount(runtime)
+
+    return runtime
+end
+
+return Adapter
 
 end;
 
