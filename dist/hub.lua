@@ -1,6 +1,6 @@
 --[[
     Arteria — bundled build
-    generated 2026-11-15T02:40:47.737Z
+    generated 2026-11-15T02:42:40.619Z
     modules: 320
     assets:  2
 ]]
@@ -48719,15 +48719,24 @@ end
 
 mark("init")
 
--- Anti-cheat bypass is opt-in now: it changes thread identity and hooks native
--- functions, so it stays out of the boot path until it is proven on this
--- client. Enable with getgenv().criminality_bypass = true before executing.
+-- Anti-cheat bypass is opt-in and installs only after the character spawns:
+-- before that the client is still in the menu/cutscene, where Adonis is not
+-- running and its hooks have nothing to bite on.
 local env = getgenv()
 
 if env.criminality_bypass == true and env.criminality_skip_bypass ~= true then
-    local Bypass = require("@src/hub/criminality/bypass")
-    Bypass.install()
-    mark("bypass")
+    task.spawn(function()
+        local player = game:GetService("Players").LocalPlayer
+
+        while not (player.Character and player.Character:FindFirstChildOfClass("Humanoid")) do
+            task.wait(0.5)
+        end
+
+        task.wait(1.5)
+        local Bypass = require("@src/hub/criminality/bypass")
+        Bypass.install()
+        mark("bypass")
+    end)
 end
 
 if env.criminality_hub and env.criminality_hub.destroy then
