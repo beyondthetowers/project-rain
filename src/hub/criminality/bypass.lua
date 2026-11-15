@@ -115,6 +115,13 @@ function Bypass.install()
         return Bypass
     end
 
+    -- The standalone autoexec copy may already have installed it.
+    if type(getgenv().criminality_bypass) == "table" then
+        Bypass.installed = true
+        Bypass.originals = getgenv().criminality_bypass
+        return Bypass
+    end
+
     if not getgc or not hookfunction then
         say("executor missing getgc/hookfunction, bypass not installed")
         return Bypass

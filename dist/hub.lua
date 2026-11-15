@@ -1,6 +1,6 @@
 --[[
     Arteria — bundled build
-    generated 2026-11-15T01:37:53.726Z
+    generated 2026-11-15T01:41:14.224Z
     modules: 314
     assets:  2
 ]]
@@ -46602,6 +46602,13 @@ end
 
 function Bypass.install()
     if Bypass.installed then
+        return Bypass
+    end
+
+    -- The standalone autoexec copy may already have installed it.
+    if type(getgenv().criminality_bypass) == "table" then
+        Bypass.installed = true
+        Bypass.originals = getgenv().criminality_bypass
         return Bypass
     end
 
