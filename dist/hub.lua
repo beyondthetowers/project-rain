@@ -1,6 +1,6 @@
 --[[
     Arteria — bundled build
-    generated 2026-11-15T01:56:24.774Z
+    generated 2026-11-15T02:00:00.617Z
     modules: 320
     assets:  2
 ]]
@@ -48674,12 +48674,23 @@ if not game:IsLoaded() then
     game.Loaded:Wait()
 end
 
+local function mark(stage)
+    pcall(function()
+        if writefile then
+            writefile("criminality_boot.txt", tostring(stage) .. "  " .. tostring(math.floor(tick())))
+        end
+    end)
+end
+
+mark("init")
+
 -- Anti-cheat bypass goes in before anything else touches the game.
 local env = getgenv()
 
 if env.criminality_skip_bypass ~= true then
     local Bypass = require("@src/hub/criminality/bypass")
     Bypass.install()
+    mark("bypass")
 end
 
 if env.criminality_hub and env.criminality_hub.destroy then
@@ -48708,6 +48719,8 @@ hub.ui = Adapter.mount(Catalog, {
     end,
 })
 
+mark("ui")
+
 local ui = hub.ui
 
 if env.criminality_ui_only ~= true then
@@ -48720,8 +48733,12 @@ if env.criminality_ui_only ~= true then
     Disablers.start(hub)
 end
 
+mark("features")
+
 ui.status = "ready"
 ui.refresh()
+
+mark("ready")
 
 function hub:destroy()
     if self.destroyed then
@@ -50095,7 +50112,19 @@ function Adapter.mount(catalog, callbacks)
         end
     end
 
-    ArteriaUI.mount(runtime)
+    pcall(function()
+        writefile("criminality_boot.txt", "ui_arteria:mount")
+    end)
+
+    local ok, err = pcall(ArteriaUI.mount, runtime)
+
+    if not ok then
+        pcall(function()
+            writefile("criminality_boot.txt", "ui error: " .. tostring(err))
+        end)
+
+        error(err, 0)
+    end
 
     return runtime
 end

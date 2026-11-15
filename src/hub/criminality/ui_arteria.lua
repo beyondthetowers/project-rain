@@ -77,7 +77,19 @@ function Adapter.mount(catalog, callbacks)
         end
     end
 
-    ArteriaUI.mount(runtime)
+    pcall(function()
+        writefile("criminality_boot.txt", "ui_arteria:mount")
+    end)
+
+    local ok, err = pcall(ArteriaUI.mount, runtime)
+
+    if not ok then
+        pcall(function()
+            writefile("criminality_boot.txt", "ui error: " .. tostring(err))
+        end)
+
+        error(err, 0)
+    end
 
     return runtime
 end

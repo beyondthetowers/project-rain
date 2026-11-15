@@ -10,12 +10,23 @@ if not game:IsLoaded() then
     game.Loaded:Wait()
 end
 
+local function mark(stage)
+    pcall(function()
+        if writefile then
+            writefile("criminality_boot.txt", tostring(stage) .. "  " .. tostring(math.floor(tick())))
+        end
+    end)
+end
+
+mark("init")
+
 -- Anti-cheat bypass goes in before anything else touches the game.
 local env = getgenv()
 
 if env.criminality_skip_bypass ~= true then
     local Bypass = require("@src/hub/criminality/bypass")
     Bypass.install()
+    mark("bypass")
 end
 
 if env.criminality_hub and env.criminality_hub.destroy then
@@ -44,6 +55,8 @@ hub.ui = Adapter.mount(Catalog, {
     end,
 })
 
+mark("ui")
+
 local ui = hub.ui
 
 if env.criminality_ui_only ~= true then
@@ -56,8 +69,12 @@ if env.criminality_ui_only ~= true then
     Disablers.start(hub)
 end
 
+mark("features")
+
 ui.status = "ready"
 ui.refresh()
+
+mark("ready")
 
 function hub:destroy()
     if self.destroyed then
