@@ -1,6 +1,6 @@
 --[[
     Arteria — bundled build
-    generated 2026-11-15T02:21:34.562Z
+    generated 2026-11-15T02:40:47.737Z
     modules: 320
     assets:  2
 ]]
@@ -48719,10 +48719,12 @@ end
 
 mark("init")
 
--- Anti-cheat bypass goes in before anything else touches the game.
+-- Anti-cheat bypass is opt-in now: it changes thread identity and hooks native
+-- functions, so it stays out of the boot path until it is proven on this
+-- client. Enable with getgenv().criminality_bypass = true before executing.
 local env = getgenv()
 
-if env.criminality_skip_bypass ~= true then
+if env.criminality_bypass == true and env.criminality_skip_bypass ~= true then
     local Bypass = require("@src/hub/criminality/bypass")
     Bypass.install()
     mark("bypass")
