@@ -200,7 +200,11 @@ end
 local connection
 
 function Silent.start(ctx)
-    installNamecall()
+    State.on("silent.enabled", function(value)
+        if value then
+            pcall(installNamecall)
+        end
+    end)
 
     connection = Game.runService.RenderStepped:Connect(function()
         local enabled = active()

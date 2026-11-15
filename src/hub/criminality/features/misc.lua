@@ -32,6 +32,51 @@ for key, value in next, defaults do
     State.define(key, value)
 end
 
+local teleportPositions = {
+    ["tower"] = Vector3.new(-4475, 105, -850),
+    ["vibe check"] = Vector3.new(-4848, -200, -875),
+    ["subway"] = Vector3.new(-4619, -31, -814),
+    ["sewers"] = Vector3.new(-4131, -91, -704),
+    ["junkyard"] = Vector3.new(-3941, 5, -595),
+    ["gas station"] = Vector3.new(-4373, 7, 215),
+    ["motel"] = Vector3.new(-4638, 6, -983),
+    ["grey wall"] = Vector3.new(-4901, 189, -779),
+}
+
+State.define("teleport.target", "tower")
+
+local lastTeleport = 0
+
+function Misc.positions()
+    local names = {}
+
+    for name in next, teleportPositions do
+        table.insert(names, name)
+    end
+
+    table.sort(names)
+
+    return names
+end
+
+function Misc.teleport(name)
+    local root = Game.root()
+    local destination = teleportPositions[name]
+
+    if not root or not destination then
+        return false
+    end
+
+    if tick() - lastTeleport < 3 then
+        return false
+    end
+
+    lastTeleport = tick()
+    root.CFrame = CFrame.new(destination)
+
+    return true
+end
+
 local connections = {}
 local originalSpeed
 local originalFov
@@ -123,7 +168,15 @@ local function installStamina()
     staminaHook = old
 end
 
+local noFallInstalled = false
+
 local function installNoFall()
+    if noFallInstalled then
+        return
+    end
+
+    noFallInstalled = true
+
     local old
     old = hookmetamethod(game, "__namecall", function(self, ...)
         if checkcaller() then
@@ -272,7 +325,11 @@ function Misc.start(ctx)
         end
     end))
 
-    installNoFall()
+    State.on("misc.no_fall", function(value)
+        if value then
+            pcall(installNoFall)
+        end
+    end)
 
     State.on("misc.fullbright", function(value)
         applyFullbright(value)

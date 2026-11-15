@@ -10,10 +10,12 @@ if not game:IsLoaded() then
 end
 
 -- Anti-cheat bypass goes in before anything else touches the game.
-local Bypass = require("@src/hub/criminality/bypass")
-Bypass.install()
-
 local env = getgenv()
+
+if env.criminality_skip_bypass ~= true then
+    local Bypass = require("@src/hub/criminality/bypass")
+    Bypass.install()
+end
 
 if env.criminality_hub and env.criminality_hub.destroy then
     pcall(function()
@@ -29,8 +31,21 @@ local Aimbot = require("@src/hub/criminality/features/aimbot")
 local Silent = require("@src/hub/criminality/features/silent")
 local ESP = require("@src/hub/criminality/features/esp")
 local Misc = require("@src/hub/criminality/features/misc")
+local World = require("@src/hub/criminality/features/world")
+local Gun = require("@src/hub/criminality/features/gun")
+local Disablers = require("@src/hub/criminality/features/disablers")
 
 State.define("config.name", "default")
+
+-- drop a window left behind by an earlier failed boot
+do
+    local parent = (gethui and gethui()) or game:GetService("CoreGui")
+    local previous = parent and parent:FindFirstChild("criminality_hub")
+
+    if previous then
+        previous:Destroy()
+    end
+end
 
 local window = UI.new({
     title = "criminality  ·  hub",
@@ -72,6 +87,17 @@ do
     local visuals = tab:section("Overlay")
 
     visuals:toggle("aimbot.draw_fov", "Draw FOV ring")
+
+    local travel = tab:section("Teleports", "map waypoints")
+
+    travel:dropdown("teleport.target", "Location", Misc.positions())
+    travel:button("Teleport", function()
+        if Misc.teleport(State.get("teleport.target")) then
+            window:notify("teleported to " .. tostring(State.get("teleport.target")))
+        else
+            window:notify("teleport on cooldown or no character", "error")
+        end
+    end)
 end
 
 --------------------------------------------------------------------------
@@ -131,6 +157,24 @@ do
     world:toggle("world.atms", "ATMs")
     world:toggle("world.cash", "Dropped cash")
     world:slider("world.max_distance", "Max distance", 50, 1500, 10)
+
+    local earth = tab:section("World settings", "sky and light")
+
+    earth:dropdown("world.skybox", "Skybox", { "none", "nebula", "vaporwave", "clouds", "twilight" })
+    earth:toggle("world.color_correction", "Colour correction")
+    earth:slider("world.saturation", "Saturation", 0, 100, 1)
+    earth:toggle("world.force_time", "Force time of day")
+    earth:slider("world.time", "Time", 0, 24, 1)
+    earth:toggle("world.disable_clouds", "Disable clouds")
+
+    local removals = tab:section("Removals", "strip effects")
+
+    removals:toggle("world.remove_smoke", "Smoke")
+    removals:toggle("world.remove_bullet_holes", "Bullet holes")
+    removals:toggle("world.remove_blind", "Blind effect")
+    removals:toggle("world.remove_smoke_vignette", "Smoke vignette")
+    removals:toggle("world.remove_atm_blur", "ATM blur")
+    removals:toggle("world.remove_blood_vignette", "Blood vignette")
 end
 
 --------------------------------------------------------------------------
@@ -160,6 +204,22 @@ do
     utility:toggle("misc.lockpick", "Lockpick bars")
     utility:toggle("misc.autopickup", "Auto pickup")
     utility:slider("misc.autopickup_range", "Pickup range", 2, 20, 1)
+
+    local weapons = tab:section("Gun mods", "config swap")
+
+    weapons:toggle("gun.enabled", "Enabled")
+    weapons:slider("gun.recoil", "Recoil", 0, 100, 1, nil, "%")
+    weapons:slider("gun.firerate", "Fire rate", 1, 3, 0.1, nil, "x")
+    weapons:toggle("gun.fast_equip", "Fast equip")
+    weapons:toggle("gun.no_spread", "No spread")
+
+    local disablers = tab:section("Disablers")
+
+    disablers:toggle("disablers.down", "No down")
+    disablers:toggle("disablers.ragdoll", "No ragdoll")
+    disablers:toggle("disablers.zawarudo", "No za warudo")
+    disablers:toggle("disablers.jailed", "No jailed")
+    disablers:toggle("disablers.handcuffed", "No handcuffs")
 end
 
 --------------------------------------------------------------------------
@@ -220,10 +280,15 @@ end
 
 Config.autoload()
 
-Aimbot.start(hub)
-Silent.start(hub)
-ESP.start(hub)
-Misc.start(hub)
+if env.criminality_ui_only ~= true then
+    Aimbot.start(hub)
+    Silent.start(hub)
+    ESP.start(hub)
+    Misc.start(hub)
+    World.start(hub)
+    Gun.start(hub)
+    Disablers.start(hub)
+end
 
 window.status.Text = "ready"
 
@@ -251,6 +316,9 @@ function hub:destroy()
     Silent.stop()
     ESP.stop()
     Misc.stop()
+    World.stop()
+    Gun.stop()
+    Disablers.stop()
 
     if self.window and self.window.screenGui then
         self.window.screenGui:Destroy()

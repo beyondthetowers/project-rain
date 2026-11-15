@@ -1,7 +1,7 @@
 --[[
     Arteria — bundled build
-    generated 2026-11-15T01:41:14.224Z
-    modules: 314
+    generated 2026-11-15T01:49:48.836Z
+    modules: 318
     assets:  2
 ]]
 
@@ -46959,6 +46959,99 @@ return Aimbot
 
 end;
 
+__modules["src/hub/criminality/features/disablers"] = function()
+--[[
+    src/hub/criminality/features/disablers.lua
+
+    Character disablers from the old script: down, ragdoll, zawarudo, jailed,
+    handcuffed. Installs one __index hook the first time any disabler is
+    enabled; while they are all off the hook returns immediately.
+]]
+
+local Game = require("@src/hub/criminality/game")
+local State = require("@src/hub/criminality/state")
+
+local Disablers = {}
+
+local defaults = {
+    ["disablers.down"] = false,
+    ["disablers.ragdoll"] = false,
+    ["disablers.zawarudo"] = false,
+    ["disablers.jailed"] = false,
+    ["disablers.handcuffed"] = false,
+}
+
+for key, value in next, defaults do
+    State.define(key, value)
+end
+
+local installed = false
+
+local function anyEnabled()
+    return State.get("disablers.down")
+        or State.get("disablers.ragdoll")
+        or State.get("disablers.zawarudo")
+        or State.get("disablers.jailed")
+        or State.get("disablers.handcuffed")
+end
+
+local function install()
+    if installed or not hookmetamethod then
+        return
+    end
+
+    installed = true
+
+    local old
+    old = hookmetamethod(game, "__index", function(self, key)
+        if checkcaller() or not anyEnabled() then
+            return old(self, key)
+        end
+
+        if key == "Value" then
+            local name = self.Name
+
+            if name == "Downed" and State.get("disablers.down") then
+                return false
+            end
+
+            if name == "RagdollTime" or name == "RagdollTime2" then
+                if State.get("disablers.ragdoll") then return 0 end
+            elseif name == "RagdollSwitch" or name == "RagdollSwitch2" or name == "SRagdolled" then
+                if State.get("disablers.ragdoll") then return false end
+            elseif name == "ZaWarudo" then
+                if State.get("disablers.zawarudo") then return false end
+            elseif name == "Jailed" then
+                if State.get("disablers.jailed") then return false end
+            elseif name == "Handcuffed" then
+                if State.get("disablers.handcuffed") then return false end
+            end
+        elseif key == "PlatformStand" then
+            if State.get("disablers.ragdoll") then
+                return false
+            end
+        end
+
+        return old(self, key)
+    end)
+end
+
+function Disablers.start(ctx)
+    for key in next, defaults do
+        State.on(key, function(value)
+            if value then
+                pcall(install)
+            end
+        end)
+    end
+end
+
+function Disablers.stop() end
+
+return Disablers
+
+end;
+
 __modules["src/hub/criminality/features/esp"] = function()
 --[[
     src/hub/criminality/features/esp.lua
@@ -47288,6 +47381,114 @@ return ESP
 
 end;
 
+__modules["src/hub/criminality/features/gun"] = function()
+--[[
+    src/hub/criminality/features/gun.lua
+
+    Gun modifiers ported from the old script: recoil, fire rate, equip time and
+    spread, applied by swapping the game's Config module for a filtered copy.
+    The require hook is installed the first time the feature is enabled and is
+    inert while disabled.
+]]
+
+local Game = require("@src/hub/criminality/game")
+local State = require("@src/hub/criminality/state")
+
+local Gun = {}
+
+local defaults = {
+    ["gun.enabled"] = false,
+    ["gun.recoil"] = 0,
+    ["gun.firerate"] = 1,
+    ["gun.fast_equip"] = false,
+    ["gun.no_spread"] = false,
+}
+
+for key, value in next, defaults do
+    State.define(key, value)
+end
+
+local installed = false
+local fakeConfig
+
+local function buildFakeConfig()
+    return {
+        GetConfig = function(_, tool)
+            local settings = {}
+            local ok, config = pcall(function()
+                return require(tool:WaitForChild("Config"))
+            end)
+
+            if not ok or type(config) ~= "table" then
+                return settings
+            end
+
+            local recoil = tonumber(State.get("gun.recoil")) or 100
+            local firerate = tonumber(State.get("gun.firerate")) or 1
+
+            for setting, value in next, config do
+                if State.get("gun.enabled") then
+                    if setting == "Recoil" and type(value) == "number" then
+                        value = value * (recoil / 100)
+                    elseif setting == "FireRate" and type(value) == "number" then
+                        value = value * firerate
+                    elseif setting == "EquipTime" and State.get("gun.fast_equip") then
+                        value = 0.1
+                    elseif setting == "Spread" and State.get("gun.no_spread") then
+                        value = 0
+                    end
+                end
+
+                settings[setting] = value
+            end
+
+            return settings
+        end,
+    }
+end
+
+local function install()
+    if installed or not hookfunction or not getrenv then
+        return
+    end
+
+    local realConfig = Game.modules and Game.modules:FindFirstChild("Config")
+
+    if not realConfig then
+        return
+    end
+
+    installed = true
+    fakeConfig = buildFakeConfig()
+
+    local original
+    original = hookfunction(getrenv().require, function(target, ...)
+        if target == realConfig and State.get("gun.enabled") then
+            return fakeConfig
+        end
+
+        return original(target, ...)
+    end)
+end
+
+function Gun.start(ctx)
+    State.on("gun.enabled", function(value)
+        if value then
+            local ok, err = pcall(install)
+
+            if not ok then
+                warn("[criminality] gun hook failed: " .. tostring(err))
+            end
+        end
+    end)
+end
+
+function Gun.stop() end
+
+return Gun
+
+end;
+
 __modules["src/hub/criminality/features/misc"] = function()
 --[[
     src/hub/criminality/features/misc.lua
@@ -47321,6 +47522,51 @@ local defaults = {
 
 for key, value in next, defaults do
     State.define(key, value)
+end
+
+local teleportPositions = {
+    ["tower"] = Vector3.new(-4475, 105, -850),
+    ["vibe check"] = Vector3.new(-4848, -200, -875),
+    ["subway"] = Vector3.new(-4619, -31, -814),
+    ["sewers"] = Vector3.new(-4131, -91, -704),
+    ["junkyard"] = Vector3.new(-3941, 5, -595),
+    ["gas station"] = Vector3.new(-4373, 7, 215),
+    ["motel"] = Vector3.new(-4638, 6, -983),
+    ["grey wall"] = Vector3.new(-4901, 189, -779),
+}
+
+State.define("teleport.target", "tower")
+
+local lastTeleport = 0
+
+function Misc.positions()
+    local names = {}
+
+    for name in next, teleportPositions do
+        table.insert(names, name)
+    end
+
+    table.sort(names)
+
+    return names
+end
+
+function Misc.teleport(name)
+    local root = Game.root()
+    local destination = teleportPositions[name]
+
+    if not root or not destination then
+        return false
+    end
+
+    if tick() - lastTeleport < 3 then
+        return false
+    end
+
+    lastTeleport = tick()
+    root.CFrame = CFrame.new(destination)
+
+    return true
 end
 
 local connections = {}
@@ -47414,7 +47660,15 @@ local function installStamina()
     staminaHook = old
 end
 
+local noFallInstalled = false
+
 local function installNoFall()
+    if noFallInstalled then
+        return
+    end
+
+    noFallInstalled = true
+
     local old
     old = hookmetamethod(game, "__namecall", function(self, ...)
         if checkcaller() then
@@ -47563,7 +47817,11 @@ function Misc.start(ctx)
         end
     end))
 
-    installNoFall()
+    State.on("misc.no_fall", function(value)
+        if value then
+            pcall(installNoFall)
+        end
+    end)
 
     State.on("misc.fullbright", function(value)
         applyFullbright(value)
@@ -47792,7 +48050,11 @@ end
 local connection
 
 function Silent.start(ctx)
-    installNamecall()
+    State.on("silent.enabled", function(value)
+        if value then
+            pcall(installNamecall)
+        end
+    end)
 
     connection = Game.runService.RenderStepped:Connect(function()
         local enabled = active()
@@ -47870,6 +48132,208 @@ end
 
 return Silent
 
+
+end;
+
+__modules["src/hub/criminality/features/world"] = function()
+--[[
+    src/hub/criminality/features/world.lua
+
+    World settings ported from the old scripts: skybox presets, colour
+    correction, forced time of day, cloud toggle and the removals list
+    (smoke, bullet holes, blind effect, smoke vignette, ATM blur, blood
+    vignette).
+]]
+
+local Game = require("@src/hub/criminality/game")
+local State = require("@src/hub/criminality/state")
+
+local World = {}
+
+local defaults = {
+    ["world.skybox"] = "none",
+    ["world.color_correction"] = false,
+    ["world.saturation"] = 0,
+    ["world.fullbright"] = false,
+    ["world.force_time"] = false,
+    ["world.time"] = 12,
+    ["world.disable_clouds"] = false,
+    ["world.remove_smoke"] = false,
+    ["world.remove_bullet_holes"] = false,
+    ["world.remove_blind"] = false,
+    ["world.remove_smoke_vignette"] = false,
+    ["world.remove_atm_blur"] = false,
+    ["world.remove_blood_vignette"] = false,
+}
+
+for key, value in next, defaults do
+    State.define(key, value)
+end
+
+local skyboxes = {
+    none = {
+        SkyboxLf = "rbxassetid://252760980",
+        SkyboxBk = "rbxassetid://252760981",
+        SkyboxDn = "rbxassetid://252763035",
+        SkyboxFt = "rbxassetid://252761439",
+        SkyboxRt = "rbxassetid://252760986",
+        SkyboxUp = "rbxassetid://252762652",
+    },
+    nebula = {
+        SkyboxLf = "rbxassetid://159454286",
+        SkyboxBk = "rbxassetid://159454299",
+        SkyboxDn = "rbxassetid://159454296",
+        SkyboxFt = "rbxassetid://159454293",
+        SkyboxRt = "rbxassetid://159454300",
+        SkyboxUp = "rbxassetid://159454288",
+    },
+    vaporwave = {
+        SkyboxLf = "rbxassetid://1417494402",
+        SkyboxBk = "rbxassetid://1417494030",
+        SkyboxDn = "rbxassetid://1417494146",
+        SkyboxFt = "rbxassetid://1417494253",
+        SkyboxRt = "rbxassetid://1417494499",
+        SkyboxUp = "rbxassetid://1417494643",
+    },
+    clouds = {
+        SkyboxLf = "rbxassetid://570557620",
+        SkyboxBk = "rbxassetid://570557514",
+        SkyboxDn = "rbxassetid://570557775",
+        SkyboxFt = "rbxassetid://570557559",
+        SkyboxRt = "rbxassetid://570557672",
+        SkyboxUp = "rbxassetid://570557727",
+    },
+    twilight = {
+        SkyboxLf = "rbxassetid://264909758",
+        SkyboxBk = "rbxassetid://264908339",
+        SkyboxDn = "rbxassetid://264907909",
+        SkyboxFt = "rbxassetid://264909420",
+        SkyboxRt = "rbxassetid://264908886",
+        SkyboxUp = "rbxassetid://264907379",
+    },
+}
+
+local connections = {}
+local lighting = game:GetService("Lighting")
+local colorCorrection
+local originalTime
+
+local function applySkybox(name)
+    local preset = skyboxes[name]
+
+    if not preset then
+        return
+    end
+
+    local sky = lighting:FindFirstChildOfClass("Sky")
+
+    if not sky then
+        sky = Instance.new("Sky")
+        sky.Parent = lighting
+    end
+
+    for property, value in next, preset do
+        sky[property] = value
+    end
+end
+
+local function track(connection)
+    table.insert(connections, connection)
+
+    return connection
+end
+
+local function matchesName(name, wanted)
+    return name == wanted
+end
+
+local function installRemovals()
+    if State.get("world.remove_smoke") then
+        track(Game.debris and Game.debris.ChildAdded:Connect(function(child)
+            if State.get("world.remove_smoke") and matchesName(child.Name, "SmokeExplosion") then
+                child:Destroy()
+            end
+        end) or { Disconnect = function() end })
+    end
+
+    if State.get("world.remove_bullet_holes") then
+        track(Game.debris and Game.debris.ChildAdded:Connect(function(child)
+            if State.get("world.remove_bullet_holes") and matchesName(child.Name, "BulletHole") then
+                child:Destroy()
+            end
+        end) or { Disconnect = function() end })
+    end
+
+    if State.get("world.remove_blind") then
+        track(Game.camera.ChildAdded:Connect(function(child)
+            if State.get("world.remove_blind") and child.Name == "BlindEffect" then
+                child.Enabled = false
+            end
+        end))
+    end
+
+    if State.get("world.remove_smoke_vignette") then
+        track(Game.localPlayer.PlayerGui.ChildAdded:Connect(function(child)
+            if State.get("world.remove_smoke_vignette") and child.Name == "SmokeScreenGUI" then
+                for _, descendant in next, child:GetChildren() do
+                    descendant.ImageTransparency = 1
+                end
+            end
+        end))
+    end
+end
+
+function World.start(ctx)
+    originalTime = lighting.ClockTime
+
+    colorCorrection = Instance.new("ColorCorrectionEffect")
+    colorCorrection.Name = "criminality_cc"
+    colorCorrection.Enabled = false
+    colorCorrection.Parent = Game.camera
+
+    track(Game.runService.Heartbeat:Connect(function()
+        lighting.ClockTime = State.get("world.force_time") and State.get("world.time") or originalTime
+
+        local clouds = workspace:FindFirstChild("Terrain") and workspace.Terrain:FindFirstChild("Clouds")
+
+        if clouds then
+            clouds.Enabled = not State.get("world.disable_clouds")
+        end
+
+        colorCorrection.Enabled = State.get("world.color_correction")
+        colorCorrection.Saturation = (tonumber(State.get("world.saturation")) or 0) / 50
+    end))
+
+    State.on("world.skybox", function(value)
+        applySkybox(value)
+    end)
+
+    State.on("world.remove_smoke", function() installRemovals() end)
+    State.on("world.remove_bullet_holes", function() installRemovals() end)
+    State.on("world.remove_blind", function() installRemovals() end)
+    State.on("world.remove_smoke_vignette", function() installRemovals() end)
+
+    installRemovals()
+end
+
+function World.stop()
+    for _, connection in next, connections do
+        pcall(function()
+            connection:Disconnect()
+        end)
+    end
+
+    connections = {}
+
+    if colorCorrection then
+        colorCorrection:Destroy()
+        colorCorrection = nil
+    end
+
+    lighting.ClockTime = originalTime
+end
+
+return World
 
 end;
 
@@ -48025,10 +48489,12 @@ if not game:IsLoaded() then
 end
 
 -- Anti-cheat bypass goes in before anything else touches the game.
-local Bypass = require("@src/hub/criminality/bypass")
-Bypass.install()
-
 local env = getgenv()
+
+if env.criminality_skip_bypass ~= true then
+    local Bypass = require("@src/hub/criminality/bypass")
+    Bypass.install()
+end
 
 if env.criminality_hub and env.criminality_hub.destroy then
     pcall(function()
@@ -48044,8 +48510,21 @@ local Aimbot = require("@src/hub/criminality/features/aimbot")
 local Silent = require("@src/hub/criminality/features/silent")
 local ESP = require("@src/hub/criminality/features/esp")
 local Misc = require("@src/hub/criminality/features/misc")
+local World = require("@src/hub/criminality/features/world")
+local Gun = require("@src/hub/criminality/features/gun")
+local Disablers = require("@src/hub/criminality/features/disablers")
 
 State.define("config.name", "default")
+
+-- drop a window left behind by an earlier failed boot
+do
+    local parent = (gethui and gethui()) or game:GetService("CoreGui")
+    local previous = parent and parent:FindFirstChild("criminality_hub")
+
+    if previous then
+        previous:Destroy()
+    end
+end
 
 local window = UI.new({
     title = "criminality  ·  hub",
@@ -48087,6 +48566,17 @@ do
     local visuals = tab:section("Overlay")
 
     visuals:toggle("aimbot.draw_fov", "Draw FOV ring")
+
+    local travel = tab:section("Teleports", "map waypoints")
+
+    travel:dropdown("teleport.target", "Location", Misc.positions())
+    travel:button("Teleport", function()
+        if Misc.teleport(State.get("teleport.target")) then
+            window:notify("teleported to " .. tostring(State.get("teleport.target")))
+        else
+            window:notify("teleport on cooldown or no character", "error")
+        end
+    end)
 end
 
 --------------------------------------------------------------------------
@@ -48146,6 +48636,24 @@ do
     world:toggle("world.atms", "ATMs")
     world:toggle("world.cash", "Dropped cash")
     world:slider("world.max_distance", "Max distance", 50, 1500, 10)
+
+    local earth = tab:section("World settings", "sky and light")
+
+    earth:dropdown("world.skybox", "Skybox", { "none", "nebula", "vaporwave", "clouds", "twilight" })
+    earth:toggle("world.color_correction", "Colour correction")
+    earth:slider("world.saturation", "Saturation", 0, 100, 1)
+    earth:toggle("world.force_time", "Force time of day")
+    earth:slider("world.time", "Time", 0, 24, 1)
+    earth:toggle("world.disable_clouds", "Disable clouds")
+
+    local removals = tab:section("Removals", "strip effects")
+
+    removals:toggle("world.remove_smoke", "Smoke")
+    removals:toggle("world.remove_bullet_holes", "Bullet holes")
+    removals:toggle("world.remove_blind", "Blind effect")
+    removals:toggle("world.remove_smoke_vignette", "Smoke vignette")
+    removals:toggle("world.remove_atm_blur", "ATM blur")
+    removals:toggle("world.remove_blood_vignette", "Blood vignette")
 end
 
 --------------------------------------------------------------------------
@@ -48175,6 +48683,22 @@ do
     utility:toggle("misc.lockpick", "Lockpick bars")
     utility:toggle("misc.autopickup", "Auto pickup")
     utility:slider("misc.autopickup_range", "Pickup range", 2, 20, 1)
+
+    local weapons = tab:section("Gun mods", "config swap")
+
+    weapons:toggle("gun.enabled", "Enabled")
+    weapons:slider("gun.recoil", "Recoil", 0, 100, 1, nil, "%")
+    weapons:slider("gun.firerate", "Fire rate", 1, 3, 0.1, nil, "x")
+    weapons:toggle("gun.fast_equip", "Fast equip")
+    weapons:toggle("gun.no_spread", "No spread")
+
+    local disablers = tab:section("Disablers")
+
+    disablers:toggle("disablers.down", "No down")
+    disablers:toggle("disablers.ragdoll", "No ragdoll")
+    disablers:toggle("disablers.zawarudo", "No za warudo")
+    disablers:toggle("disablers.jailed", "No jailed")
+    disablers:toggle("disablers.handcuffed", "No handcuffs")
 end
 
 --------------------------------------------------------------------------
@@ -48235,10 +48759,15 @@ end
 
 Config.autoload()
 
-Aimbot.start(hub)
-Silent.start(hub)
-ESP.start(hub)
-Misc.start(hub)
+if env.criminality_ui_only ~= true then
+    Aimbot.start(hub)
+    Silent.start(hub)
+    ESP.start(hub)
+    Misc.start(hub)
+    World.start(hub)
+    Gun.start(hub)
+    Disablers.start(hub)
+end
 
 window.status.Text = "ready"
 
@@ -48266,6 +48795,9 @@ function hub:destroy()
     Silent.stop()
     ESP.stop()
     Misc.stop()
+    World.stop()
+    Gun.stop()
+    Disablers.stop()
 
     if self.window and self.window.screenGui then
         self.window.screenGui:Destroy()
@@ -48591,16 +49123,21 @@ UI.__index = UI
 
 local Tween = TweenInfo.new(0.14, Enum.EasingStyle.Quad, Enum.EasingDirection.Out)
 
+local Theme = require("@src/arteria/theme")
+
 local THEME = {
-    window = Color3.fromRGB(12, 12, 17),
-    panel = Color3.fromRGB(18, 18, 25),
-    panel2 = Color3.fromRGB(23, 23, 32),
-    stroke = Color3.fromRGB(38, 38, 51),
-    text = Color3.fromRGB(232, 232, 240),
-    muted = Color3.fromRGB(138, 138, 158),
-    accent = Color3.fromRGB(84, 101, 255),
-    accent2 = Color3.fromRGB(61, 220, 151),
-    danger = Color3.fromRGB(255, 92, 92),
+    window = Theme.color.ink,
+    panel = Theme.color.surface,
+    panel2 = Theme.color.surface_hover,
+    stroke = Theme.color.line,
+    text = Theme.color.text,
+    muted = Theme.color.muted,
+    accent = Theme.color.neon,
+    accent2 = Theme.color.neon_glow,
+    danger = Theme.color.alert,
+    heading = Theme.font.heading,
+    body = Theme.font.body,
+    mono = Theme.font.mono,
 }
 
 local function create(class, props, parent)
@@ -48620,7 +49157,7 @@ local function create(class, props, parent)
 end
 
 local function corner(instance, radius)
-    return create("UICorner", { CornerRadius = UDim.new(0, radius or 6) }, instance)
+    return create("UICorner", { CornerRadius = UDim.new(0, radius or 2) }, instance)
 end
 
 local function stroke(instance, color, thickness)
@@ -48678,7 +49215,7 @@ function Control:onChanged(callback)
     return self
 end
 
-function Control:addToggle(parent, key, text, callback)
+function Control.addToggle(parent, key, text, callback)
     local control = setmetatable({ key = key, kind = "toggle" }, Control)
     local row = create("Frame", {
         BackgroundTransparency = 1,
@@ -48740,7 +49277,7 @@ function Control:addToggle(parent, key, text, callback)
     return control
 end
 
-function Control:addSlider(parent, key, text, min, max, step, callback, suffix)
+function Control.addSlider(parent, key, text, min, max, step, callback, suffix)
     local control = setmetatable({ key = key, kind = "slider" }, Control)
     local row = create("Frame", {
         BackgroundTransparency = 1,
@@ -48857,7 +49394,7 @@ function Control:addSlider(parent, key, text, min, max, step, callback, suffix)
     return control
 end
 
-function Control:addDropdown(parent, key, text, options, callback)
+function Control.addDropdown(parent, key, text, options, callback)
     local control = setmetatable({ key = key, kind = "dropdown" }, Control)
     local row = create("Frame", {
         BackgroundTransparency = 1,
@@ -49008,7 +49545,7 @@ function Control:addDropdown(parent, key, text, options, callback)
     return control
 end
 
-function Control:addKeybind(parent, key, text, default)
+function Control.addKeybind(parent, key, text, default)
     local control = setmetatable({ key = key, kind = "keybind" }, Control)
     local row = create("Frame", {
         BackgroundTransparency = 1,
@@ -49078,7 +49615,7 @@ function Control:addKeybind(parent, key, text, default)
     return control
 end
 
-function Control:addText(parent, key, text, placeholder)
+function Control.addText(parent, key, text, placeholder)
     local control = setmetatable({ key = key, kind = "text" }, Control)
     local row = create("Frame", {
         BackgroundTransparency = 1,
@@ -49122,7 +49659,7 @@ function Control:addText(parent, key, text, placeholder)
     return control
 end
 
-function Control:addButton(parent, text, callback, danger)
+function Control.addButton(parent, text, callback, danger)
     local button = create("TextButton", {
         BackgroundColor3 = THEME.panel2,
         Size = UDim2.new(1, -20, 0, 26),
@@ -49174,7 +49711,7 @@ function Window:tab(name, caption)
         TextSize = 13,
         TextColor3 = THEME.muted,
         TextXAlignment = Enum.TextXAlignment.Left,
-        Text = "  " .. caption,
+        Text = "  " .. string.upper(caption),
         AutoButtonColor = false,
         LayoutOrder = #self.tabs + 1,
     }, self.sidebar)
@@ -49247,8 +49784,8 @@ function Window:tab(name, caption)
             Padding = UDim.new(0, 0),
         }, frame)
 
-        local titleLabel = label(frame, title, 13, THEME.text, Enum.Font.GothamBold)
-        titleLabel.Size = UDim2.new(1, 0, 0, 18)
+        local titleLabel = label(frame, string.upper(title), 13, THEME.text, THEME.heading)
+        titleLabel.Size = UDim2.new(1, 0, 0, 20)
         titleLabel.LayoutOrder = 1
 
         if subtitle then
@@ -49392,7 +49929,7 @@ function UI.new(options)
         Name = "Window",
         AnchorPoint = Vector2.new(0.5, 0.5),
         Position = UDim2.new(0.5, 0, 0.5, 0),
-        Size = UDim2.fromOffset(620, 430),
+        Size = UDim2.fromOffset(860, 560),
         BackgroundColor3 = THEME.window,
         BorderSizePixel = 0,
     }, screenGui)
@@ -49459,7 +49996,7 @@ function UI.new(options)
         Name = "Sidebar",
         BackgroundTransparency = 1,
         Position = UDim2.fromOffset(10, 48),
-        Size = UDim2.fromOffset(136, 372),
+        Size = UDim2.fromOffset(190, 502),
     }, root)
 
     create("UIListLayout", {
@@ -49470,8 +50007,8 @@ function UI.new(options)
     local content = create("Frame", {
         Name = "Content",
         BackgroundTransparency = 1,
-        Position = UDim2.fromOffset(154, 48),
-        Size = UDim2.new(1, -164, 1, -58),
+        Position = UDim2.fromOffset(204, 48),
+        Size = UDim2.new(1, -214, 1, -58),
     }, root)
 
     window.sidebar = sidebar
@@ -49528,6 +50065,63 @@ end
 UI.THEME = THEME
 
 return UI
+
+end;
+
+__modules["src/hub/debug_ui"] = function()
+local State = require("@src/hub/criminality/state")
+local UI = require("@src/hub/criminality/ui")
+
+State.define("dbg.toggle", false)
+State.define("dbg.slider", 5)
+State.define("dbg.drop", "x")
+State.define("dbg.key", "Y")
+State.define("dbg.text", "")
+State.define("config.name", "default")
+
+print("[dbg] modules loaded")
+
+local ok, err = xpcall(function()
+    local window = UI.new({ title = "debug" })
+    print("[dbg] window ok")
+
+    local tab = window:tab("a", "A")
+    print("[dbg] tab ok, tabs=" .. tostring(#window.tabs))
+
+    local section = tab:section("S")
+    print("[dbg] section ok rows=" .. tostring(type(section.rows)) .. " body=" .. tostring(section.body ~= nil))
+
+    section:toggle("dbg.toggle", "Toggle")
+    print("[dbg] toggle ok")
+
+    section:slider("dbg.slider", "Slider", 1, 10, 1)
+    print("[dbg] slider ok")
+
+    section:dropdown("dbg.drop", "Drop", { "x", "y" })
+    print("[dbg] dropdown ok")
+
+    section:keybind("dbg.key", "Key")
+    print("[dbg] keybind ok")
+
+    section:text("dbg.text", "Text", "hint")
+    print("[dbg] text ok")
+
+    section:button("Button", function() end)
+    print("[dbg] button ok")
+
+    local tab2 = window:tab("b", "B")
+    print("[dbg] tab2 ok tabs=" .. tostring(#window.tabs))
+
+    local s2 = tab2:section("S2", "sub")
+    s2:toggle("dbg.toggle", "T2")
+    print("[dbg] tab2 section ok")
+end, function(e)
+    return tostring(e) .. "\n" .. debug.traceback("", 2)
+end)
+
+print("[dbg] result=" .. tostring(ok) .. "  err=" .. tostring(err))
+
+return ok
 
 end;
 

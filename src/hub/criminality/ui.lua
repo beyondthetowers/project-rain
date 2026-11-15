@@ -19,16 +19,21 @@ UI.__index = UI
 
 local Tween = TweenInfo.new(0.14, Enum.EasingStyle.Quad, Enum.EasingDirection.Out)
 
+local Theme = require("@src/arteria/theme")
+
 local THEME = {
-    window = Color3.fromRGB(12, 12, 17),
-    panel = Color3.fromRGB(18, 18, 25),
-    panel2 = Color3.fromRGB(23, 23, 32),
-    stroke = Color3.fromRGB(38, 38, 51),
-    text = Color3.fromRGB(232, 232, 240),
-    muted = Color3.fromRGB(138, 138, 158),
-    accent = Color3.fromRGB(84, 101, 255),
-    accent2 = Color3.fromRGB(61, 220, 151),
-    danger = Color3.fromRGB(255, 92, 92),
+    window = Theme.color.ink,
+    panel = Theme.color.surface,
+    panel2 = Theme.color.surface_hover,
+    stroke = Theme.color.line,
+    text = Theme.color.text,
+    muted = Theme.color.muted,
+    accent = Theme.color.neon,
+    accent2 = Theme.color.neon_glow,
+    danger = Theme.color.alert,
+    heading = Theme.font.heading,
+    body = Theme.font.body,
+    mono = Theme.font.mono,
 }
 
 local function create(class, props, parent)
@@ -48,7 +53,7 @@ local function create(class, props, parent)
 end
 
 local function corner(instance, radius)
-    return create("UICorner", { CornerRadius = UDim.new(0, radius or 6) }, instance)
+    return create("UICorner", { CornerRadius = UDim.new(0, radius or 2) }, instance)
 end
 
 local function stroke(instance, color, thickness)
@@ -106,7 +111,7 @@ function Control:onChanged(callback)
     return self
 end
 
-function Control:addToggle(parent, key, text, callback)
+function Control.addToggle(parent, key, text, callback)
     local control = setmetatable({ key = key, kind = "toggle" }, Control)
     local row = create("Frame", {
         BackgroundTransparency = 1,
@@ -168,7 +173,7 @@ function Control:addToggle(parent, key, text, callback)
     return control
 end
 
-function Control:addSlider(parent, key, text, min, max, step, callback, suffix)
+function Control.addSlider(parent, key, text, min, max, step, callback, suffix)
     local control = setmetatable({ key = key, kind = "slider" }, Control)
     local row = create("Frame", {
         BackgroundTransparency = 1,
@@ -285,7 +290,7 @@ function Control:addSlider(parent, key, text, min, max, step, callback, suffix)
     return control
 end
 
-function Control:addDropdown(parent, key, text, options, callback)
+function Control.addDropdown(parent, key, text, options, callback)
     local control = setmetatable({ key = key, kind = "dropdown" }, Control)
     local row = create("Frame", {
         BackgroundTransparency = 1,
@@ -436,7 +441,7 @@ function Control:addDropdown(parent, key, text, options, callback)
     return control
 end
 
-function Control:addKeybind(parent, key, text, default)
+function Control.addKeybind(parent, key, text, default)
     local control = setmetatable({ key = key, kind = "keybind" }, Control)
     local row = create("Frame", {
         BackgroundTransparency = 1,
@@ -506,7 +511,7 @@ function Control:addKeybind(parent, key, text, default)
     return control
 end
 
-function Control:addText(parent, key, text, placeholder)
+function Control.addText(parent, key, text, placeholder)
     local control = setmetatable({ key = key, kind = "text" }, Control)
     local row = create("Frame", {
         BackgroundTransparency = 1,
@@ -550,7 +555,7 @@ function Control:addText(parent, key, text, placeholder)
     return control
 end
 
-function Control:addButton(parent, text, callback, danger)
+function Control.addButton(parent, text, callback, danger)
     local button = create("TextButton", {
         BackgroundColor3 = THEME.panel2,
         Size = UDim2.new(1, -20, 0, 26),
@@ -602,7 +607,7 @@ function Window:tab(name, caption)
         TextSize = 13,
         TextColor3 = THEME.muted,
         TextXAlignment = Enum.TextXAlignment.Left,
-        Text = "  " .. caption,
+        Text = "  " .. string.upper(caption),
         AutoButtonColor = false,
         LayoutOrder = #self.tabs + 1,
     }, self.sidebar)
@@ -675,8 +680,8 @@ function Window:tab(name, caption)
             Padding = UDim.new(0, 0),
         }, frame)
 
-        local titleLabel = label(frame, title, 13, THEME.text, Enum.Font.GothamBold)
-        titleLabel.Size = UDim2.new(1, 0, 0, 18)
+        local titleLabel = label(frame, string.upper(title), 13, THEME.text, THEME.heading)
+        titleLabel.Size = UDim2.new(1, 0, 0, 20)
         titleLabel.LayoutOrder = 1
 
         if subtitle then
@@ -820,7 +825,7 @@ function UI.new(options)
         Name = "Window",
         AnchorPoint = Vector2.new(0.5, 0.5),
         Position = UDim2.new(0.5, 0, 0.5, 0),
-        Size = UDim2.fromOffset(620, 430),
+        Size = UDim2.fromOffset(860, 560),
         BackgroundColor3 = THEME.window,
         BorderSizePixel = 0,
     }, screenGui)
@@ -887,7 +892,7 @@ function UI.new(options)
         Name = "Sidebar",
         BackgroundTransparency = 1,
         Position = UDim2.fromOffset(10, 48),
-        Size = UDim2.fromOffset(136, 372),
+        Size = UDim2.fromOffset(190, 502),
     }, root)
 
     create("UIListLayout", {
@@ -898,8 +903,8 @@ function UI.new(options)
     local content = create("Frame", {
         Name = "Content",
         BackgroundTransparency = 1,
-        Position = UDim2.fromOffset(154, 48),
-        Size = UDim2.new(1, -164, 1, -58),
+        Position = UDim2.fromOffset(204, 48),
+        Size = UDim2.new(1, -214, 1, -58),
     }, root)
 
     window.sidebar = sidebar
