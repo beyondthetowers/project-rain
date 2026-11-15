@@ -22,6 +22,7 @@ function Adapter.mount(catalog, callbacks)
         status = "ready",
         errors = {},
         reduce_motion = false,
+        low_cost = getgenv().criminality_full_fx ~= true,
         flags = {},
         bindings = {},
         features = {},

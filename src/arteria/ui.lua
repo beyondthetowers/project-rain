@@ -68,6 +68,7 @@ function UI.mount(runtime)
 
     -- Real optical neon bloom for buttons, badges and indicators
     local function add_neon_bloom(parent, color, layers)
+        if runtime.low_cost then return {} end
         layers = layers or {
             { size = 4, alpha = 0.74 },
             { size = 8, alpha = 0.85 },
@@ -94,6 +95,7 @@ function UI.mount(runtime)
 
     -- Real optical neon bloom aura for large titles and logos
     local function add_text_bloom(label, color)
+        if runtime.low_cost then return {} end
         local parent = label.Parent
         local layers = {
             { thickness = 2, alpha = 0.45 },
@@ -292,7 +294,7 @@ function UI.mount(runtime)
     }, game:GetService("Players").LocalPlayer:WaitForChild("PlayerGui"))
     runtime.gui = gui
 
-    local panel = create("CanvasGroup", {
+    local panel = create(runtime.low_cost and "Frame" or "CanvasGroup", {
         Name = "Panel",
         BackgroundColor3 = C.ink,
         BorderSizePixel = 0,
@@ -368,7 +370,7 @@ function UI.mount(runtime)
         { size = 14, alpha = 0.94 },
     })
 
-    local content = create("CanvasGroup", {
+    local content = create(runtime.low_cost and "Frame" or "CanvasGroup", {
         Name = "Content",
         BackgroundTransparency = 1,
         Position = UDim2.fromOffset(theme.sidebar, 0),
@@ -443,11 +445,15 @@ function UI.mount(runtime)
             if not ok then runtime.config.message = "ERROR / " .. tostring(err) end
         end
         runtime.refresh()
-        if not system_reduced and not runtime.reduce_motion then
+        if not system_reduced and not runtime.reduce_motion and not runtime.low_cost then
             content.GroupTransparency = 0.25
             content.Position = UDim2.fromOffset(content_home.X.Offset + 10, 0)
         end
-        animate(content, { GroupTransparency = 0, Position = content_home }, theme.motion.page)
+        if runtime.low_cost then
+            content.Position = content_home
+        else
+            animate(content, { GroupTransparency = 0, Position = content_home }, theme.motion.page)
+        end
         title.TextTransparency = (system_reduced or runtime.reduce_motion) and 0 or 0.35
         animate(title, { TextTransparency = 0 }, theme.motion.page)
         stagger_rows()
@@ -483,7 +489,9 @@ function UI.mount(runtime)
         local version = visibility_version
         if hide_thread then pcall(task.cancel, hide_thread); hide_thread = nil end
         if visible then panel.Visible = true end
-        animate(panel, { GroupTransparency = visible and 0 or 1 }, theme.motion.window)
+        if not runtime.low_cost then
+            animate(panel, { GroupTransparency = visible and 0 or 1 }, theme.motion.window)
+        end
         if not visible then
             capture = nil
             if gui_service.SelectedObject and gui_service.SelectedObject:IsDescendantOf(panel) then gui_service.SelectedObject = nil end
@@ -1080,8 +1088,11 @@ function UI.mount(runtime)
 
     fit()
     runtime.refresh()
-    panel.GroupTransparency = (system_reduced or runtime.reduce_motion) and 0 or 1
-    animate(panel, { GroupTransparency = 0 }, theme.motion.window)
+
+    if not runtime.low_cost then
+        panel.GroupTransparency = (system_reduced or runtime.reduce_motion) and 0 or 1
+        animate(panel, { GroupTransparency = 0 }, theme.motion.window)
+    end
 end
 
 return UI
