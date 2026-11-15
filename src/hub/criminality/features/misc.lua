@@ -192,6 +192,10 @@ local function installNoFall()
 end
 
 local function hbe()
+    if not State.get("misc.hbe") then
+        return
+    end
+
     local multiplier = math.max(tonumber(State.get("misc.hbe_multiplier")) or 150, 100) / 100
     local base = Vector3.new(1.2, 1, 1)
 
@@ -202,15 +206,24 @@ local function hbe()
             local humanoid = character and character:FindFirstChildOfClass("Humanoid")
 
             if head and humanoid and humanoid.Health > 0 then
-                if State.get("misc.hbe") then
-                    head.Size = base * multiplier
-                    head.Transparency = 0.6
-                    head.CanCollide = false
-                else
-                    head.Size = base
-                    head.Transparency = 0
-                end
+                head.Size = base * multiplier
+                head.Transparency = 0.6
+                head.CanCollide = false
             end
+        end
+    end
+end
+
+local function restoreHeads()
+    local base = Vector3.new(1.2, 1, 1)
+
+    for _, player in next, Game.players:GetPlayers() do
+        local character = player.Character
+        local head = character and character:FindFirstChild("Head")
+
+        if head then
+            head.Size = base
+            head.Transparency = 0
         end
     end
 end
@@ -337,6 +350,12 @@ function Misc.start(ctx)
 
     State.on("misc.fullbright", function(value)
         applyFullbright(value)
+    end)
+
+    State.on("misc.hbe", function(value)
+        if not value then
+            restoreHeads()
+        end
     end)
 
     State.on("misc.show_chat", function(value)

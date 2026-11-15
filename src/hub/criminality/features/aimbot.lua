@@ -98,18 +98,23 @@ local function active()
 end
 
 local function drawFov(entryCount)
+    local show = State.get("aimbot.draw_fov") and State.get("aimbot.enabled") == true
+
+    if not show then
+        if circle then
+            circle.Visible = false
+        end
+
+        return
+    end
+
     local ring = ensureCircle()
 
     if not ring then
         return
     end
 
-    local show = State.get("aimbot.draw_fov") and State.get("aimbot.enabled") == true
-    ring.Visible = show and true or false
-
-    if not show then
-        return
-    end
+    ring.Visible = true
 
     local mouse = Game.userInputService:GetMouseLocation()
     ring.Position = Vector2.new(mouse.X, mouse.Y + 36)

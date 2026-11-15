@@ -1,6 +1,6 @@
 --[[
     Arteria — bundled build
-    generated 2026-11-15T02:04:04.424Z
+    generated 2026-11-15T02:21:34.562Z
     modules: 320
     assets:  2
 ]]
@@ -47053,18 +47053,23 @@ local function active()
 end
 
 local function drawFov(entryCount)
+    local show = State.get("aimbot.draw_fov") and State.get("aimbot.enabled") == true
+
+    if not show then
+        if circle then
+            circle.Visible = false
+        end
+
+        return
+    end
+
     local ring = ensureCircle()
 
     if not ring then
         return
     end
 
-    local show = State.get("aimbot.draw_fov") and State.get("aimbot.enabled") == true
-    ring.Visible = show and true or false
-
-    if not show then
-        return
-    end
+    ring.Visible = true
 
     local mouse = Game.userInputService:GetMouseLocation()
     ring.Position = Vector2.new(mouse.X, mouse.Y + 36)
@@ -47861,6 +47866,10 @@ local function installNoFall()
 end
 
 local function hbe()
+    if not State.get("misc.hbe") then
+        return
+    end
+
     local multiplier = math.max(tonumber(State.get("misc.hbe_multiplier")) or 150, 100) / 100
     local base = Vector3.new(1.2, 1, 1)
 
@@ -47871,15 +47880,24 @@ local function hbe()
             local humanoid = character and character:FindFirstChildOfClass("Humanoid")
 
             if head and humanoid and humanoid.Health > 0 then
-                if State.get("misc.hbe") then
-                    head.Size = base * multiplier
-                    head.Transparency = 0.6
-                    head.CanCollide = false
-                else
-                    head.Size = base
-                    head.Transparency = 0
-                end
+                head.Size = base * multiplier
+                head.Transparency = 0.6
+                head.CanCollide = false
             end
+        end
+    end
+end
+
+local function restoreHeads()
+    local base = Vector3.new(1.2, 1, 1)
+
+    for _, player in next, Game.players:GetPlayers() do
+        local character = player.Character
+        local head = character and character:FindFirstChild("Head")
+
+        if head then
+            head.Size = base
+            head.Transparency = 0
         end
     end
 end
@@ -48006,6 +48024,12 @@ function Misc.start(ctx)
 
     State.on("misc.fullbright", function(value)
         applyFullbright(value)
+    end)
+
+    State.on("misc.hbe", function(value)
+        if not value then
+            restoreHeads()
+        end
     end)
 
     State.on("misc.show_chat", function(value)
